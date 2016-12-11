@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head />
+<h:body>
+
+	<div id="cabecalho">
+		<h:graphicImage library="img" name="logo.png" />
+		<h1>
+			<ui:insert name="titulo" />
+		</h1>
+
+		<h:form rendered="#{usuarioLogado != null}">
+			<h:commandButton value="Logout" action="#{loginBean.logout}" />
+		</h:form>
+		<br />
+
+	</div>
+
+	<div id="conteudo">
+		<ui:insert name="conteudo" />
+	</div>
+
+	<div id="rodape">
+		<p>Copyright 2016</p>		
+	</div>
+
+
+
+</h:body>
+</html>

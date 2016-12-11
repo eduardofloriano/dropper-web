@@ -1,0 +1,48 @@
+@CHARSET "ISO-8859-1";
+
+div#conteudo .ui-g{
+	height: 600px;
+	/*background-color: gray;*/
+}
+
+div#conteudo .section-login{
+	display: block;
+	/*background-color: white;*/
+}
+
+div#conteudo div#section-login-logo{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20px;
+
+}
+
+div#conteudo div#section-login-form {
+	display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20px;
+    height: 100%;
+}
+
+
+div#conteudo .section-login-form-table{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: 54%;    
+}
+
+div#conteudo .section-login-form-table .ui-widget-content{
+	border: none;
+	border-color: transparent;
+		
+}
+
+.dr-button-center{
+	display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 20px;
+}
