@@ -42,6 +42,11 @@ public class LoginBean {
 			return "livro.xhtml?faces-redirect=true";
 		}
 	}
+	
+	public String cadastrarUsuario(){
+		System.out.println("Redirecionando para cadastroUsuario.xhtml");
+		return "cadastroUsuario.xhtml?faces-redirect=true";
+	}
 
 	public String logout() {
 		FacesContext context = FacesContext.getCurrentInstance();

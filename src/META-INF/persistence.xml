@@ -4,17 +4,15 @@
 	version="2.0">
 	
 	
-	<persistence-unit name="livraria-postgresql">
+	<persistence-unit name="dropper-postgresql">
 		
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>	
-		<class>br.com.alura.livraria.modelo.Usuario</class>	
-		<class>br.com.alura.livraria.modelo.Livro</class>
-		<class>br.com.alura.livraria.modelo.Autor</class>
+		<class>br.com.dropper.web.modelo.Usuario</class>	
 		
 		
 		<properties>			
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/alura" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/dropper" />
 			<property name="javax.persistence.jdbc.user" value="postgres" />
 			<property name="javax.persistence.jdbc.password" value="postgres" />
 			

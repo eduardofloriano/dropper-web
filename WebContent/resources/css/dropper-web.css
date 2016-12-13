@@ -1,5 +1,17 @@
 @CHARSET "ISO-8859-1";
 
+/***************************
+*THEME OVERRIDE
+***************************/
+#conteudo .ui-widget-content{
+	background: white;
+}
+
+
+
+/***************************
+*THEME DROPPER
+***************************/
 div#conteudo .ui-g{
 	height: 600px;
 	/*background-color: gray;*/
@@ -18,7 +30,7 @@ div#conteudo div#section-login-logo{
 
 }
 
-div#conteudo div#section-login-form {
+div#conteudo div#section-login-form, div#conteudo div#section-cadastro-form {
 	display: block;
     margin: 0 auto;
     text-align: center;
@@ -34,15 +46,26 @@ div#conteudo .section-login-form-table{
     width: 54%;    
 }
 
-div#conteudo .section-login-form-table .ui-widget-content{
+div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section-cadastro-form-table .ui-widget-content {
 	border: none;
 	border-color: transparent;
 		
 }
 
 .dr-button-center{
-	display: block;
+	display: inline-block;
     margin: 0 auto;
     text-align: center;
     margin-top: 20px;
+    margin-left: 20px;
+}
+
+.menu-header-logo{
+	display: block;
+	padding: 6px 0;
+}
+
+
+#conteudo #cadastroUsuario-form .ui-widget-content{
+	text-align: right;
 }

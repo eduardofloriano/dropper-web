@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/postgresql-9.4.1212.jre6.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.faces-2.2.13.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/primefaces-6.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/cupertino-1.0.10.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
