@@ -40,9 +40,7 @@ public class UsuarioBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Usuário Cadastrado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
-		
-		System.out.println("Redirecionando para cadastroUsuario.xhtml");
-		return "cadastroUsuario.xhtml?faces-redirect=true";
+		return null;
 	}
 
 	

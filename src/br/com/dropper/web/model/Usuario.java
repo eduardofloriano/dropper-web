@@ -42,7 +42,7 @@ public class Usuario {
 	private String email;
 	private String senha;
 
-	
+	//Getters e Setters
 	
 	public String getNome() {
 		return nome;
