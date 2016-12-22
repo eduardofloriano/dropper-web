@@ -39,7 +39,7 @@ public class LoginBean {
 					.put("usuarioLogado", usuario);
 			// context.getExternalContext().getSessionMap().put("emailUsuario",
 			// usuario.getEmail());
-			return "livro.xhtml?faces-redirect=true";
+			return "dashboard.xhtml?faces-redirect=true";
 		}
 	}
 	

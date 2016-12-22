@@ -69,3 +69,19 @@ div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section
 #conteudo #cadastroUsuario-form .ui-widget-content{
 	text-align: right;
 }
+
+
+/***************************
+DASHBOARD
+***************************/
+.upload-area .ui-fileupload-content{
+	height: 140px;
+}
+
+.dropper-grid-area .ui-panel-title{	
+    background: #d7ebf9 url(/dropper-web/javax.faces.resource/images/ui-bg_glass_80_d7ebf9_1x400.png.xhtml?ln=primefaces-cupertino) 50% 50% repeat-x;
+    font-weight: bold;
+    color: #2779aa;
+}
+
+
