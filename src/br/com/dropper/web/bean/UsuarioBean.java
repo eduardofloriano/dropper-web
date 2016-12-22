@@ -19,29 +19,22 @@ public class UsuarioBean {
 
 	private Usuario usuario = new Usuario();
 
-	
-
 	public Usuario getUsuario() {
 		return usuario;
 	}
-
-
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
-
-
-	public String cadastrar(){
+	public String cadastrar() {
 		System.out.println("Persistindo Usuário: " + usuario.getEmail());
 		usuarioDAO.persist(this.usuario);
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Usuário Cadastrado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
 		return null;
 	}
 
-	
 }

@@ -38,6 +38,9 @@ public class Imagem {
 	@Column(length=100000)
 	private byte[] data;
 	
+	
+	private Long tamanho;
+	
 	//Getters e Setters
 	
 	
@@ -79,6 +82,14 @@ public class Imagem {
 
 	public void setData(byte[] data) {
 		this.data = data;
+	}
+
+	public Long getTamanho() {
+		return tamanho;
+	}
+
+	public void setTamanho(long tamanho) {
+		this.tamanho = tamanho;
 	}
 	
 	
