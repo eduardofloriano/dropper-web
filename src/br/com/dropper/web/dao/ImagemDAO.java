@@ -34,5 +34,10 @@ public class ImagemDAO extends DAO<Imagem> {
 			return null;
 		}
 	}
+	
+	
+	public Imagem obterImagemPorId(Integer id){
+		return em.find(Imagem.class, id);
+	}
 
 }

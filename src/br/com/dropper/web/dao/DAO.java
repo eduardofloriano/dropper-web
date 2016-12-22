@@ -22,7 +22,7 @@ public class DAO<T> {
 		em.getTransaction().begin();
 		em.merge(t);
 		em.getTransaction().commit();
+		
 	}
-	
 	
 }

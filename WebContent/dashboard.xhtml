@@ -34,10 +34,10 @@
 								</h:form>
 							</div>
 							<div class="ui-g-9 upload-area">
-								<h:form>
+								<h:form id="dashboard-upload-form">
 									<p:fileUpload
 										fileUploadListener="#{imagemBean.handleFileUpload}"
-										mode="advanced" dragDropSupport="true" update="messages"
+										mode="advanced" dragDropSupport="true" update=":dashboard-data-form:dropper-data-grid"
 										sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
 
 									<p:growl id="messages" showDetail="true" />
@@ -47,8 +47,31 @@
 							<div class="ui-g-3" />
 
 							<div class="ui-g-9 dropper-grid-area">
-								<p:panel id="basic" header="DROPPER">
-								</p:panel>
+								<h:form id="dashboard-data-form">
+									<p:dataGrid id="dropper-data-grid" var="imagem"
+										value="#{imagemBean.imagens}" columns="3" layout="grid"
+										rows="3" paginator="true"
+										paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="6,12,16">
+
+										<f:facet name="header">
+											DROPPER
+										</f:facet>
+
+										<p:panel header="#{imagem.nome}" style="text-align:center">
+											<h:panelGrid columns="1" style="width:100%">
+
+												 <p:graphicImage value="#{imagemBean.imagem}">
+													<f:param name="id" value="#{imagem.id}" />
+												</p:graphicImage>
+
+											</h:panelGrid>
+										</p:panel>
+
+
+
+									</p:dataGrid>
+								</h:form>
 							</div>
 						</div>
 
