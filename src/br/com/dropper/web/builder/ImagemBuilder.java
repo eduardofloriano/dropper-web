@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.commons.io.IOUtils;
 
 import br.com.dropper.web.model.Imagem;
+import br.com.dropper.web.model.Usuario;
 
 public class ImagemBuilder {
 
@@ -13,6 +14,7 @@ public class ImagemBuilder {
 	private Date dataInclusao;
 	private InputStream data;
 	private long tamanho;
+	private Usuario usuario;
 	
 	public ImagemBuilder(){
 		
@@ -65,12 +67,22 @@ public class ImagemBuilder {
 		this.tamanho = tamanho;
 		return this;
 	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public ImagemBuilder setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+		return this;
+	}
 
 	public Imagem construct(){
 		Imagem imagem = new Imagem();
 		imagem.setNome(nome);
 		imagem.setTamanho(tamanho);
 		imagem.setDataInclusao(dataInclusao);
+		imagem.setUsuario(usuario);
 		
 		try {
 			imagem.setData(IOUtils.toByteArray(data));

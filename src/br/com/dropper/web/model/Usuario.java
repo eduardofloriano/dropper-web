@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -42,6 +43,10 @@ public class Usuario {
 	private String email;
 	private String senha;
 
+	@Lob
+	@Column(length=100000)
+	private byte[] imagem;
+		
 	//Getters e Setters
 	
 	public String getNome() {
@@ -115,5 +120,15 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+
+	public byte[] getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(byte[] imagem) {
+		this.imagem = imagem;
+	}
+	
+	
 
 }

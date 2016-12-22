@@ -8,23 +8,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@NamedQuery(name = "obterImagemPorNome", query = "select i from Imagem i where i.nome = :pNome")
+@NamedQueries({
+	@NamedQuery(name = "obterImagemPorNome", query = "select i from Imagem i where i.nome = :pNome"),
+	@NamedQuery(name = "obterImagensPorUsuario", query = "select i from Imagem i where i.usuario = :pUsuario")
+})
 @Entity
 @SequenceGenerator(name = "SEQ_IMAGEM", sequenceName = "SEQ_IMAGEM", initialValue = 1, allocationSize = 1)
 public class Imagem {
 
-	public static final String OBTER_IMAGEM_POR_NOME = "obterImagemPorNome";	
+	public static final String OBTER_IMAGEM_POR_NOME = "obterImagemPorNome";
+	public static final String OBTER_IMAGENS_POR_USUARIO = "obterImagensPorUsuario";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_IMAGEM")
 	private Integer id;
 	
 	private String nome;
+	
+	private Long tamanho;
 		
 	@Temporal(TemporalType.DATE)
 	@Column(name = "dataInclusao", insertable=false)
@@ -38,8 +46,8 @@ public class Imagem {
 	@Column(length=100000)
 	private byte[] data;
 	
-	
-	private Long tamanho;
+	@ManyToOne
+	private Usuario usuario;
 	
 	//Getters e Setters
 	
@@ -90,6 +98,14 @@ public class Imagem {
 
 	public void setTamanho(long tamanho) {
 		this.tamanho = tamanho;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	
