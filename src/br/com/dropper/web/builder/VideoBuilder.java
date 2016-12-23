@@ -5,10 +5,10 @@ import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
 
-import br.com.dropper.web.model.Imagem;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.model.Video;
 
-public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
+public class VideoBuilder implements ArquivoMultimidiaBuilder<Video> {
 
 	private String nome;
 	private Date dataInclusao;
@@ -16,11 +16,11 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 	private long tamanho;
 	private Usuario usuario;
 	
-	public ImagemBuilder(){
+	public VideoBuilder(){
 		
 	}
 	
-	public ImagemBuilder(String nome, Date dataInclusao, InputStream data) {
+	public VideoBuilder(String nome, Date dataInclusao, InputStream data) {
 		super();
 		this.nome = nome;
 		this.dataInclusao = dataInclusao;
@@ -31,7 +31,7 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return nome;
 	}
 
-	public ImagemBuilder setNome(String nome) {
+	public VideoBuilder setNome(String nome) {
 		this.nome = nome;
 		return this;
 	}
@@ -40,7 +40,7 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return dataInclusao;
 	}
 
-	public ImagemBuilder setDataInclusao(Date dataInclusao) {
+	public VideoBuilder setDataInclusao(Date dataInclusao) {
 		if(dataInclusao == null){
 			this.dataInclusao = new Date();
 		}else{
@@ -54,7 +54,7 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return data;
 	}
 
-	public ImagemBuilder setData(InputStream data) {
+	public VideoBuilder setData(InputStream data) {
 		this.data = data;
 		return this;
 	}
@@ -63,7 +63,7 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return tamanho;
 	}
 
-	public ImagemBuilder setTamanho(Long tamanho) {
+	public VideoBuilder setTamanho(Long tamanho) {
 		this.tamanho = tamanho;
 		return this;
 	}
@@ -72,26 +72,26 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return usuario;
 	}
 
-	public ImagemBuilder setUsuario(Usuario usuario) {
+	public VideoBuilder setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 		return this;
 	}
 
-	public Imagem construct(){
-		Imagem imagem = new Imagem();
-		imagem.setNome(nome);
-		imagem.setTamanho(tamanho);
-		imagem.setDataInclusao(dataInclusao);
-		imagem.setUsuario(usuario);
+	public Video construct(){
+		Video video = new Video();
+		video.setNome(nome);
+		video.setTamanho(tamanho);
+		video.setDataInclusao(dataInclusao);
+		video.setUsuario(usuario);
 		
 		try {
-			imagem.setData(IOUtils.toByteArray(data));
+			video.setData(IOUtils.toByteArray(data));
 		} catch (Exception e) {
-			System.out.println("Nao foi possivel converter o InputStream da imagem para byteArray!");
+			System.out.println("Nao foi possivel converter o InputStream da Video para byteArray!");
 			e.printStackTrace();
 		}
 		
-		return imagem;
+		return video;
 	}
 
 }

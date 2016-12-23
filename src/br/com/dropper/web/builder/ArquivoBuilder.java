@@ -5,10 +5,10 @@ import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
 
-import br.com.dropper.web.model.Imagem;
+import br.com.dropper.web.model.Arquivo;
 import br.com.dropper.web.model.Usuario;
 
-public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
+public class ArquivoBuilder implements ArquivoMultimidiaBuilder<Arquivo> {
 
 	private String nome;
 	private Date dataInclusao;
@@ -16,11 +16,11 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 	private long tamanho;
 	private Usuario usuario;
 	
-	public ImagemBuilder(){
+	public ArquivoBuilder(){
 		
 	}
 	
-	public ImagemBuilder(String nome, Date dataInclusao, InputStream data) {
+	public ArquivoBuilder(String nome, Date dataInclusao, InputStream data) {
 		super();
 		this.nome = nome;
 		this.dataInclusao = dataInclusao;
@@ -31,7 +31,7 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return nome;
 	}
 
-	public ImagemBuilder setNome(String nome) {
+	public ArquivoBuilder setNome(String nome) {
 		this.nome = nome;
 		return this;
 	}
@@ -40,7 +40,7 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return dataInclusao;
 	}
 
-	public ImagemBuilder setDataInclusao(Date dataInclusao) {
+	public ArquivoBuilder setDataInclusao(Date dataInclusao) {
 		if(dataInclusao == null){
 			this.dataInclusao = new Date();
 		}else{
@@ -54,7 +54,7 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return data;
 	}
 
-	public ImagemBuilder setData(InputStream data) {
+	public ArquivoBuilder setData(InputStream data) {
 		this.data = data;
 		return this;
 	}
@@ -63,7 +63,7 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return tamanho;
 	}
 
-	public ImagemBuilder setTamanho(Long tamanho) {
+	public ArquivoBuilder setTamanho(Long tamanho) {
 		this.tamanho = tamanho;
 		return this;
 	}
@@ -72,26 +72,27 @@ public class ImagemBuilder implements ArquivoMultimidiaBuilder<Imagem> {
 		return usuario;
 	}
 
-	public ImagemBuilder setUsuario(Usuario usuario) {
+	public ArquivoBuilder setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 		return this;
 	}
 
-	public Imagem construct(){
-		Imagem imagem = new Imagem();
-		imagem.setNome(nome);
-		imagem.setTamanho(tamanho);
-		imagem.setDataInclusao(dataInclusao);
-		imagem.setUsuario(usuario);
+	@Override	
+	public Arquivo construct(){
+		Arquivo arquivo = new Arquivo();
+		arquivo.setNome(nome);
+		arquivo.setTamanho(tamanho);
+		arquivo.setDataInclusao(dataInclusao);
+		arquivo.setUsuario(usuario);
 		
 		try {
-			imagem.setData(IOUtils.toByteArray(data));
+			arquivo.setData(IOUtils.toByteArray(data));
 		} catch (Exception e) {
 			System.out.println("Nao foi possivel converter o InputStream da imagem para byteArray!");
 			e.printStackTrace();
 		}
 		
-		return imagem;
+		return arquivo;
 	}
 
 }
