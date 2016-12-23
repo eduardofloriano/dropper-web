@@ -18,6 +18,57 @@
 			</div>
 			<div id="section-login-form">
 				<h:form id="login">
+
+					<div class="ui-g ui-fluid">
+
+						<div class="ui-g-12 ui-g-nopad">
+							<div class="ui-g-3" />
+							<div class="ui-g-6">
+								<p:inputText id="email" value="#{loginBean.usuario.email}"
+									required="True" requiredMessage="Email é Obrigatório"
+									placeholder="Email">
+									<f:ajax event="blur" render="messages" />
+								</p:inputText>
+							</div>
+							<div class="ui-g-3" />
+						</div>
+
+						<div class="ui-g-12 ui-g-nopad">
+							<div class="ui-g-3" />
+							<div class="ui-g-6">
+								<p:password id="senha" value="#{loginBean.usuario.senha}"
+									required="true" feedback="true"
+									requiredMessage="Senha é Obrigatório" placeholder="Password" />
+							</div>
+							<div class="ui-g-3" />
+						</div>
+						
+						<div class="ui-g-12 drooper-separator" />
+
+						<div class="ui-g-12 ui-g-nopad">
+							<div class="ui-g-3" />
+							<div class="ui-g-6">
+								<p:commandButton styleClass="dr-button-center" value="Entrar"
+									action="#{loginBean.autenticar}" update="@form" process="@form" />
+							</div>
+							<div class="ui-g-3" />
+						</div>
+
+						<div class="ui-g-12 ui-g-nopad">
+							<div class="ui-g-3" />
+							<div class="ui-g-6">
+								<p:commandButton styleClass="dr-button-center" value="Cadastrar"
+									action="#{loginBean.cadastrarUsuario}" immediate="true" />
+							</div>
+							<div class="ui-g-3" />
+						</div>
+
+
+
+					</div>
+
+
+					<!-- 
 					<p:panelGrid styleClass="section-login-form-table" columns="2">
 						<p:outputLabel value="Email:" for="email" />
 						<p:inputText id="email" value="#{loginBean.usuario.email}"
@@ -30,11 +81,9 @@
 							requiredMessage="Senha é Obrigatório" />
 
 
-					</p:panelGrid>
-					<p:commandButton styleClass="dr-button-center" value="Entrar"
-						action="#{loginBean.autenticar}" update="@form" process="@form" />
-					<p:commandButton styleClass="dr-button-center" value="Cadastrar"
-						action="#{loginBean.cadastrarUsuario}" immediate="true" />
+					</p:panelGrid> -->
+
+
 				</h:form>
 			</div>
 		</div>

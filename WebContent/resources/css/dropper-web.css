@@ -3,85 +3,102 @@
 /***************************
 *THEME OVERRIDE
 ***************************/
-#conteudo .ui-widget-content{
+#conteudo .ui-widget-content {
 	background: white;
 }
-
-
 
 /***************************
 *THEME DROPPER
 ***************************/
-div#conteudo .ui-g{
-	height: 600px;
-	/*background-color: gray;*/
+html {
+	background-color: #edf0f5;
 }
 
-div#conteudo .section-login{
+div#conteudo {
+	padding-top: 60px;
+}
+
+div#conteudo .drooper-separator{
+	height: 50px;
+}
+
+div#conteudo .section-login {
 	display: block;
 	/*background-color: white;*/
+	margin-top: 20px;
+	box-sizing: border-box;
+	height: 450px;
+	background-color: #ffffff;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+	padding: 2em;
+	text-align: center;
+	color: #4f575b;
 }
 
-div#conteudo div#section-login-logo{
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    padding-top: 20px;
-
+div#conteudo .section-login .ui-button {
+	margin: 0;
+	border: 1px solid #1f89ce;
+	color: #fff;
+	background: #2399e5;
 }
 
-div#conteudo div#section-login-form, div#conteudo div#section-cadastro-form {
+div#conteudo div#section-login-logo {
 	display: block;
-    margin: 0 auto;
-    text-align: center;
-    padding-top: 20px;
-    height: 100%;
+	margin: 0 auto;
+	text-align: center;
+	padding-top: 20px;
 }
 
-
-div#conteudo .section-login-form-table{
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    width: 54%;    
+div#conteudo div#section-login-form, div#conteudo div#section-cadastro-form
+	{
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+	padding-top: 20px;
+	height: 100%;
 }
 
-div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section-cadastro-form-table .ui-widget-content {
+div#conteudo .section-login-form-table {
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+	width: 54%;
+}
+
+div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section-cadastro-form-table .ui-widget-content
+	{
 	border: none;
 	border-color: transparent;
-		
 }
 
-.dr-button-center{
+.dr-button-center {
 	display: inline-block;
-    margin: 0 auto;
-    text-align: center;
-    margin-top: 20px;
-    margin-left: 20px;
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 20px;
+	margin-left: 20px;
 }
 
-.menu-header-logo{
+.menu-header-logo {
 	display: block;
 	padding: 6px 0;
 }
 
-
-#conteudo #cadastroUsuario-form .ui-widget-content{
+#conteudo #cadastroUsuario-form .ui-widget-content {
 	text-align: right;
 }
-
 
 /***************************
 DASHBOARD
 ***************************/
-.upload-area .ui-fileupload-content{
+.upload-area .ui-fileupload-content {
 	height: 140px;
 }
 
-.dropper-grid-area .ui-panel-title{	
-    background: #d7ebf9 url(/dropper-web/javax.faces.resource/images/ui-bg_glass_80_d7ebf9_1x400.png.xhtml?ln=primefaces-cupertino) 50% 50% repeat-x;
-    font-weight: bold;
-    color: #2779aa;
+.dropper-grid-area .ui-panel-title {
+	background: #d7ebf9
+		url(/dropper-web/javax.faces.resource/images/ui-bg_glass_80_d7ebf9_1x400.png.xhtml?ln=primefaces-cupertino)
+		50% 50% repeat-x;
+	font-weight: bold;
+	color: #2779aa;
 }
-
-
