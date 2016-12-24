@@ -48,6 +48,13 @@ public class ImagemBean {
 
 		atualizaListaImagem();
 	}
+	
+	
+	public void remover(Imagem imagem){
+		System.out.println("Removendo...");
+		System.out.println("Vai remover a imagem: " + imagem.getNome() + " - " + imagem.getId());		
+	}
+	
 
 	private void atualizaListaImagem() {
 		this.imagens = imagemDAO.obterImagensPorUsuario(getUsuarioLogado());

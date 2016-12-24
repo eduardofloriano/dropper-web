@@ -18,6 +18,7 @@ public class UsuarioBean {
 	private UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 
 	private Usuario usuario = new Usuario();
+	private Usuario usuarioLogado = new Usuario();;
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -26,7 +27,13 @@ public class UsuarioBean {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
+	
+	public Usuario getUsuarioLogado() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		this.usuarioLogado = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");		
+		return this.usuarioLogado;
+	}
+	
 	public String cadastrar() {
 		System.out.println("Persistindo Usuário: " + usuario.getEmail());
 		usuarioDAO.persist(this.usuario);

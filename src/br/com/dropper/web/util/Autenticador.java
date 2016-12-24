@@ -25,6 +25,10 @@ public class Autenticador implements PhaseListener {
 			return;
 		}
 		
+		if(nomePagina.equals("/cadastroUsuario.xhtml")){
+			return;
+		}
+		
 		Usuario usuario = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
 		if(usuario != null){
 			return;

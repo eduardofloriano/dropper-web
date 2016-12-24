@@ -7,16 +7,17 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-<ui:composition template="_template_box_default.xhtml">
+<ui:composition template="_template_box_medium.xhtml">
 
 
 
 	<ui:define name="conteudo">
-		<div id="section-login">
-			<div id="section-cadastro-form">
-				<p:fieldset legend="Cadastro de Usuário">
+
+		<p:panel>
+			<div class="ui-g">
+				<div class="ui-g-12 ui-g-nopad conteudo-section">
 					<h:form id="cadastroUsuario-form">
-						<p:panelGrid styleClass="section-cadastro-form-table" columns="4">
+						<p:panelGrid styleClass="section-cadastro-form-table" columns="1">
 
 							<p:outputLabel value="Nome:" for="nome" />
 							<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
@@ -69,36 +70,14 @@
 
 						<p:messages id="messages" globalOnly="true" />
 					</h:form>
-				</p:fieldset>
+
+				</div>
 			</div>
-		</div>
+		</p:panel>
+
 	</ui:define>
 	<!-- FIM DO CONTEUDO -->
 
 
-
-	<!--  <h:form id="login">
-
-			<p:messages id="messages" globalOnly="true" />
-
-			<p:fieldset legend="Dados de Login">				
-				<p:panelGrid columns="3">
-					<p:outputLabel value="Email" for="email" />
-					<p:inputText id="email" value="#{loginBean.usuario.email}"
-						required="True" requiredMessage="Email é Obrigatório">
-						<f:ajax event="blur" render="messages" />
-					</p:inputText>
-					<p:message for="email" />
-
-					<p:outputLabel value="Senha" for="senha" />					
-					<p:password id="senha" value="#{loginBean.usuario.senha}" required="true" feedback="true"
-						requiredMessage="Senha é Obrigatório" />
-					<p:message for="senha" />
-				</p:panelGrid>
-
-				<p:commandButton value="Entrar" action="#{loginBean.autenticar}" update="@form" process="@form" />
-			</p:fieldset>
-
-		</h:form> -->
 </ui:composition>
 </html>

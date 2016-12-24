@@ -23,7 +23,6 @@
 					<h:graphicImage styleClass="menu-header-logo" library="img"
 						name="dropper-web-logo-header-transparente.png" />
 				</f:facet>
-				<p:menuitem value="Menu" url="#" icon="ui-icon-gear" />
 				<p:menuitem value="Home" url="dashboard.xhtml" icon="ui-icon-home" />
 				<p:menuitem value="Notificações" url="#" icon="ui-icon-volume-on" />
 				<p:submenu label="Ajuda" icon="ui-icon-help">
@@ -39,10 +38,11 @@
 	<div id="conteudo">
 		<div class="ui-g">
 			<div class="ui-g-2" />
-			<div class="ui-g-8 section-login">
+				<ui:insert name="dropper-sidebar" />
+			<div class="ui-g-9">
 				<ui:insert name="conteudo" />
 			</div>
-			<div class="ui-g-2" />
+			<div class="ui-g-1" />
 		</div>
 	</div>
 	<!-- FIM CONTEUDO -->

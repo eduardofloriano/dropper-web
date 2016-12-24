@@ -10,75 +10,100 @@
 <ui:composition template="_template_box_default.xhtml">
 
 
+	<ui:define name="dropper-sidebar">
+		<div class="dr-sidebar">
+
+			<div class="profile">
+				<h:graphicImage library="img" name="profile.png" />
+				<a id="profile-button" href="#"> <h:outputText
+						styleClass="username" value="#{usuarioBean.usuarioLogado.nome}" />
+				</a>
+				<h:form rendered="#{usuarioLogado != null}">
+					<div class="profile-logout">
+						<p:commandLink styleClass="fa fa-fw fa-sign-out" value="Logout"
+							action="${loginBean.logout}" />
+					</div>
+
+				</h:form>
+			</div>
+			<h:form>
+				<div class="dr-menu">
+					<!--					 <p:panelMenu stateful="false">
+						<p:submenu label="Multimidia" icon="fa fa-fw fa-cloud">
+							<p:menuitem value="Imagens" icon="fa fa-fw fa-file"/>
+							<p:menuitem value="Arquivos" icon="fa fa-fw fa-image"/>
+							<p:menuitem value="Videos" icon="fa fa-fw fa-video-camera" />
+							<p:menuitem value="Perfil" icon="fa fa-fw fa-user" />
+						</p:submenu>
+					</p:panelMenu>-->
+					<div class="ui-panelmenu-panel">
+						<p:menu>
+							<p:menuitem value="Imagens" icon="fa fa-fw fa-file" />
+							<p:menuitem value="Arquivos" icon="fa fa-fw fa-image" />
+							<p:menuitem value="Videos" icon="fa fa-fw fa-video-camera" />
+							<p:menuitem value="Perfil" icon="fa fa-fw fa-user" />
+						</p:menu>
+					</div>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+
+
 
 	<ui:define name="conteudo">
-		<div id="section-login">
-			<div id="section-cadastro-form">
-				<p:fieldset legend="DASHBOARD">
-					<div class="ui-g">
-						<div class="ui-g-12 ui-g-nopad">
-							<div class="ui-g-3">
-								<h:form id="dashboard-form">
-									<p:menu>
-										<p:submenu label="Multimidia">
-											<p:menuitem value="Imagem"
-												actionListener="#{dashboardBean.dull}" update="messages" />
-											<p:menuitem value="Arquivo"
-												actionListener="#{dashboardBean.dull}" update="messages" />
-											<p:menuitem value="Video"
-												actionListener="#{dashboardBean.dull}" update="messages" />
-										</p:submenu>
-									</p:menu>
+		<p:panel>
+			<div class="ui-g">
+				<div class="ui-g-12 ui-g-nopad dashboard-area">
 
-									<p:messages id="messages" globalOnly="true" />
-								</h:form>
-							</div>
-							<div class="ui-g-9 upload-area">
-								<h:form id="dashboard-upload-form">
-									<p:fileUpload
-										fileUploadListener="#{imagemBean.handleFileUpload}"
-										mode="advanced" dragDropSupport="true" update=":dashboard-data-form:dropper-data-grid"
-										sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+					<div class="ui-g-12 upload-area">
+						<h:form id="dashboard-upload-form">
+							<p:fileUpload fileUploadListener="#{imagemBean.handleFileUpload}"
+								mode="advanced" dragDropSupport="true"
+								update=":dashboard-data-form:dropper-data-grid"
+								sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
 
-									<p:growl id="messages" showDetail="true" />
-								</h:form>
-							</div>
-
-							<div class="ui-g-3" />
-
-							<div class="ui-g-9 dropper-grid-area">
-								<h:form id="dashboard-data-form">
-									<p:dataGrid id="dropper-data-grid" var="imagem"
-										value="#{imagemBean.imagens}" columns="3" layout="grid"
-										rows="3" paginator="true"
-										paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-										rowsPerPageTemplate="6,12,16">
-
-										<f:facet name="header">
-											DROPPER
-										</f:facet>
-
-										<p:panel header="#{imagem.nome}" style="text-align:center">
-											<h:panelGrid columns="1" style="width:100%">
-
-												 <p:graphicImage value="#{imagemBean.imagem}">
-													<f:param name="id" value="#{imagem.id}" />
-												</p:graphicImage>
-
-											</h:panelGrid>
-										</p:panel>
+							<p:growl id="messages" showDetail="true" />
+						</h:form>
+					</div>
 
 
+					<h:form id="dashboard-data-form">
+						<div class="ui-g-12 dropper-grid-area">
 
-									</p:dataGrid>
-								</h:form>
-							</div>
+							<p:dataGrid id="dropper-data-grid" var="imagem"
+								value="#{imagemBean.imagens}" columns="3" layout="grid" rows="3"
+								paginator="true" paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="6,12,16">
+
+								<p:panel style="text-align:center">
+									<h:panelGrid columns="1" style="width:100%">
+										<!-- <p:outputLabel value="#{imagem.nome}"></p:outputLabel>  -->
+										<p:graphicImage value="#{imagemBean.imagem}">
+											<f:param name="id" value="#{imagem.id}" />
+
+											<p:contextMenu for="dropper-data-grid">
+												<p:menuitem value="Excluir" update="dropper-data-grid"
+													icon="fa fa-fw fa-trash" actionListener="#{imagemBean.remover(imagem)}" />
+											</p:contextMenu>
+											
+										</p:graphicImage>
+
+									</h:panelGrid>
+								</p:panel>
+
+							</p:dataGrid>
+
 						</div>
 
-					</div>
-				</p:fieldset>
+
+
+					</h:form>
+
+				</div>
 			</div>
-		</div>
+		</p:panel>
 	</ui:define>
 	<!-- FIM DO CONTEUDO -->
 

@@ -3,29 +3,33 @@
 /***************************
 *THEME OVERRIDE
 ***************************/
-#conteudo .ui-widget-content {
-	background: white;
+.ui-widget-content {
+	/*background: white;*/
+	background: #ffffff url(/dropper-web/javax.faces.resource/images/ui-bg_highlight-hard_100_f2f5f7_1x100.png.xhtml?ln=primefaces-cupertino) 50% top repeat-x;
 }
+
 
 /***************************
 *THEME DROPPER
 ***************************/
 html {
+	font: 400 14px Lato, Arial, sans-serif;
 	background-color: #edf0f5;
 }
 
 div#conteudo {
-	padding-top: 60px;
+	/*padding-top: 60px;*/
+	
 }
 
-div#conteudo .drooper-separator{
+div#conteudo .drooper-separator {
 	height: 50px;
 }
 
 div#conteudo .section-login {
 	display: block;
 	/*background-color: white;*/
-	margin-top: 20px;
+	margin-top: 80px;
 	box-sizing: border-box;
 	height: 450px;
 	background-color: #ffffff;
@@ -35,7 +39,7 @@ div#conteudo .section-login {
 	color: #4f575b;
 }
 
-div#conteudo .section-login .ui-button {
+div#conteudo .ui-button {
 	margin: 0;
 	border: 1px solid #1f89ce;
 	color: #fff;
@@ -88,11 +92,208 @@ div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section
 	text-align: right;
 }
 
+/**
+* HOVER EM TODO O TEMA
+*/
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover,
+	.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus
+	{
+	border: none;
+	background: inherit;
+	/*color: #ffffff;*/
+	color: inherit;
+	-webkit-transition: padding-left 0.3s;
+	transition: padding-left 0.3s;
+}
+
+/***************************
+MENUHEADER
+***************************/
+#menu-header .ui-menu {
+	border-radius: 0px;
+}
+
+#menu-header .ui-widget-content {
+	-moz-transition: left 0.3s;
+	-o-transition: left 0.3s;
+	-webkit-transition: left 0.3s;
+	transition: left 0.3s;
+	box-sizing: border-box;
+	color: #ffffff;
+	z-index: 101;
+}
+
+/***************************
+SIDEBAR
+***************************/
+.dr-sidebar {
+	position: fixed;
+	width: 250px;
+	height: 100%;
+	z-index: 102;
+	-moz-transition: margin-left 0.3s;
+	-o-transition: margin-left 0.3s;
+	-webkit-transition: margin-left 0.3s;
+	transition: margin-left 0.3s;
+	background-color: #4e5159;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#4e5159),
+		to(#1f2023));
+	background-image: -webkit-linear-gradient(top, #4e5159, #1f2023);
+	background-image: -moz-linear-gradient(top, #4e5159, #1f2023);
+	background-image: -ms-linear-gradient(top, #4e5159, #1f2023);
+	background-image: -o-linear-gradient(top, #4e5159, #1f2023);
+	background-image: linear-gradient(top, #4e5159, #1f2023);
+	filter: progid:DXImageTransform.Microsoft.gradient(start-colourStr='#4e5159',
+		end-colourStr='#1f2023');
+}
+
+.dr-sidebar .profile {
+	display: block;
+	text-decoration: none;
+	text-align: center;
+	padding: 40px 0;
+}
+
+.dr-sidebar .profile img {
+	display: block;
+	width: 56px;
+	margin: 0 auto;
+}
+
+.dr-sidebar .profile>a {
+	display: inline-block;
+	margin-bottom: 10px;
+	color: #ffffff;
+	text-decoration: none;
+	-moz-transition: color 0.3s;
+	-o-transition: color 0.3s;
+	-webkit-transition: color 0.3s;
+	transition: color 0.3s;
+}
+
+.dr-sidebar .profile>a .username {
+	display: inline-block;
+	margin-top: 8px;
+}
+
+.dr-sidebar .profile .profile-logout{
+	text-align: center;
+}
+
+.dr-sidebar .profile .profile-logout a{
+	color: #ffffff;
+	text-decoration: none;
+	padding-right: 60px;
+}
+
+.dr-sidebar .profile .profile-logout a:BEFORE{
+	padding: 7px;
+
+	}
+
+.dr-sidebar .dr-menu .ui-panelmenu-panel .ui-widget {
+	border: none;
+	background: inherit;
+	font-weight: normal;
+	position: relative;
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 14px;
+	padding: 5px;
+	display: block;
+	box-sizing: border-box;
+	border-top: 1px solid #4e5159;
+	-moz-transition: padding-left 0.3s;
+	-o-transition: padding-left 0.3s;
+	-webkit-transition: padding-left 0.3s;
+	transition: padding-left 0.3s;
+}
+
+
+.dr-sidebar .dr-menu .ui-panelmenu-panel .ui-menu{
+	width: 100%;
+}
+
+.dr-sidebar .dr-menu .ui-panelmenu-panel .ui-widget-content {
+	border: none;
+}
+
+.dr-sidebar .dr-menu .ui-panelmenu-panel .ui-icon {
+	/* display: none; */
+}
+
+.dr-sidebar .dr-menu .ui-state-default a, .dr-sidebar .dr-menu .ui-state-default a:link,
+	.dr-sidebar .dr-menu .ui-state-default a:visited {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.dr-sidebar .dr-menu .ui-menuitem-outline {
+	outline: 0px none;
+	color: #2399e5;
+}
+
+#conteudo .dr-sidebar .dr-menu  .ui-panelmenu-panel .ui-panelmenu-content
+	{
+	background: inherit;
+}
+
+.dr-sidebar .dr-menu  .ui-panelmenu-panel  .ui-menuitem a
+	{
+	color: #ffffff;
+	padding: 10px 15px;
+	font-size: 13px;
+	position: relative;
+	text-decoration: none;
+	display: block;
+}
+
+.dr-sidebar .dr-menu  .ui-panelmenu-panel  .ui-menuitem a .ui-icon{
+	margin-right: 10px;
+}
+
+/**
+* HOVER NO MENU LATERAL
+*/
+.dr-sidebar .ui-state-hover, .dr-sidebar .ui-widget-content .ui-state-hover,
+	.dr-sidebar .ui-widget-header .ui-state-hover, .dr-sidebar .ui-state-focus,
+	.dr-sidebar .ui-widget-content .ui-state-focus, .dr-sidebar .ui-widget-header .ui-state-focus
+	{
+	color: #ffffff;
+	-moz-transition: padding-left 0s;
+	-o-transition: padding-left 0s;
+	-webkit-transition: padding-left 0s;
+	transition: padding-left 0s;
+}
+
 /***************************
 DASHBOARD
 ***************************/
 .upload-area .ui-fileupload-content {
-	height: 140px;
+	height: 250px;
+	background-image: url(../javax.faces.resource/upload.png.xhtml?ln=img);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.dashboard-area .ui-widget-header {
+	border: none;
+	background: none;
+	background-color: #0388e5;
+	color: #ffffff;
+	font-weight: bold;
+	background-color: #0388e5;
+}
+
+/**
+* BOTOES 
+*/
+.upload-area .ui-state-default, .upload-area .ui-widget-content .ui-state-default,
+	.upload-area .ui-widget-header .ui-state-default {
+	border: none;
+	background: none;
+	font-weight: bold;
+	color: inherit;
 }
 
 .dropper-grid-area .ui-panel-title {
@@ -101,4 +302,5 @@ DASHBOARD
 		50% 50% repeat-x;
 	font-weight: bold;
 	color: #2779aa;
+	opacity: 0.5;
 }
