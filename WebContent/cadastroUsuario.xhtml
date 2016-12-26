@@ -13,11 +13,13 @@
 
 	<ui:define name="conteudo">
 
-		<p:panel>
+		<p:panel styleClass="section-cadastro">
 			<div class="ui-g">
-				<div class="ui-g-12 ui-g-nopad conteudo-section">
+				<div class="ui-g-2" />
+				<div class="ui-g-8 ui-g-nopad conteudo-section">
 					<h:form id="cadastroUsuario-form">
-						<p:panelGrid styleClass="section-cadastro-form-table" columns="1">
+
+						<p:panelGrid styleClass="section-cadastro-form-table" columns="2">
 
 							<p:outputLabel value="Nome:" for="nome" />
 							<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
@@ -63,15 +65,25 @@
 							<p:password id="senha" value="#{usuarioBean.usuario.senha}"
 								required="true" feedback="true"
 								requiredMessage="Senha é Obrigatório" />
+
+
 						</p:panelGrid>
 
-						<p:commandButton styleClass="dr-button-center" value="Cadastrar"
-							action="#{usuarioBean.cadastrar}" update="@form" process="@form" />
+						<p:panelGrid styleClass="section-cadastro-form-table-buttons"
+							columns="1">
+							<div class="dropper-separator" />
+							<p:commandButton styleClass="dr-button-center" value="Cadastrar"
+								action="#{usuarioBean.cadastrar}" update="@form" process="@form" />
+
+							<p:commandButton styleClass="dr-button-center" value="Retornar"
+								action="login.xhtml?faces-redirect=true" immediate="true" />
+						</p:panelGrid>
 
 						<p:messages id="messages" globalOnly="true" />
 					</h:form>
 
 				</div>
+				<div class="ui-g-2" />
 			</div>
 		</p:panel>
 

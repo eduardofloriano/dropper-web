@@ -5,9 +5,8 @@
 ***************************/
 .ui-widget-content {
 	/*background: white;*/
-	background: #ffffff url(/dropper-web/javax.faces.resource/images/ui-bg_highlight-hard_100_f2f5f7_1x100.png.xhtml?ln=primefaces-cupertino) 50% top repeat-x;
+	background: #ffffff;
 }
-
 
 /***************************
 *THEME DROPPER
@@ -17,13 +16,17 @@ html {
 	background-color: #edf0f5;
 }
 
+body {
+	margin: 0px;
+}
+
 div#conteudo {
 	/*padding-top: 60px;*/
 	
 }
 
-div#conteudo .drooper-separator {
-	height: 50px;
+div#conteudo .dropper-separator {
+	height: 40px;
 }
 
 div#conteudo .section-login {
@@ -88,9 +91,33 @@ div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section
 	padding: 6px 0;
 }
 
+.section-cadastro{
+	border: none;
+	box-sizing: border-box;	
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
 #conteudo #cadastroUsuario-form .ui-widget-content {
 	text-align: right;
 }
+
+.section-cadastro-form-table-buttons {
+	width: 100%;
+}
+
+#conteudo .section-cadastro-form-table-buttons .ui-widget-content,
+	#conteudo .section-cadastro-form-table-buttons .ui-widget-content .ui-panelgrid-cell
+	{
+	text-align: center;
+	border: none;
+}
+
+div#conteudo  .section-cadastro-form-table-buttons .ui-button{
+	width: 60%;
+}
+
+
+
 
 /**
 * HOVER EM TODO O TEMA
@@ -98,17 +125,26 @@ div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover,
 	.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus
 	{
+	/*
 	border: none;
 	background: inherit;
-	/*color: #ffffff;*/
+	
 	color: inherit;
 	-webkit-transition: padding-left 0.3s;
 	transition: padding-left 0.3s;
+	*/
+	
 }
 
 /***************************
 MENUHEADER
 ***************************/
+#menu-header {
+	position: fixed;
+	width: 100%;
+	z-index: 103;
+}
+
 #menu-header .ui-menu {
 	border-radius: 0px;
 }
@@ -121,12 +157,14 @@ MENUHEADER
 	box-sizing: border-box;
 	color: #ffffff;
 	z-index: 101;
+	background: #ffffff;
 }
 
 /***************************
 SIDEBAR
 ***************************/
 .dr-sidebar {
+	margin-top: 43px;
 	position: fixed;
 	width: 250px;
 	height: 100%;
@@ -176,23 +214,22 @@ SIDEBAR
 	margin-top: 8px;
 }
 
-.dr-sidebar .profile .profile-logout{
+.dr-sidebar .profile .profile-logout {
 	text-align: center;
 }
 
-.dr-sidebar .profile .profile-logout a{
+.dr-sidebar .profile .profile-logout a {
 	color: #ffffff;
 	text-decoration: none;
 	padding-right: 60px;
 }
 
-.dr-sidebar .profile .profile-logout a:BEFORE{
+.dr-sidebar .profile .profile-logout a:BEFORE {
 	padding: 7px;
-
-	}
+}
 
 .dr-sidebar .dr-menu .ui-panelmenu-panel .ui-widget {
-	border: none;
+	border-radius: 0;
 	background: inherit;
 	font-weight: normal;
 	position: relative;
@@ -209,8 +246,7 @@ SIDEBAR
 	transition: padding-left 0.3s;
 }
 
-
-.dr-sidebar .dr-menu .ui-panelmenu-panel .ui-menu{
+.dr-sidebar .dr-menu .ui-panelmenu-panel .ui-menu {
 	width: 100%;
 }
 
@@ -220,6 +256,7 @@ SIDEBAR
 
 .dr-sidebar .dr-menu .ui-panelmenu-panel .ui-icon {
 	/* display: none; */
+	
 }
 
 .dr-sidebar .dr-menu .ui-state-default a, .dr-sidebar .dr-menu .ui-state-default a:link,
@@ -238,8 +275,7 @@ SIDEBAR
 	background: inherit;
 }
 
-.dr-sidebar .dr-menu  .ui-panelmenu-panel  .ui-menuitem a
-	{
+.dr-sidebar .dr-menu  .ui-panelmenu-panel  .ui-menuitem a {
 	color: #ffffff;
 	padding: 10px 15px;
 	font-size: 13px;
@@ -248,7 +284,7 @@ SIDEBAR
 	display: block;
 }
 
-.dr-sidebar .dr-menu  .ui-panelmenu-panel  .ui-menuitem a .ui-icon{
+.dr-sidebar .dr-menu  .ui-panelmenu-panel  .ui-menuitem a .ui-icon {
 	margin-right: 10px;
 }
 
@@ -259,11 +295,12 @@ SIDEBAR
 	.dr-sidebar .ui-widget-header .ui-state-hover, .dr-sidebar .ui-state-focus,
 	.dr-sidebar .ui-widget-content .ui-state-focus, .dr-sidebar .ui-widget-header .ui-state-focus
 	{
-	color: #ffffff;
+	/*color: #ffffff;
 	-moz-transition: padding-left 0s;
 	-o-transition: padding-left 0s;
 	-webkit-transition: padding-left 0s;
-	transition: padding-left 0s;
+	transition: padding-left 0s;*/
+	background: inherit;
 }
 
 /***************************
@@ -271,9 +308,17 @@ DASHBOARD
 ***************************/
 .upload-area .ui-fileupload-content {
 	height: 250px;
-	background-image: url(../javax.faces.resource/upload.png.xhtml?ln=img);
+	background-image:
+		url(../javax.faces.resource/upload-opacity.png.xhtml?ln=img);
 	background-repeat: no-repeat;
 	background-position: center center;
+}
+
+.dashboard-area {
+	margin-top: 50px;
+	background: #ffffff;
+	border: none;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .dashboard-area .ui-widget-header {
@@ -303,4 +348,15 @@ DASHBOARD
 	font-weight: bold;
 	color: #2779aa;
 	opacity: 0.5;
+}
+
+.dropper-grid-area .ui-widget-content img{
+	width: auto;
+	max-width: 225px;
+	max-height: 200px;
+}
+
+.dropper-grid-area .ui-widget-content #dropper-image-visualizar img{
+	width: auto;
+	heiht: auto;
 }

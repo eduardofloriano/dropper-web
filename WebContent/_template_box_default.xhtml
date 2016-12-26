@@ -37,9 +37,11 @@
 	<!-- CONTEUDO -->
 	<div id="conteudo">
 		<div class="ui-g">
-			<div class="ui-g-2" />
-				<ui:insert name="dropper-sidebar" />
-			<div class="ui-g-9">
+			<div class="ui-g-3" />
+				<ui:insert name="dropper-sidebar">
+					<ui:include src="_template_dropper_sidebar.xhtml" />
+				</ui:insert>
+			<div class="ui-g-8">
 				<ui:insert name="conteudo" />
 			</div>
 			<div class="ui-g-1" />
