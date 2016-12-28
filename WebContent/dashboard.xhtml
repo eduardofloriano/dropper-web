@@ -17,7 +17,7 @@
 						<h:form id="dashboard-upload-form">
 							<p:fileUpload fileUploadListener="#{imagemBean.handleFileUpload}"
 								mode="advanced" dragDropSupport="true"
-								update=":dashboard-data-form:dropper-data-grid"
+								update=":dashboard-data-form:dropper-data-grid :profile-form"
 								sizeLimit="100000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
 
 							<p:growl id="messages" showDetail="true" />

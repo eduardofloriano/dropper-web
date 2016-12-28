@@ -10,25 +10,30 @@
 			<a id="profile-button" href="#"> <h:outputText
 					styleClass="username" value="#{usuarioBean.usuarioLogado.nome}" />
 			</a>
-			<h:form rendered="#{usuarioLogado != null}">
+			<h:form id="profile-form" rendered="#{usuarioLogado != null}">
 				<div class="profile-logout">
 					<p:commandLink styleClass="fa fa-fw fa-sign-out" value="Logout"
 						action="#{loginBean.logout}" />
 				</div>
+
+
+				<div class="profile-progress-bar">
+					<p:progressBar id="profile-progress-bar"
+						value="#{usuarioBean.espacoDisponivel}" labelTemplate="{value}%"
+						displayOnly="true" />
+				</div>
 			</h:form>
-			
-			<div class="profile-progress-bar">
-				<p:progressBar value="#{usuarioBean.espacoDisponivel}" labelTemplate="{value}%" displayOnly="true"/>
-			</div>			
 		</div>
 		<h:form>
 			<div class="dr-menu">
 				<div class="ui-panelmenu-panel">
 					<p:menu>
-						<p:menuitem value="Imagens" icon="fa fa-fw fa-image" action="dashboard.xhtml?faces-redirect=true" />
+						<p:menuitem value="Imagens" icon="fa fa-fw fa-image"
+							action="dashboard.xhtml?faces-redirect=true" />
 						<p:menuitem value="Arquivos" icon="fa fa-fw fa-file" />
 						<p:menuitem value="Videos" icon="fa fa-fw fa-video-camera" />
-						<p:menuitem value="Perfil" icon="fa fa-fw fa-user" action="perfilUsuario.xhtml?faces-redirect=true" />
+						<p:menuitem value="Perfil" icon="fa fa-fw fa-user"
+							action="perfilUsuario.xhtml?faces-redirect=true" />
 					</p:menu>
 				</div>
 			</div>

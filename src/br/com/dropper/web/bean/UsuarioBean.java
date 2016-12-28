@@ -36,13 +36,13 @@ public class UsuarioBean implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	public Usuario getUsuarioLogado() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		this.usuarioLogado = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");		
+		this.usuarioLogado = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
 		return this.usuarioLogado;
 	}
-	
+
 	public String cadastrar() {
 		System.out.println("Persistindo Usuário: " + usuario.getEmail());
 		usuarioDAO.persist(this.usuario);
@@ -53,27 +53,21 @@ public class UsuarioBean implements Serializable {
 		return null;
 	}
 
-	public void alterar(){
+	public void alterar() {
 		System.out.println("Atualizando Usuário");
 		usuarioDAO.merge(this.usuarioLogado);
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Usuário Atualizado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
 	}
-	
-	public Long getEspacoDisponivel(){
-		
-		FacesContext context = FacesContext.getCurrentInstance();
-		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-			return 0L;
-		}else{
+
+	public Long getEspacoDisponivel() {
+		if(getUsuarioLogado() != null){
 			Long espacoTotal = usuarioLogado.getRepositorio().getEspacoTotal();
 			Long espacoOcupado = repositorioDAO.obterEspacoOcupadoPorUsuario(usuarioLogado);
-			return ((espacoTotal - espacoOcupado) * 100) / espacoTotal ;
+			return ((espacoTotal - espacoOcupado) * 100) / espacoTotal;
 		}
-		
-		
-		
+		return 1L;
 	}
-	
+
 }
