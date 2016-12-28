@@ -2,6 +2,7 @@ package br.com.dropper.web.bean;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -24,8 +25,12 @@ import br.com.dropper.web.util.JpaUtil;
 
 @ManagedBean
 @ApplicationScoped
-public class VideoBean {
+public class VideoBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1759708926235041459L;
 	private UploadedFile file;
 	private EntityManager em = new JpaUtil().getEntityManager();
 	private VideoDAO videoDAO = new VideoDAO(em);

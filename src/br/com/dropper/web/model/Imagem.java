@@ -43,7 +43,7 @@ public class Imagem {
 	private Date dataAlteracao;
 
 	@Lob
-	@Column(length=100000)
+	@Column(length=200000) //2MB
 	private byte[] data;
 	
 	@ManyToOne

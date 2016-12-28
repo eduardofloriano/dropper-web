@@ -16,6 +16,10 @@
 						action="#{loginBean.logout}" />
 				</div>
 			</h:form>
+			
+			<div class="profile-progress-bar">
+				<p:progressBar value="#{usuarioBean.espacoDisponivel}" labelTemplate="{value}%" displayOnly="true"/>
+			</div>			
 		</div>
 		<h:form>
 			<div class="dr-menu">

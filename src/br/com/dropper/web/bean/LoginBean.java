@@ -1,5 +1,7 @@
 package br.com.dropper.web.bean;
 
+import java.io.Serializable;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -12,8 +14,12 @@ import br.com.dropper.web.util.JpaUtil;
 
 @ManagedBean
 @ViewScoped
-public class LoginBean {
+public class LoginBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 156852095421552680L;
 	private EntityManager em = new JpaUtil().getEntityManager();
 	private UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 
@@ -26,7 +32,6 @@ public class LoginBean {
 	public String autenticar() {
 
 		Usuario usuario = usuarioDAO.obterUsuarioPorEmail(this.usuario);
-
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		if (usuario == null) {

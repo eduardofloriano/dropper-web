@@ -5,7 +5,7 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	
+
 	<ui:define name="conteudo">
 		<p:panel styleClass="dashboard-area">
 			<div class="ui-g">
@@ -19,21 +19,23 @@
 									columns="2">
 
 									<p:outputLabel value="Nome:" for="nome" />
-									<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
-										required="True" requiredMessage="Nome é Obrigatório">
+									<p:inputText id="nome"
+										value="#{usuarioBean.usuarioLogado.nome}" required="True"
+										requiredMessage="Nome é Obrigatório">
 										<f:ajax event="blur" render="messages" />
 									</p:inputText>
 
 									<p:outputLabel value="Sobrenome:" for="sobrenome" />
 									<p:inputText id="sobrenome"
-										value="#{usuarioBean.usuario.sobrenome}" required="True"
+										value="#{usuarioBean.usuarioLogado.sobrenome}" required="True"
 										requiredMessage="Sobrenome é Obrigatório">
 										<f:ajax event="blur" render="messages" />
 									</p:inputText>
 
 									<p:outputLabel value="Data de Nascimento:" for="dataNascimento" />
 									<p:calendar id="dataNascimento"
-										value="#{usuarioBean.usuario.dataNascimento}" required="True"
+										value="#{usuarioBean.usuarioLogado.dataNascimento}"
+										required="True"
 										requiredMessage="Data de Nascimento é Obrigatório"
 										pattern="dd/MM/yyyy" mask="true">
 										<f:ajax event="blur" render="messages" />
@@ -41,27 +43,28 @@
 
 									<p:outputLabel value="Telefone:" for="telefone" />
 									<p:inputText id="telefone"
-										value="#{usuarioBean.usuario.telefone}" required="True"
+										value="#{usuarioBean.usuarioLogado.telefone}" required="True"
 										requiredMessage="Telefone é Obrigatório">
 										<f:ajax event="blur" render="messages" />
 									</p:inputText>
 
 									<p:outputLabel value="Endereço:" for="endereco" />
 									<p:inputText id="endereco"
-										value="#{usuarioBean.usuario.endereco}" required="True"
+										value="#{usuarioBean.usuarioLogado.endereco}" required="True"
 										requiredMessage="Endereço é Obrigatório">
 										<f:ajax event="blur" render="messages" />
 									</p:inputText>
 
 									<p:outputLabel value="Email:" for="email" />
-									<p:inputText id="email" value="#{usuarioBean.usuario.email}"
-										required="True" requiredMessage="Email é Obrigatório">
+									<p:inputText id="email"
+										value="#{usuarioBean.usuarioLogado.email}" required="True"
+										requiredMessage="Email é Obrigatório">
 										<f:ajax event="blur" render="messages" />
 									</p:inputText>
 									<p:outputLabel value="Senha:" for="senha" />
-									<p:password id="senha" value="#{usuarioBean.usuario.senha}"
-										required="true" feedback="true"
-										requiredMessage="Senha é Obrigatório" />
+									<p:password id="senha"
+										value="#{usuarioBean.usuarioLogado.senha}" required="true"
+										feedback="true" requiredMessage="Senha é Obrigatório" redisplay="true" />
 
 
 								</p:panelGrid>
@@ -69,18 +72,15 @@
 								<p:panelGrid styleClass="section-cadastro-form-table-buttons"
 									columns="1">
 									<div class="dropper-separator" />
-									<p:commandButton styleClass="dr-button-center"
-										value="Cadastrar" action="#{usuarioBean.cadastrar}"
-										update="@form" process="@form" />
-
-									<p:commandButton styleClass="dr-button-center" value="Retornar"
-										action="login.xhtml?faces-redirect=true" immediate="true" />
+									<p:commandButton styleClass="dr-button-center" value="Alterar"
+										action="#{usuarioBean.alterar}" update="@form" process="@form" />
 								</p:panelGrid>
 
 								<p:messages id="messages" globalOnly="true" />
 
 							</p:panel>
-
+						</h:form>
+						<h:form>
 							<p:panel header="Dados do Repositório">
 
 

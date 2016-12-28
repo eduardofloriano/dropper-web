@@ -2,6 +2,7 @@ package br.com.dropper.web.bean;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -24,8 +25,12 @@ import br.com.dropper.web.util.JpaUtil;
 
 @ManagedBean
 @ApplicationScoped
-public class ArquivoBean {
+public class ArquivoBean  implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -105011233399925138L;
 	private UploadedFile file;
 	private EntityManager em = new JpaUtil().getEntityManager();
 	private ArquivoDAO arquivoDAO = new ArquivoDAO(em);

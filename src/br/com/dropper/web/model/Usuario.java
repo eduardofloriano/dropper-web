@@ -2,16 +2,22 @@ package br.com.dropper.web.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @NamedQuery(name = "obterUsuarioPorEmail", query = "select u from Usuario u where u.email = :pEmail and u.senha = :pSenha")
 @Entity
@@ -32,7 +38,7 @@ public class Usuario {
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "dataInclusao", insertable=false)
-	private Date dataInclusao;
+	private Date dataInclusao = new Date();
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "dataInclusao", insertable=false, updatable=false)
@@ -44,9 +50,25 @@ public class Usuario {
 	private String senha;
 
 	@Lob
-	@Column(length=100000)
-	private byte[] imagem;
+	@Column(length=500000) //5MB
+	private byte[] imagemPerfil;
 		
+	@OneToOne(cascade=CascadeType.ALL,
+			optional=false,
+			fetch=FetchType.EAGER,
+			orphanRemoval=true)
+	private Repositorio repositorio = new Repositorio(this);
+	
+	@Transient
+	private Long espacoDisponivel;
+	
+	
+	@PreUpdate
+	@PrePersist
+	public void atualizaDataAlteracao(){
+		dataAlteracao = new Date();
+	}
+	
 	//Getters e Setters
 	
 	public String getNome() {
@@ -121,12 +143,32 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public byte[] getImagem() {
-		return imagem;
+	public byte[] getImagemPerfil() {
+		return imagemPerfil;
 	}
 
-	public void setImagem(byte[] imagem) {
-		this.imagem = imagem;
+	public void setImagempergil(byte[] imagemPerfil) {
+		this.imagemPerfil = imagemPerfil;
+	}
+
+	public Repositorio getRepositorio() {
+		return repositorio;
+	}
+
+	public void setRepositorio(Repositorio repositorio) {
+		this.repositorio = repositorio;
+	}
+
+	public Long getEspacoDisponivel() {
+		return espacoDisponivel;
+	}
+
+	public void setEspacoDisponivel(Long espacoDisponivel) {
+		this.espacoDisponivel = espacoDisponivel;
+	}
+
+	public void setImagemPerfil(byte[] imagemPerfil) {
+		this.imagemPerfil = imagemPerfil;
 	}
 	
 	

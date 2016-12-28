@@ -2,8 +2,7 @@ package br.com.dropper.web.bean;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -12,7 +11,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -27,8 +25,12 @@ import br.com.dropper.web.util.JpaUtil;
 
 @ManagedBean
 @SessionScoped
-public class ImagemBean {
+public class ImagemBean  implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4639661786842341443L;
 	private UploadedFile file;
 	private EntityManager em = new JpaUtil().getEntityManager();
 	private ImagemDAO imagemDAO = new ImagemDAO(em);
