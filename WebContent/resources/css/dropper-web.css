@@ -91,9 +91,9 @@ div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section
 	padding: 6px 0;
 }
 
-.section-cadastro{
+.section-cadastro {
 	border: none;
-	box-sizing: border-box;	
+	box-sizing: border-box;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -112,12 +112,9 @@ div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section
 	border: none;
 }
 
-div#conteudo  .section-cadastro-form-table-buttons .ui-button{
+div#conteudo  .section-cadastro-form-table-buttons .ui-button {
 	width: 60%;
 }
-
-
-
 
 /**
 * HOVER EM TODO O TEMA
@@ -228,6 +225,23 @@ SIDEBAR
 	padding: 7px;
 }
 
+.dr-sidebar .profile .profile-progress-bar {
+	padding: 10px 15px;
+}
+
+.dr-sidebar .profile .profile-progress-bar .ui-progressbar, .dr-sidebar .profile .profile-progress-bar .ui-progressbar-value
+	{
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	border-color: #1f89ce;
+}
+
+.dr-sidebar .profile .profile-progress-bar .ui-progressbar-value{
+	background: #1f89ce;
+}
+    
+
 .dr-sidebar .dr-menu .ui-panelmenu-panel .ui-widget {
 	border-radius: 0;
 	background: inherit;
@@ -318,7 +332,7 @@ DASHBOARD
 	margin-top: 50px;
 	background: #ffffff;
 	border: none;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .dashboard-area .ui-widget-header {
@@ -350,13 +364,13 @@ DASHBOARD
 	opacity: 0.5;
 }
 
-.dropper-grid-area .ui-widget-content img{
+.dropper-grid-area .ui-widget-content img {
 	width: auto;
 	max-width: 225px;
 	max-height: 200px;
 }
 
-.dropper-grid-area .ui-widget-content #dropper-image-visualizar img{
+.dropper-grid-area .ui-widget-content #dropper-image-visualizar img {
 	width: auto;
 	heiht: auto;
 }

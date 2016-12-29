@@ -39,7 +39,7 @@
 											<f:param name="id" value="#{imagem.id}" />
 
 											<p:contextMenu for="dropper-data-image-panel">
-												<p:menuitem value="Excluir" update="dropper-data-grid"
+												<p:menuitem value="Excluir" update="dropper-data-grid :profile-form"
 													icon="fa fa-fw fa-remove"
 													actionListener="#{imagemBean.remover(imagem)}" />
 

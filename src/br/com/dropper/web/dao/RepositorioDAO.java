@@ -37,6 +37,9 @@ public class RepositorioDAO extends DAO<Repositorio> {
 		try {
 			return query.getSingleResult();
 		} catch (NoResultException e) {
+			return 0L;
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 		

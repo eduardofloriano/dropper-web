@@ -6,7 +6,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
 import javax.persistence.EntityManager;
 
 import br.com.dropper.web.dao.RepositorioDAO;
@@ -65,7 +64,9 @@ public class UsuarioBean implements Serializable {
 		if(getUsuarioLogado() != null){
 			Long espacoTotal = usuarioLogado.getRepositorio().getEspacoTotal();
 			Long espacoOcupado = repositorioDAO.obterEspacoOcupadoPorUsuario(usuarioLogado);
-			return ((espacoTotal - espacoOcupado) * 100) / espacoTotal;
+			//Long espadoDisponivel = espacoTotal - espacoOcupado;
+			//return ((espacoTotal - espacoOcupado) * 100) / espacoTotal;
+			return ( espacoOcupado * 100) / espacoTotal;
 		}
 		return 1L;
 	}

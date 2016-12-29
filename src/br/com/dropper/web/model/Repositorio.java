@@ -14,7 +14,7 @@ import javax.persistence.SequenceGenerator;
 	@NamedQuery(name = "obterRepositorioPorUsuario", query = "select u from Usuario u where u.email = :pEmail and u.senha = :pSenha"),
 	//@NamedQuery(name = "obterEspacoLivrePorUsuario", query = "select r.espacoTotal - SUM(select i.tamanho from imagem where i.usuario = r.usuario) from repositorio r where r.usuario = :pUsuario")
 	@NamedQuery(name = "obterEspacoLivrePorUsuario", query = ""
-			+ " select sum(i.tamanho)"
+			+ " select coalesce(sum(i.tamanho),0)"
 			+ " from Imagem i"		
 			+ " where i.usuario = :pUsuario")
 })
