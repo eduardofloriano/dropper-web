@@ -44,7 +44,7 @@ public class LoginBean implements Serializable {
 					.put("usuarioLogado", usuario);
 			// context.getExternalContext().getSessionMap().put("emailUsuario",
 			// usuario.getEmail());
-			return "dashboard.xhtml?faces-redirect=true";
+			return "dashboardImagem.xhtml?faces-redirect=true";
 		}
 	}
 	

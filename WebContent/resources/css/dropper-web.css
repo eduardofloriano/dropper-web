@@ -374,3 +374,11 @@ DASHBOARD
 	width: auto;
 	heiht: auto;
 }
+
+.dropper-grid-area-arquivo .ui-datagrid-content .ui-widget-content{
+	width: auto;
+	max-width: 160px;
+	height: 100px;
+	
+	font-size: 0.935em
+}

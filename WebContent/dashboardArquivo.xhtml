@@ -1,0 +1,73 @@
+<ui:composition template="_template_box_default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<ui:define name="conteudo">
+		<p:panel styleClass="dashboard-area">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-g-nopad">
+
+					<div class="ui-g-12 upload-area">
+						<h:form id="dashboard-upload-form">
+							<p:fileUpload fileUploadListener="#{arquivoBean.handleFileUpload}"
+								mode="advanced" dragDropSupport="true"
+								update=":dashboard-data-form:dropper-data-grid :profile-form"
+								sizeLimit="100000000" />
+
+							<p:growl id="messages" showDetail="true" />
+						</h:form>
+					</div>
+
+					<h:form id="dashboard-data-form">
+						<div class="ui-g-12 dropper-grid-area dropper-grid-area-arquivo">
+							<p:dataGrid id="dropper-data-grid" var="arquivo"
+								value="#{arquivoBean.arquivos}" columns="6" layout="grid"
+								rows="20" paginator="true" paginatorPosition="bottom"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+								<p:panel style="text-align:center">
+									<h:panelGrid id="dropper-data-arquivo-panel" columns="1"
+										style="width:100%">
+										
+										<p:graphicImage library="img" name="arquivo-icone.png">
+
+											<p:contextMenu for="dropper-data-arquivo-panel">
+												<p:menuitem value="Excluir"
+													update="dropper-data-grid :profile-form"
+													icon="fa fa-fw fa-remove"
+													actionListener="#{arquivoBean.remover(arquivo)}" />
+
+												<p:menuitem value="Download" update="dropper-data-grid"
+													icon="fa fa-fw fa-download" ajax="false">
+													<p:fileDownload value="#{arquivoBean.download(arquivo)}" />
+												</p:menuitem>
+
+												<p:menuitem id="dropper-image-visualizar" value="Visualizar"
+													icon="fa fa-fw fa-file-image-o" />
+
+											</p:contextMenu>
+										</p:graphicImage>
+										<p:outputLabel value="#{arquivo.nome}">
+											<f:converter converterId="mascaraConverter"></f:converter>
+										</p:outputLabel>
+									</h:panelGrid>
+								</p:panel>
+
+							</p:dataGrid>
+
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</p:panel>
+	</ui:define>
+	<!-- FIM DO CONTEUDO -->
+
+
+</ui:composition>

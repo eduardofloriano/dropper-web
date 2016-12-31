@@ -25,7 +25,7 @@ import br.com.dropper.web.util.JpaUtil;
 
 @ManagedBean
 @SessionScoped
-public class ImagemBean  implements Serializable {
+public class ImagemBean implements Serializable {
 
 	/**
 	 * 
@@ -35,31 +35,27 @@ public class ImagemBean  implements Serializable {
 	private EntityManager em = new JpaUtil().getEntityManager();
 	private ImagemDAO imagemDAO = new ImagemDAO(em);
 
-	private List<Imagem> imagens = imagemDAO
-			.obterImagensPorUsuario(getUsuarioLogado());
+	private List<Imagem> imagens = imagemDAO.obterImagensPorUsuario(getUsuarioLogado());
 
 	public void handleFileUpload(FileUploadEvent event) throws IOException {
 
 		this.file = event.getFile();
 
 		ImagemBuilder builder = new ImagemBuilder();
-		builder.setNome(file.getFileName()).setTamanho(file.getSize())
-				.setDataInclusao(null).setData(file.getInputstream())
-				.setUsuario(getUsuarioLogado());
+		builder.setNome(file.getFileName()).setTamanho(file.getSize()).setDataInclusao(null)
+				.setData(file.getInputstream()).setUsuario(getUsuarioLogado());
 
 		Imagem imagem = builder.construct();
 		imagemDAO.persist(imagem);
 
-		FacesMessage message = new FacesMessage("Imagem ", event.getFile()
-				.getFileName() + " cadastrada com sucesso!");
+		FacesMessage message = new FacesMessage("Imagem ", event.getFile().getFileName() + " cadastrada com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, message);
 
 		atualizaListaImagem();
 	}
 
 	public void remover(Imagem imagem) {
-		System.out.println("Vai remover a imagem: " + imagem.getNome() + " - "
-				+ imagem.getId());
+		System.out.println("Vai remover a imagem: " + imagem.getNome() + " - " + imagem.getId());
 		imagem = imagemDAO.obterImagemPorId(imagem.getId());
 		imagemDAO.remove(imagem);
 
@@ -67,18 +63,15 @@ public class ImagemBean  implements Serializable {
 	}
 
 	public StreamedContent download(Imagem imagem) throws IOException {
-		System.out.println("Vai realizar o download da imagem: "
-				+ imagem.getNome() + " - " + imagem.getId());
+		System.out.println("Vai realizar o download da imagem: " + imagem.getNome() + " - " + imagem.getId());
 		imagem = imagemDAO.obterImagemPorId(imagem.getId());
 
-		 //TODO download
-		 StreamedContent file = new DefaultStreamedContent(new
-		 ByteArrayInputStream(imagem.getData()), "image/png",
-		 imagem.getNome());
-		
-		 //return		 
-		 return file;
-		
+		// TODO download
+		StreamedContent file = new DefaultStreamedContent(new ByteArrayInputStream(imagem.getData()), "image/png",
+				imagem.getNome());
+
+		// return
+		return file;
 
 	}
 
@@ -88,8 +81,7 @@ public class ImagemBean  implements Serializable {
 
 	private Usuario getUsuarioLogado() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		Usuario usuario = (Usuario) context.getExternalContext()
-				.getSessionMap().get("usuarioLogado");
+		Usuario usuario = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
 		return usuario;
 	}
 
@@ -106,12 +98,10 @@ public class ImagemBean  implements Serializable {
 	public StreamedContent getImagem() throws Exception {
 
 		FacesContext context = FacesContext.getCurrentInstance();
-		String id = context.getExternalContext().getRequestParameterMap()
-				.get("id");
+		String id = context.getExternalContext().getRequestParameterMap().get("id");
 		if (!(id == null || id.equals("") || id.equals(" "))) {
 			Imagem imagem = imagemDAO.obterImagemPorId(Integer.parseInt(id));
-			return new DefaultStreamedContent(new ByteArrayInputStream(
-					imagem.getData()), "image/png");
+			return new DefaultStreamedContent(new ByteArrayInputStream(imagem.getData()), "image/png");
 		}
 
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
@@ -122,8 +112,7 @@ public class ImagemBean  implements Serializable {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
 			Imagem imagem = imagemDAO.obterImagemPorId(Integer.parseInt(id));
-			return new DefaultStreamedContent(new ByteArrayInputStream(
-					imagem.getData()), "image/png");
+			return new DefaultStreamedContent(new ByteArrayInputStream(imagem.getData()), "image/png");
 		}
 
 	}

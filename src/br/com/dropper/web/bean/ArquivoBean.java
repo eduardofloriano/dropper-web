@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.persistence.EntityManager;
@@ -25,7 +26,7 @@ import br.com.dropper.web.util.JpaUtil;
 
 @ManagedBean
 @ApplicationScoped
-public class ArquivoBean  implements Serializable {
+public class ArquivoBean implements Serializable {
 
 	/**
 	 * 
@@ -73,21 +74,44 @@ public class ArquivoBean  implements Serializable {
 	public void setArquivos(List<Arquivo> arquivos) {
 		this.arquivos = arquivos;
 	}
+	
+	
+//	public StreamedContent getArquivo() throws Exception {
+//
+//		FacesContext context = FacesContext.getCurrentInstance();
+//		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+//			// So, we're rendering the view. Return a stub StreamedContent so
+//			// that it will generate right URL.
+//			return new DefaultStreamedContent();
+//		} else {
+//			// So, browser is requesting the image. Return a real
+//			// StreamedContent with the image bytes.
+//			String id = context.getExternalContext().getRequestParameterMap().get("id");
+//			Arquivo arquivo = arquivoDAO.obterArquivoPorId(Integer.parseInt(id));
+//
+//			return new DefaultStreamedContent(new ByteArrayInputStream(arquivo.getData()), "image/png");
+//		}
+//
+//	}
 
-	public StreamedContent getArquivo() throws Exception {
+	public void remover(Arquivo arquivo) {
+		System.out.println("Vai remover o arquivo: " + arquivo.getNome() + " - " + arquivo.getId());
+		arquivo = arquivoDAO.obterArquivoPorId(arquivo.getId());
+		arquivoDAO.remove(arquivo);
 
-		FacesContext context = FacesContext.getCurrentInstance();
-		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        }
-        else {
-            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-            String id = context.getExternalContext().getRequestParameterMap().get("id");
-            Arquivo arquivo = arquivoDAO.obterArquivoPorId(Integer.parseInt(id));
-            
-            return new DefaultStreamedContent(new ByteArrayInputStream(arquivo.getData()), "image/png");
-        }
+		atualizaListaArquivo();
+	}
+
+	public StreamedContent download(Arquivo arquivo) throws IOException {
+		System.out.println("Vai realizar o download da imagem: " + arquivo.getNome() + " - " + arquivo.getId());
+		arquivo = arquivoDAO.obterArquivoPorId(arquivo.getId());
+		
+		// TODO download
+		StreamedContent file = new DefaultStreamedContent(new ByteArrayInputStream(arquivo.getData()), null,
+				arquivo.getNome());
+
+		// return
+		return file;
 
 	}
 
