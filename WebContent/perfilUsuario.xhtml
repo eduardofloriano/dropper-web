@@ -64,7 +64,8 @@
 									<p:outputLabel value="Senha:" for="senha" />
 									<p:password id="senha"
 										value="#{usuarioBean.usuarioLogado.senha}" required="true"
-										feedback="true" requiredMessage="Senha é Obrigatório" redisplay="true" />
+										feedback="true" requiredMessage="Senha é Obrigatório"
+										redisplay="true" />
 
 
 								</p:panelGrid>
@@ -80,9 +81,14 @@
 
 							</p:panel>
 						</h:form>
+
+						<div class="dropper-separator" />
+
 						<h:form>
 							<p:panel header="Dados do Repositório">
 
+								<p:chart type="pie" model="#{repositorioBean.repositorioPieChartModel}"
+									style="width:400px;height:300px" />
 
 							</p:panel>
 						</h:form>

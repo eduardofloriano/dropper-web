@@ -16,7 +16,7 @@ public class QueryTest {
 		RepositorioDAO repositorioDAO = new RepositorioDAO(em);
 
 		
-		Usuario usuario = em.find(Usuario.class, 6);
+		Usuario usuario = em.find(Usuario.class, 3);
 		
 		Long espacoTotal = usuario.getRepositorio().getEspacoTotal();
 		Long espacoOcupado = repositorioDAO.obterEspacoOcupadoPorUsuario(usuario);

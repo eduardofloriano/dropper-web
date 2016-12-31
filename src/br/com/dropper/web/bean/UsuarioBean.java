@@ -61,12 +61,18 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public Long getEspacoDisponivel() {
-		if(getUsuarioLogado() != null){
+		if (getUsuarioLogado() != null) {
 			Long espacoTotal = usuarioLogado.getRepositorio().getEspacoTotal();
-			Long espacoOcupado = repositorioDAO.obterEspacoOcupadoPorUsuario(usuarioLogado);
-			//Long espadoDisponivel = espacoTotal - espacoOcupado;
-			//return ((espacoTotal - espacoOcupado) * 100) / espacoTotal;
-			return ( espacoOcupado * 100) / espacoTotal;
+			// Long espacoOcupado =
+			// repositorioDAO.obterEspacoOcupadoPorUsuario(usuarioLogado);
+			// Long espadoDisponivel = espacoTotal - espacoOcupado;
+			// return ((espacoTotal - espacoOcupado) * 100) / espacoTotal;
+
+			Long espacoOcupado = repositorioDAO.obterEspacoOcupadoImagemPorUsuario(usuarioLogado)
+					+ repositorioDAO.obterEspacoOcupadoArquivoPorUsuario(usuarioLogado)
+					+ repositorioDAO.obterEspacoOcupadoVideoPorUsuario(usuarioLogado);
+
+			return (espacoOcupado * 100) / espacoTotal;
 		}
 		return 1L;
 	}

@@ -1,6 +1,8 @@
 package br.com.dropper.web.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -49,6 +53,12 @@ public class Usuario {
 	private String email;
 	private String senha;
 
+	
+	@Transient
+//	@ManyToMany(cascade=CascadeType.ALL)	
+//	@JoinTable(name="amigo")
+	private List<Usuario> amigos = new ArrayList<Usuario>();
+	
 	@Lob
 	@Column(length=500000) //5MB
 	private byte[] imagemPerfil;
@@ -169,6 +179,14 @@ public class Usuario {
 
 	public void setImagemPerfil(byte[] imagemPerfil) {
 		this.imagemPerfil = imagemPerfil;
+	}
+
+	public List<Usuario> getAmigos() {
+		return amigos;
+	}
+
+	public void setAmigos(List<Usuario> amigos) {
+		this.amigos = amigos;
 	}
 	
 	

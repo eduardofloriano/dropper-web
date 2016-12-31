@@ -122,6 +122,7 @@ div#conteudo  .section-cadastro-form-table-buttons .ui-button {
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover,
 	.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus
 	{
+	
 	/*
 	border: none;
 	background: inherit;
@@ -131,6 +132,11 @@ div#conteudo  .section-cadastro-form-table-buttons .ui-button {
 	transition: padding-left 0.3s;
 	*/
 	
+}
+
+.dr-sidebar .ui-menu.ui-widget li > .ui-menuitem-link.ui-state-hover{
+	background-color: transparent;
+	background-image: none;
 }
 
 /***************************
@@ -292,7 +298,7 @@ SIDEBAR
 .dr-sidebar .dr-menu  .ui-panelmenu-panel  .ui-menuitem a {
 	color: #ffffff;
 	padding: 10px 15px;
-	font-size: 13px;
+	font-size: 15px;
 	position: relative;
 	text-decoration: none;
 	display: block;
@@ -364,6 +370,10 @@ DASHBOARD
 	opacity: 0.5;
 }
 
+.dropper-grid-area .ui-datagrid-content .ui-widget-content{
+	border: none;	
+}
+
 .dropper-grid-area .ui-widget-content img {
 	width: auto;
 	max-width: 225px;
@@ -374,6 +384,8 @@ DASHBOARD
 	width: auto;
 	heiht: auto;
 }
+
+
 
 .dropper-grid-area-arquivo .ui-datagrid-content .ui-widget-content{
 	width: auto;

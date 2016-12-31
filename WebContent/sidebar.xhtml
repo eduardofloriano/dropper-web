@@ -19,7 +19,7 @@
 
 				<div class="profile-progress-bar">
 					<p:progressBar id="profile-progress-bar"
-						value="#{usuarioBean.espacoDisponivel}" labelTemplate="{value}%"
+						value="#{repositorioBean.espacoDisponivel}" labelTemplate="{value}%"
 						displayOnly="true" />
 				</div>
 			</h:form>
@@ -32,7 +32,10 @@
 							action="dashboardImagem.xhtml?faces-redirect=true" />
 						<p:menuitem value="Arquivos" icon="fa fa-fw fa-file"
 							action="dashboardArquivo.xhtml?faces-redirect=true" />
-						<p:menuitem value="Videos" icon="fa fa-fw fa-video-camera" />
+						<p:menuitem value="Videos" icon="fa fa-fw fa-video-camera"
+							action="dashboardVideo.xhtml?faces-redirect=true" />
+							<p:menuitem value="Audios" icon="fa fa-fw fa-music"
+							action="dashboardAudio.xhtml?faces-redirect=true" />
 						<p:menuitem value="Perfil" icon="fa fa-fw fa-user"
 							action="perfilUsuario.xhtml?faces-redirect=true" />
 					</p:menu>
