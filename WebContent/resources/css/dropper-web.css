@@ -394,3 +394,8 @@ DASHBOARD
 	
 	font-size: 0.935em
 }
+
+.dropper-grid-area-arquivo .ui-widget-content .ui-grid-row{
+	/* Hack para acertar icones de arquivos com nome em duas linhas */
+	margin-bottom: 10px;
+}

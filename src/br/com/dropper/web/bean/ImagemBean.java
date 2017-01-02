@@ -27,6 +27,10 @@ import br.com.dropper.web.util.JpaUtil;
 @SessionScoped
 public class ImagemBean implements Serializable {
 
+	public ImagemBean(){
+		System.out.println("Criando um managedBean");
+	}
+	
 	/**
 	 * 
 	 */

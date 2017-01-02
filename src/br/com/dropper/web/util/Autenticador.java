@@ -21,6 +21,8 @@ public class Autenticador implements PhaseListener {
 		FacesContext context = event.getFacesContext();
 		String nomePagina = context.getViewRoot().getViewId();
 		
+		
+		//TODO: rola usar um strategy ou um chain aqui?
 		if(nomePagina.equals("/login.xhtml")){
 			return;
 		}
