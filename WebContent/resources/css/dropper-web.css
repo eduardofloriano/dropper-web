@@ -42,6 +42,12 @@ div#conteudo .section-login {
 	color: #4f575b;
 }
 
+
+div#conteudo .section-login img {
+	width: auto;
+	height: 175px;
+}
+
 div#conteudo .ui-button {
 	margin: 0;
 	border: 1px solid #1f89ce;
