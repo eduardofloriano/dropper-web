@@ -85,11 +85,18 @@
 						<div class="dropper-separator" />
 
 						<h:form>
-							<p:panel header="Dados do Repositório">
+							<p:panel header="Dados do Repositório"
+								styleClass="section-repositorio-panel">
+								<p:panelGrid columns="2"
+									styleClass="section-repositorio-form-table-charts">
+									<p:chart type="bar"
+										model="#{repositorioBean.repositorioBarModel}"
+										style="height:300px; width:600px" />
 
-								<p:chart type="pie" model="#{repositorioBean.repositorioPieChartModel}"
-									style="width:400px;height:300px" />
-
+									<p:chart type="pie"
+										model="#{repositorioBean.repositorioPieChartModel}"
+										style="width:400px;height:300px" />
+								</p:panelGrid>
 							</p:panel>
 						</h:form>
 					</div>

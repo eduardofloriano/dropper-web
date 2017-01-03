@@ -101,8 +101,17 @@ div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section
 	text-align: right;
 }
 
-.section-cadastro-form-table-buttons {
+.section-cadastro-form-table-buttons,
+	.section-repositorio-form-table-charts {
 	width: 100%;
+}
+
+.section-repositorio-form-table-charts .ui-panelgrid-cell {
+	border: none;
+}
+
+.section-repositorio-panel .ui-widget-content{
+	border: 0px solid transparent;
 }
 
 #conteudo .section-cadastro-form-table-buttons .ui-widget-content,
@@ -122,7 +131,6 @@ div#conteudo  .section-cadastro-form-table-buttons .ui-button {
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover,
 	.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus
 	{
-	
 	/*
 	border: none;
 	background: inherit;
@@ -134,7 +142,7 @@ div#conteudo  .section-cadastro-form-table-buttons .ui-button {
 	
 }
 
-.dr-sidebar .ui-menu.ui-widget li > .ui-menuitem-link.ui-state-hover{
+.dr-sidebar .ui-menu.ui-widget li>.ui-menuitem-link.ui-state-hover {
 	background-color: transparent;
 	background-image: none;
 }
@@ -243,10 +251,9 @@ SIDEBAR
 	border-color: #1f89ce;
 }
 
-.dr-sidebar .profile .profile-progress-bar .ui-progressbar-value{
+.dr-sidebar .profile .profile-progress-bar .ui-progressbar-value {
 	background: #1f89ce;
 }
-    
 
 .dr-sidebar .dr-menu .ui-panelmenu-panel .ui-widget {
 	border-radius: 0;
@@ -370,8 +377,8 @@ DASHBOARD
 	opacity: 0.5;
 }
 
-.dropper-grid-area .ui-datagrid-content .ui-widget-content{
-	border: none;	
+.dropper-grid-area .ui-datagrid-content .ui-widget-content {
+	border: none;
 }
 
 .dropper-grid-area .ui-widget-content img {
@@ -385,17 +392,14 @@ DASHBOARD
 	heiht: auto;
 }
 
-
-
-.dropper-grid-area-arquivo .ui-datagrid-content .ui-widget-content{
+.dropper-grid-area-arquivo .ui-datagrid-content .ui-widget-content {
 	width: auto;
 	max-width: 160px;
 	height: 100px;
-	
 	font-size: 0.935em
 }
 
-.dropper-grid-area-arquivo .ui-widget-content .ui-grid-row{
+.dropper-grid-area-arquivo .ui-widget-content .ui-grid-row {
 	/* Hack para acertar icones de arquivos com nome em duas linhas */
 	margin-bottom: 10px;
 }
