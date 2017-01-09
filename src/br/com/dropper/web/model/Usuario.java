@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
@@ -54,10 +55,15 @@ public class Usuario {
 	private String senha;
 
 	
-	@Transient
-//	@ManyToMany(cascade=CascadeType.ALL)	
-//	@JoinTable(name="amigo")
+//	@Transient
+	@ManyToMany(cascade=CascadeType.ALL)	
+	@JoinTable(name = "amigos", joinColumns = {
+			 @JoinColumn(name = "usuario1", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+			 @JoinColumn(name = "usuario2", referencedColumnName = "id", nullable = false)})
 	private List<Usuario> amigos = new ArrayList<Usuario>();
+	
+	@ManyToMany(mappedBy = "amigos")
+	private List<Usuario> amigoDe = new ArrayList<>();
 	
 	@Lob
 	@Column(length=500000) //5MB
@@ -188,7 +194,14 @@ public class Usuario {
 	public void setAmigos(List<Usuario> amigos) {
 		this.amigos = amigos;
 	}
-	
+
+	public List<Usuario> getAmigoDe() {
+		return amigoDe;
+	}
+
+	public void setAmigoDe(List<Usuario> amigoDe) {
+		this.amigoDe = amigoDe;
+	}
 	
 
 }

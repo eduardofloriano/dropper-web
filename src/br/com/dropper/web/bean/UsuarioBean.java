@@ -1,15 +1,23 @@
 package br.com.dropper.web.bean;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.persistence.EntityManager;
+
+import org.apache.commons.io.IOUtils;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 import br.com.dropper.web.dao.RepositorioDAO;
 import br.com.dropper.web.dao.UsuarioDAO;
+import br.com.dropper.web.model.Imagem;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.util.JpaUtil;
 
@@ -28,12 +36,22 @@ public class UsuarioBean implements Serializable {
 	private Usuario usuario = new Usuario();
 	private Usuario usuarioLogado = new Usuario();
 
+	private UploadedFile file;
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
 	}
 
 	public Usuario getUsuarioLogado() {
@@ -42,8 +60,23 @@ public class UsuarioBean implements Serializable {
 		return this.usuarioLogado;
 	}
 
+	public void carregarImagemPerfil(){
+		
+	}
+	
 	public String cadastrar() {
 		System.out.println("Persistindo Usuário: " + usuario.getEmail());
+		
+		if(file != null){
+			try {
+				this.usuario.setImagemPerfil(IOUtils.toByteArray(file.getInputstream()));
+				System.out.println("Possuí imagem de perfil! " + file.getFileName());
+			} catch (Exception e) {
+				System.out.println("Ocorreu um erro ao processar a imagem de perfil do usuário.");
+				e.printStackTrace();
+			}			
+		}
+		
 		usuarioDAO.persist(this.usuario);
 
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -77,4 +110,27 @@ public class UsuarioBean implements Serializable {
 		return 1L;
 	}
 
+	
+	public StreamedContent getImagemPerfil() throws Exception {
+
+		FacesContext context = FacesContext.getCurrentInstance();
+//		String id = context.getExternalContext().getRequestParameterMap().get("id");
+//		if (!(id == null || id.equals("") || id.equals(" "))) {
+//			Imagem imagem = imagemDAO.obterImagemPorId(Integer.parseInt(id));
+//			return new DefaultStreamedContent(new ByteArrayInputStream(imagem.getData()), "image/png");
+//		}
+
+		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+			// So, we're rendering the view. Return a stub StreamedContent so
+			// that it will generate right URL.
+			return new DefaultStreamedContent();
+		} else {
+			// So, browser is requesting the image. Return a real
+			// StreamedContent with the image bytes.
+//			Imagem imagem = imagemDAO.obterImagemPorId(Integer.parseInt(id));
+			return new DefaultStreamedContent(new ByteArrayInputStream(usuarioLogado.getImagemPerfil()), "image/png");
+		}
+
+	}
+	
 }
