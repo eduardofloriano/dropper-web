@@ -1,0 +1,32 @@
+http://maven.apache.org/
+
+Maven é uma ferramenta criada para simplificar e gerenciar o processo de build, dependencias e o clico de vida dos projetos Java. 
+
+Dentre seus principais objetivos:
+- Simplificar o processo de build: facilitando a compilação do código, o empacotamento para jar, war, ear..., execução de testes unitários e de integração, entre outros.
+- Fornecer um sistema de build padronizado: gerenciando o controle das verões (releases) da aplicação
+- Fornecer informações do projeto: centralizando as informações de forma organizada no projeto, incluindo as dependências, documentação e resultados dos testes unitários.
+- Fornecer meios para as melhores praticas de desenvolvimento: separando as classes da aplicação das classes de testes, usando convenções de nomes e diretórios, etc.
+- Facilitar a migração para novas funcionalidades
+
+O Maven trabalha em cima do conceito de artefatos, onde cada artefado é identificado principalmente pelos elementos:
+- groupId: Identifica o grupo a qual aquele artefato pertence.
+- artifactId: Identifica o artefato dentro daquele grupo.
+- version: identifica a versão do artefato
+
+Já o ciclo de vida do maven é baseado no conceito de construir e distribuir um artefato em particular. Este ciclo de vida é divido em fases bem definidas:
+- validate: Valida se o projeto está correto sem erros de compilação.
+- compile: compila o código fonte do projeto
+- test: testa o código fonte compilado utilizando um framework de testes unitários, como JUnit.
+- package: realiza o empacotamento do código compilado para o formato definido, como JAR ou WAR.
+- verify: realiza testes de integração para garantir a qualidade.
+- install: instala o pacote no repositório local.
+- deploy: completa o cicloo de build, copiando o pacote para ser compartilhado no repositório remoto com os demais interessados.
+Essas fases do ciclo de vida são executadas de forma sequencial para completar o chamado ciclo de vida default. Esse ciclo de vida pode ser personalizado para atender a cada projeto.
+É muito comum a utilização de plugins para gerenciar a execução das fases do ciclo, por exemplo, o plugin compiler pode executar tanto a fase compile e a fase test para garantir a qualidade do código compilado.
+
+O principal elemento de um projeto que utilza maven é o POM (Project Object Model), que é um arquivo XML que contem informações sobre o projeto e os detalhes de configuração utilizados pelo maven para realizar o build do projeto [ fonte ]. Ele é obrigatório em todo o projeto que utiliza maven e centraliza toda configuração de dependências, plugins, repositórios entre outros.
+
+O Maven costuma trabalhar com dois repositórios para gerenciar os artefatos: Repostitório Local e Repostório Remoto.
+O Repositório Local armazena todos os artefatos na máquina local, após serem baixados do repositório remoto. Desse modo, a aplicação, quando necesista de alguma dependencia, procura direto no diretório do repositório local.
+Já o Repostiório Remoto é onde todos os artefatos ficam disponíveis para serem baixados pelo maven, podendo ser um repositório publico ou até mesmo um privado, em uma intranet

@@ -123,7 +123,8 @@ public class UsuarioBean implements Serializable {
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
 			// So, we're rendering the view. Return a stub StreamedContent so
 			// that it will generate right URL.
-			return new DefaultStreamedContent();
+//			return new DefaultStreamedContent();
+			return new DefaultStreamedContent(new ByteArrayInputStream(usuarioLogado.getImagemPerfil()), "image/png");
 		} else {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.

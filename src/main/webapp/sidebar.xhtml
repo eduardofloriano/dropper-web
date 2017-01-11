@@ -7,7 +7,7 @@
 	<div class="dr-sidebar">
 		<div class="profile">
 			 <h:graphicImage library="img" name="profile.png" rendered="#{usuarioBean.usuarioLogado.imagemPerfil == null}" />
-			 <h:graphicImage value="#{usuarioBean.imagemPerfil}" rendered="#{usuarioBean.usuarioLogado.imagemPerfil != null}"/>
+			 <p:graphicImage value="#{usuarioBean.imagemPerfil}" rendered="#{usuarioBean.usuarioLogado.imagemPerfil != null}"/>
 			<a id="profile-button" href="#"> <h:outputText
 					styleClass="username" value="#{usuarioBean.usuarioLogado.nome}" />
 			</a>

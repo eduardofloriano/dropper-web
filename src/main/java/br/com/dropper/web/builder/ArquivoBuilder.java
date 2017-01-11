@@ -8,7 +8,7 @@ import org.apache.commons.io.IOUtils;
 import br.com.dropper.web.model.Arquivo;
 import br.com.dropper.web.model.Usuario;
 
-public class ArquivoBuilder implements ArquivoMultimidiaBuilder<Arquivo> {
+public class ArquivoBuilder implements ArquivoMultimidiaBuilder<Arquivo>{
 
 	private String nome;
 	private Date dataInclusao;
@@ -77,7 +77,7 @@ public class ArquivoBuilder implements ArquivoMultimidiaBuilder<Arquivo> {
 		return this;
 	}
 
-	@Override	
+	@Override
 	public Arquivo construct(){
 		Arquivo arquivo = new Arquivo();
 		arquivo.setNome(nome);
