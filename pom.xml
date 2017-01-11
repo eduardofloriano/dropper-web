@@ -47,13 +47,13 @@
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/cupertino-1.0.10.jar</systemPath>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>dropper-web</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/dom4j-1.6.1.jar</systemPath>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>dropper-web</groupId>
