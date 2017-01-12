@@ -16,7 +16,7 @@
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 			<!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/dropper" /> -->
 			<!--<property name="javax.persistence.jdbc.url" value="mysql://postgresql:5432/sampledb" /> -->
-			<property name="javax.persistence.jdbc.url" value="jdbc://postgresql:5432//172.30.245.19/sampledb" />			
+			<property name="javax.persistence.jdbc.url" value="jdbc://postgresql:5432//10.1.42.26/sampledb" />			
 			<property name="javax.persistence.jdbc.user" value="user0M7" />
 			<property name="javax.persistence.jdbc.password" value="lEF27YGFLNHCGaKt" />
 			
