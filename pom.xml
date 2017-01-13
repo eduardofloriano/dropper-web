@@ -25,13 +25,13 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>dropper-web</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.4.1212</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/postgresql-9.4.1212.jre6.jar</systemPath>
-		</dependency>
+		</dependency>  -->
 
 		<dependency>
 			<groupId>dropper-web</groupId>
