@@ -7,7 +7,9 @@
 	<div class="dr-sidebar">
 		<div class="profile">
 			 <h:graphicImage library="img" name="profile.png" rendered="#{usuarioBean.usuarioLogado.imagemPerfil == null}" />
-			 <p:graphicImage value="#{usuarioBean.imagemPerfil}" rendered="#{usuarioBean.usuarioLogado.imagemPerfil != null}"/>
+			 <p:graphicImage value="#{usuarioBean.imagemPerfil}" rendered="#{usuarioBean.usuarioLogado.imagemPerfil != null}">
+			 	<f:param name="id" value="#{usuarioBean.usuarioLogado.id}" />
+			 </p:graphicImage>
 			<a id="profile-button" href="#"> <h:outputText
 					styleClass="username" value="#{usuarioBean.usuarioLogado.nome}" />
 			</a>
@@ -39,6 +41,8 @@
 							action="dashboardAudio.xhtml?faces-redirect=true" />
 						<p:menuitem value="Perfil" icon="fa fa-fw fa-user"
 							action="perfilUsuario.xhtml?faces-redirect=true" />
+						<p:menuitem value="Social" icon="fa fa-fw fa-user"
+							action="social.xhtml?faces-redirect=true" />
 					</p:menu>
 				</div>
 			</div>

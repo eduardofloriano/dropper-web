@@ -17,7 +17,7 @@
 			<div class="ui-g">
 				<div class="ui-g-2" />
 				<div class="ui-g-8 ui-g-nopad conteudo-section">
-					<h:form id="cadastroUsuario-form" enctype="multipart/form-data">
+					<h:form id="cadastroUsuario-form">
 
 						<p:panelGrid styleClass="section-cadastro-form-table" columns="2">
 
@@ -72,12 +72,9 @@
 							columns="1">
 							<div class="dropper-separator" />
 
-							 <p:fileUpload value="#{usuarioBean.file}" mode="simple"
-								skinSimple="true" label="Upload Foto Perfil"/>
-
 							<p:commandButton styleClass="dr-button-center" value="Cadastrar"
-								action="#{usuarioBean.cadastrar}" update="@form"
-								process="@form" ajax="false"/>
+								action="#{usuarioBean.cadastrar}" update="@form" process="@form"
+								ajax="false" />
 
 							<p:commandButton styleClass="dr-button-center" value="Retornar"
 								action="login.xhtml?faces-redirect=true" immediate="true" />

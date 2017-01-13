@@ -1,5 +1,8 @@
 package br.com.dropper.web.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -29,6 +32,21 @@ public class UsuarioDAO extends DAO<Usuario> {
 		return usuario;
 	}
 	
+	public Usuario obterUsuarioPorId( Integer id) {
+		return em.find(Usuario.class, id);
+	}
 
+	public List<Usuario> obterTodosUsuarios(){
+		
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		TypedQuery<Usuario> query = em.createNamedQuery(Usuario.OBTER_TODOS_USUARIOS, Usuario.class);
+		
+		try {
+			usuarios = query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+		return usuarios;
+	}
 	
 }

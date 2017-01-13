@@ -7,12 +7,12 @@
 
 
 	<ui:define name="conteudo">
-		<p:panel styleClass="dashboard-area">
+		<p:panel styleClass="dashboard-area" >
 			<div class="ui-g">
 				<div class="ui-g-12 ui-g-nopad">
 
 					<div class="ui-g-12 upload-area">
-						<h:form id="perfilUsuario-form">
+						<h:form id="perfilUsuario-form" enctype="multipart/form-data">
 
 							<p:panel header="Dados Pessoais">
 								<p:panelGrid styleClass="section-cadastro-form-table"
@@ -73,6 +73,12 @@
 								<p:panelGrid styleClass="section-cadastro-form-table-buttons"
 									columns="1">
 									<div class="dropper-separator" />
+
+									<h:inputFile value="#{usuarioBean.file}" label="Upload Foto Perfil" />
+
+									<p:commandButton styleClass="dr-button-center" value="Upload Foto de Perfil"
+										action="#{usuarioBean.alterarImagemPerfil}" update="@form" process="@form" ajax="false"/>
+
 									<p:commandButton styleClass="dr-button-center" value="Alterar"
 										action="#{usuarioBean.alterar}" update="@form" process="@form" />
 								</p:panelGrid>

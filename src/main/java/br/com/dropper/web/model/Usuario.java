@@ -1,9 +1,13 @@
 package br.com.dropper.web.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -24,12 +29,20 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-@NamedQuery(name = "obterUsuarioPorEmail", query = "select u from Usuario u where u.email = :pEmail and u.senha = :pSenha")
+import org.apache.commons.io.IOUtils;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
+@NamedQueries({
+	@NamedQuery(name = "obterUsuarioPorEmail", query = "select u from Usuario u where u.email = :pEmail and u.senha = :pSenha"),
+	@NamedQuery(name = "obterTodosUsuarios", query = "select u from Usuario u")
+})
 @Entity
 @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", initialValue = 1, allocationSize = 1)
 public class Usuario {
 
-	public static final String OBTER_USUARIO_POR_EMAIL = "obterUsuarioPorEmail";	
+	public static final String OBTER_USUARIO_POR_EMAIL = "obterUsuarioPorEmail";
+	public static final String OBTER_TODOS_USUARIOS = "obterTodosUsuarios";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
@@ -159,14 +172,29 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public byte[] getImagemPerfil() {
-		return imagemPerfil;
-	}
-
-	public void setImagempergil(byte[] imagemPerfil) {
+	public void setImagemPerfil(byte[] imagemPerfil) {
 		this.imagemPerfil = imagemPerfil;
 	}
+	
+	public byte[] getImagemPerfil() {
+		
+		if(imagemPerfil == null){
+			
+		}
+		
+		return imagemPerfil;
+	}
+	
+	public byte[] getImagemPerfilDefault() throws IOException {
+		InputStream input = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/img/profile-full.png");
+		return IOUtils.toByteArray(input);
+	}
+	
 
+	public StreamedContent getImagemPerfilStreamed(){
+		return new DefaultStreamedContent(new ByteArrayInputStream(imagemPerfil), "image/png");
+	}
+	
 	public Repositorio getRepositorio() {
 		return repositorio;
 	}
@@ -181,10 +209,6 @@ public class Usuario {
 
 	public void setEspacoDisponivel(Long espacoDisponivel) {
 		this.espacoDisponivel = espacoDisponivel;
-	}
-
-	public void setImagemPerfil(byte[] imagemPerfil) {
-		this.imagemPerfil = imagemPerfil;
 	}
 
 	public List<Usuario> getAmigos() {

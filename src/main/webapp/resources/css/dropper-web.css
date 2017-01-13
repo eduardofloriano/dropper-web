@@ -213,8 +213,9 @@ SIDEBAR
 
 .dr-sidebar .profile img {
 	display: block;
-	width: 56px;
+	width: 100px;
 	margin: 0 auto;
+	border-radius: 50%;
 }
 
 .dr-sidebar .profile>a {
