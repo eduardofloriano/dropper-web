@@ -28,7 +28,9 @@
 												<f:param name="id" value="#{amigo.id}" />
 											</p:graphicImage>
 											<h:outputText value="${amigo.nome}" />
+											<h:outputText value="${amigo.email}" />
 											<p:commandButton value="Acessar"></p:commandButton>
+											<p:commandButton value="Remover" action="#{socialBean.removerAmigo(amigo)}" update="@form" process="@form" />
 										</h:panelGrid>
 									</p:panel>
 								</p:dataGrid>
@@ -48,7 +50,8 @@
 												<f:param name="id" value="#{amigo.id}" />
 											</p:graphicImage>
 											<h:outputText value="${amigo.nome}" />
-											<p:commandButton value="Conectar"></p:commandButton>
+											<h:outputText value="${amigo.email}" />
+											<p:commandButton value="Conectar" action="#{socialBean.conectarAmigo(amigo)}" update="@form" process="@form" />
 										</h:panelGrid>
 									</p:panel>
 								</p:dataGrid>

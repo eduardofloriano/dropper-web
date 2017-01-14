@@ -8,7 +8,6 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.persistence.EntityManager;
@@ -38,6 +37,8 @@ public class SocialBean implements Serializable {
 
 	private Usuario usuario = new Usuario();
 	private Usuario usuarioLogado = new Usuario();
+	private List<Usuario> amigosTotal = new ArrayList<Usuario>();
+	private List<Usuario> amigosSugestao = new ArrayList<Usuario>();
 
 	private UploadedFile file;
 
@@ -146,7 +147,10 @@ public class SocialBean implements Serializable {
 
 		amigosTotal.addAll(usuarioPrincipal.getAmigos());
 		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
-		return amigosTotal;
+		
+		this.amigosTotal = amigosTotal;
+		
+		return this.amigosTotal;
 	}
 
 	public List<Usuario> getAmigosSugestao() {
@@ -163,7 +167,9 @@ public class SocialBean implements Serializable {
 		amigosSugestao.removeAll(amigosTotal);
 		amigosSugestao.remove(usuarioPrincipal);
 		
-		return  amigosSugestao;
+		this.amigosSugestao = amigosSugestao;
+		
+		return  this.amigosSugestao;
 	}
 
 	public StreamedContent getAmigo() throws Exception {
@@ -190,6 +196,58 @@ public class SocialBean implements Serializable {
 					"image/png");
 		}
 
+	}
+	
+	
+	public void removerAmigo(Usuario amigo){
+		System.out.println("Removendo amigo...");
+		System.out.println(amigo.getNome());
+		amigo = usuarioDAO.obterUsuarioPorId(amigo.getId());
+		
+		Usuario usuarioPrincipal = getUsuarioLogado();
+		
+		if(usuarioPrincipal.getAmigos().contains(amigo)){
+			usuarioPrincipal.getAmigos().remove(amigo);
+		}else if (usuarioPrincipal.getAmigoDe().contains(amigo)){
+			usuarioPrincipal.getAmigoDe().remove(amigo);
+		}
+		
+		usuarioDAO.merge(usuarioPrincipal);
+		
+		System.out.println("Usuario Removido");
+		atualizaListasAmigos(usuarioPrincipal);
+		
+	}
+	
+	public void conectarAmigo(Usuario amigo){
+		System.out.println("Conectando amigo...");
+		System.out.println(amigo.getNome());
+		amigo = usuarioDAO.obterUsuarioPorId(amigo.getId());
+		
+		Usuario usuarioPrincipal = getUsuarioLogado();
+
+		usuarioPrincipal.getAmigos().add(amigo);
+		usuarioDAO.merge(usuarioPrincipal);
+		
+		System.out.println("Usuario Conectado");
+		atualizaListasAmigos(usuarioPrincipal);
+		
+	}
+	
+	private void atualizaListasAmigos(Usuario usuarioPrincipal){
+		
+		List<Usuario> amigosTotal = new ArrayList<Usuario>();
+		List<Usuario> amigosSugestao = usuarioDAO.obterTodosUsuarios();
+
+		amigosTotal.addAll(usuarioPrincipal.getAmigos());
+		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
+		
+		amigosSugestao.removeAll(amigosTotal);
+		amigosSugestao.remove(usuarioPrincipal);
+		
+		this.amigosTotal = amigosTotal;
+		this.amigosSugestao = amigosSugestao;
+		
 	}
 
 }

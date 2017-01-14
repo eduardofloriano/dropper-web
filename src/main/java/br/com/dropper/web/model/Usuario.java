@@ -34,9 +34,8 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 @NamedQueries({
-	@NamedQuery(name = "obterUsuarioPorEmail", query = "select u from Usuario u where u.email = :pEmail and u.senha = :pSenha"),
-	@NamedQuery(name = "obterTodosUsuarios", query = "select u from Usuario u")
-})
+		@NamedQuery(name = "obterUsuarioPorEmail", query = "select u from Usuario u where u.email = :pEmail and u.senha = :pSenha"),
+		@NamedQuery(name = "obterTodosUsuarios", query = "select u from Usuario u") })
 @Entity
 @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", initialValue = 1, allocationSize = 1)
 public class Usuario {
@@ -47,59 +46,79 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
 	private Integer id;
-	
+
 	private String nome;
 	private String sobrenome;
-	
+
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
-	
+
 	@Temporal(TemporalType.DATE)
-	@Column(name = "dataInclusao", insertable=false)
+	@Column(name = "dataInclusao", insertable = false)
 	private Date dataInclusao = new Date();
-	
+
 	@Temporal(TemporalType.DATE)
-	@Column(name = "dataInclusao", insertable=false, updatable=false)
+	@Column(name = "dataInclusao", insertable = false, updatable = false)
 	private Date dataAlteracao;
-	
+
 	private Integer telefone;
-	private String endereco;	
+	private String endereco;
 	private String email;
 	private String senha;
 
-	
-//	@Transient
-	@ManyToMany(cascade=CascadeType.ALL)	
+	// @Transient
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "amigos", joinColumns = {
-			 @JoinColumn(name = "usuario1", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-			 @JoinColumn(name = "usuario2", referencedColumnName = "id", nullable = false)})
+			@JoinColumn(name = "usuario1", referencedColumnName = "id", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "usuario2", referencedColumnName = "id", nullable = false) })
 	private List<Usuario> amigos = new ArrayList<Usuario>();
-	
+
 	@ManyToMany(mappedBy = "amigos")
 	private List<Usuario> amigoDe = new ArrayList<>();
-	
+
 	@Lob
-	@Column(length=500000) //5MB
+	@Column(length = 500000) // 5MB
 	private byte[] imagemPerfil;
-		
-	@OneToOne(cascade=CascadeType.ALL,
-			optional=false,
-			fetch=FetchType.EAGER,
-			orphanRemoval=true)
+
+	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
 	private Repositorio repositorio = new Repositorio(this);
-	
+
 	@Transient
 	private Long espacoDisponivel;
-	
-	
+
 	@PreUpdate
 	@PrePersist
-	public void atualizaDataAlteracao(){
+	public void atualizaDataAlteracao() {
 		dataAlteracao = new Date();
 	}
-	
-	//Getters e Setters
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	// Getters e Setters
+
 	public String getNome() {
 		return nome;
 	}
@@ -175,26 +194,26 @@ public class Usuario {
 	public void setImagemPerfil(byte[] imagemPerfil) {
 		this.imagemPerfil = imagemPerfil;
 	}
-	
+
 	public byte[] getImagemPerfil() {
-		
-		if(imagemPerfil == null){
-			
+
+		if (imagemPerfil == null) {
+
 		}
-		
+
 		return imagemPerfil;
 	}
-	
+
 	public byte[] getImagemPerfilDefault() throws IOException {
-		InputStream input = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/img/profile-full.png");
+		InputStream input = FacesContext.getCurrentInstance().getExternalContext()
+				.getResourceAsStream("/resources/img/profile-full.png");
 		return IOUtils.toByteArray(input);
 	}
-	
 
-	public StreamedContent getImagemPerfilStreamed(){
+	public StreamedContent getImagemPerfilStreamed() {
 		return new DefaultStreamedContent(new ByteArrayInputStream(imagemPerfil), "image/png");
 	}
-	
+
 	public Repositorio getRepositorio() {
 		return repositorio;
 	}
@@ -226,6 +245,5 @@ public class Usuario {
 	public void setAmigoDe(List<Usuario> amigoDe) {
 		this.amigoDe = amigoDe;
 	}
-	
 
 }
