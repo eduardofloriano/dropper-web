@@ -25,7 +25,9 @@ public class UsuarioDAO extends DAO<Usuario> {
 		query.setParameter("pSenha", usuarioLogin.getSenha());
 		
 		try {
+			em.getTransaction().begin();
 			usuario = query.getSingleResult();
+			em.getTransaction().commit();
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -33,7 +35,10 @@ public class UsuarioDAO extends DAO<Usuario> {
 	}
 	
 	public Usuario obterUsuarioPorId( Integer id) {
-		return em.find(Usuario.class, id);
+		em.getTransaction().begin();
+		Usuario result =  em.find(Usuario.class, id);
+		em.getTransaction().commit();
+		return result;
 	}
 
 	public List<Usuario> obterTodosUsuarios(){
@@ -42,7 +47,9 @@ public class UsuarioDAO extends DAO<Usuario> {
 		TypedQuery<Usuario> query = em.createNamedQuery(Usuario.OBTER_TODOS_USUARIOS, Usuario.class);
 		
 		try {
+			em.getTransaction().begin();
 			usuarios = query.getResultList();
+			em.getTransaction().commit();
 		} catch (NoResultException e) {
 			return null;
 		}

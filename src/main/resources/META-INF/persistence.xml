@@ -2,24 +2,25 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
-	
-	
-	<persistence-unit name="dropper-postgresql">
+
+
+	<persistence-unit name="DropperDS" transaction-type="RESOURCE_LOCAL">
+		<jta-data-source>java:jboss/datasources/DropperDS</jta-data-source>
+		<class>br.com.dropper.web.model.Usuario</class>
+		<class>br.com.dropper.web.model.Arquivo</class>
+		<class>br.com.dropper.web.model.Audio</class>
+		<class>br.com.dropper.web.model.Imagem</class>
+		<class>br.com.dropper.web.model.Repositorio</class>
+		<class>br.com.dropper.web.model.Video</class>
 		
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>	
-		<class>br.com.dropper.web.modelo.Usuario</class>	
 		
-		
-		<properties>			
-			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/dropper" />
-			<property name="javax.persistence.jdbc.user" value="postgres" />
-			<property name="javax.persistence.jdbc.password" value="postgres" />
-			
+		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="true" />
+			<!-- <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>  -->
 		</properties>
 	</persistence-unit>
+
 </persistence>

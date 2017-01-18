@@ -29,7 +29,10 @@ public class ArquivoDAO extends DAO<Arquivo> {
 		TypedQuery<Arquivo> query = em.createNamedQuery(Arquivo.OBTER_ARQUIVOS_POR_USUARIO, Arquivo.class);
 		query.setParameter("pUsuario", usuario);
 		try {
-			return query.getResultList();
+			em.getTransaction().begin();
+			List<Arquivo> result = query.getResultList();
+			em.getTransaction().commit();
+			return result;
 		} catch (NoResultException e) {
 			return null;
 		}

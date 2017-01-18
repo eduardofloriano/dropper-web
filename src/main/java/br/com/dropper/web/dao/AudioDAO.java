@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import br.com.dropper.web.model.Arquivo;
 import br.com.dropper.web.model.Audio;
 import br.com.dropper.web.model.Usuario;
 
@@ -29,7 +30,10 @@ public class AudioDAO extends DAO<Audio> {
 		TypedQuery<Audio> query = em.createNamedQuery(Audio.OBTER_AUDIOS_POR_USUARIO, Audio.class);
 		query.setParameter("pUsuario", usuario);
 		try {
-			return query.getResultList();
+			em.getTransaction().begin();
+			List<Audio> result = query.getResultList();
+			em.getTransaction().commit();
+			return result;
 		} catch (NoResultException e) {
 			return null;
 		}

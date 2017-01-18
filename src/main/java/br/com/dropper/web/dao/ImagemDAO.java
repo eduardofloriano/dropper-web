@@ -29,7 +29,10 @@ public class ImagemDAO extends DAO<Imagem> {
 		TypedQuery<Imagem> query = em.createNamedQuery(Imagem.OBTER_IMAGENS_POR_USUARIO, Imagem.class);
 		query.setParameter("pUsuario", usuario);
 		try {
-			return query.getResultList();
+			em.getTransaction().begin();
+			List<Imagem> result = query.getResultList();
+			em.getTransaction().commit();
+			return result;
 		} catch (NoResultException e) {
 			return null;
 		}

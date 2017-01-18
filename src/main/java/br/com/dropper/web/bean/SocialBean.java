@@ -142,13 +142,19 @@ public class SocialBean implements Serializable {
 	public List<Usuario> getAmigos() {
 		List<Usuario> amigosTotal = new ArrayList<Usuario>();
 
+		
 		Usuario usuarioLogado = getUsuarioLogado();
 		Usuario usuarioPrincipal = usuarioDAO.obterUsuarioPorId(usuarioLogado.getId());
-
+		
+		em.getTransaction().begin();
+		
 		amigosTotal.addAll(usuarioPrincipal.getAmigos());
 		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
 		
 		this.amigosTotal = amigosTotal;
+		
+		em.getTransaction().commit();
+		
 		
 		return this.amigosTotal;
 	}

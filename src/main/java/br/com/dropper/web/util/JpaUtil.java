@@ -6,7 +6,7 @@ import javax.persistence.Persistence;
 
 public class JpaUtil {
 	
-	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("dropper-postgresql");
+	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("DropperDS");
 	
 	
 	public EntityManager getEntityManager(){

@@ -29,7 +29,10 @@ public class VideoDAO extends DAO<Video> {
 		TypedQuery<Video> query = em.createNamedQuery(Video.OBTER_VIDEOS_POR_USUARIO, Video.class);
 		query.setParameter("pUsuario", usuario);
 		try {
-			return query.getResultList();
+			em.getTransaction().begin();
+			List<Video> result = query.getResultList();
+			em.getTransaction().commit();
+			return result;
 		} catch (NoResultException e) {
 			return null;
 		}
