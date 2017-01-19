@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 
 import org.primefaces.event.FileUploadEvent;
@@ -22,11 +22,13 @@ import br.com.dropper.web.model.Arquivo;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.util.JpaUtil;
 
-@ManagedBean
+@Named
 @SessionScoped
 public class ArquivoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	
 	
 	private UploadedFile file;
 	private EntityManager em = new JpaUtil().getEntityManager();

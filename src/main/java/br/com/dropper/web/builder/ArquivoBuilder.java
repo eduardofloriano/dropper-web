@@ -1,6 +1,7 @@
 package br.com.dropper.web.builder;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
@@ -8,7 +9,9 @@ import org.apache.commons.io.IOUtils;
 import br.com.dropper.web.model.Arquivo;
 import br.com.dropper.web.model.Usuario;
 
-public class ArquivoBuilder implements ArquivoMultimidiaBuilder<Arquivo>{
+public class ArquivoBuilder implements ArquivoMultimidiaBuilder<Arquivo>, Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	private String nome;
 	private Date dataInclusao;

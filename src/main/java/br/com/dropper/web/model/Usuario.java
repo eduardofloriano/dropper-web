@@ -3,6 +3,7 @@ package br.com.dropper.web.model;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,9 @@ import org.primefaces.model.StreamedContent;
 		@NamedQuery(name = "obterTodosUsuarios", query = "select u from Usuario u") })
 @Entity
 @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", initialValue = 1, allocationSize = 1)
-public class Usuario {
+public class Usuario implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	public static final String OBTER_USUARIO_POR_EMAIL = "obterUsuarioPorEmail";
 	public static final String OBTER_TODOS_USUARIOS = "obterTodosUsuarios";

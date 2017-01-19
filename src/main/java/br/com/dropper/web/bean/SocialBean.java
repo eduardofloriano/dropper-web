@@ -210,7 +210,11 @@ public class SocialBean implements Serializable {
 		System.out.println(amigo.getNome());
 		amigo = usuarioDAO.obterUsuarioPorId(amigo.getId());
 		
+		em.getTransaction().begin();
+		
 		Usuario usuarioPrincipal = getUsuarioLogado();
+		
+		
 		
 		if(usuarioPrincipal.getAmigos().contains(amigo)){
 			usuarioPrincipal.getAmigos().remove(amigo);
@@ -219,6 +223,8 @@ public class SocialBean implements Serializable {
 		}
 		
 		usuarioDAO.merge(usuarioPrincipal);
+		
+		em.getTransaction().commit();
 		
 		System.out.println("Usuario Removido");
 		atualizaListasAmigos(usuarioPrincipal);
@@ -230,10 +236,14 @@ public class SocialBean implements Serializable {
 		System.out.println(amigo.getNome());
 		amigo = usuarioDAO.obterUsuarioPorId(amigo.getId());
 		
+		em.getTransaction().begin();
+		
 		Usuario usuarioPrincipal = getUsuarioLogado();
 
 		usuarioPrincipal.getAmigos().add(amigo);
 		usuarioDAO.merge(usuarioPrincipal);
+		
+		em.getTransaction().commit();
 		
 		System.out.println("Usuario Conectado");
 		atualizaListasAmigos(usuarioPrincipal);
