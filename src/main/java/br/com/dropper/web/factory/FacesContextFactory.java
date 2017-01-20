@@ -13,6 +13,7 @@ public class FacesContextFactory implements Serializable{
 	@Produces
 	@RequestScoped
 	public FacesContext getFacesContext(){
+		System.out.println("Invocando Producer do facesContext");
 		return FacesContext.getCurrentInstance();
 	}
 

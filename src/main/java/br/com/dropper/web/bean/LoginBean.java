@@ -25,19 +25,15 @@ public class LoginBean implements Serializable {
 	@Inject
 	private Usuario usuario;
 	
-	
 	//TODO: Persistencia e Transacao controladas por EJB
 	private EntityManager em = new JpaUtil().getEntityManager();
 	private UsuarioDAO usuarioDAO = new UsuarioDAO(em);
-
-	
 
 	public Usuario getUsuario() {
 		return usuario;
 	}
 
 	public String autenticar() {
-
 		Usuario usuario = usuarioDAO.obterUsuarioPorEmail(this.usuario);
 
 		if (usuario == null) {
@@ -59,7 +55,6 @@ public class LoginBean implements Serializable {
 		context.getExternalContext().getSessionMap().remove("usuarioLogado");
 		context.getExternalContext().invalidateSession();
 		return "login.xhtml?faces-redirect=true";
-
 	}
 
 }

@@ -4,33 +4,33 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 
 import br.com.dropper.web.dao.RepositorioDAO;
 import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.util.JpaUtil;
 
-@ManagedBean
+@Named
 @SessionScoped
 public class UsuarioBean implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6755567510858433234L;
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	private FacesContext context;
+	
 	private EntityManager em = new JpaUtil().getEntityManager();
 	private UsuarioDAO usuarioDAO = new UsuarioDAO(em);
 	RepositorioDAO repositorioDAO = new RepositorioDAO(em);
@@ -39,33 +39,12 @@ public class UsuarioBean implements Serializable {
 	private Usuario usuarioLogado = new Usuario();
 
 	private Part file;
-	
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-	
-	public Part getFile() {
-		return file;
-	}
-
-	public void setFile(Part file) {
-		this.file = file;
-	}
 
 	public Usuario getUsuarioLogado() {
-		FacesContext context = FacesContext.getCurrentInstance();
 		this.usuarioLogado = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
 		return this.usuarioLogado;
 	}
 
-	public void carregarImagemPerfil(){
-		
-	}
-	
 	public String cadastrar() {
 		System.out.println("Persistindo Usuário: " + usuario.getEmail());
 		
@@ -80,8 +59,6 @@ public class UsuarioBean implements Serializable {
 		}
 		
 		usuarioDAO.persist(this.usuario);
-
-		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Usuário Cadastrado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
 		return null;
@@ -90,7 +67,6 @@ public class UsuarioBean implements Serializable {
 	public void alterar() {
 		System.out.println("Atualizando Usuário");
 		usuarioDAO.merge(this.usuarioLogado);
-		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Usuário Atualizado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
 	}
@@ -98,11 +74,6 @@ public class UsuarioBean implements Serializable {
 	public Long getEspacoDisponivel() {
 		if (getUsuarioLogado() != null) {
 			Long espacoTotal = usuarioLogado.getRepositorio().getEspacoTotal();
-			// Long espacoOcupado =
-			// repositorioDAO.obterEspacoOcupadoPorUsuario(usuarioLogado);
-			// Long espadoDisponivel = espacoTotal - espacoOcupado;
-			// return ((espacoTotal - espacoOcupado) * 100) / espacoTotal;
-
 			Long espacoOcupado = repositorioDAO.obterEspacoOcupadoImagemPorUsuario(usuarioLogado)
 					+ repositorioDAO.obterEspacoOcupadoArquivoPorUsuario(usuarioLogado)
 					+ repositorioDAO.obterEspacoOcupadoVideoPorUsuario(usuarioLogado);
@@ -117,15 +88,12 @@ public class UsuarioBean implements Serializable {
 		System.out.println("Alterando Imagem de Pefil do Usuário");
 		this.usuarioLogado.setImagemPerfil(IOUtils.toByteArray(file.getInputStream()));
 		usuarioDAO.merge(this.usuarioLogado);
-		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage("Usuário Atualizado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
 		
 	}
 	
 	public StreamedContent getImagemPerfil() throws Exception {
-
-		FacesContext context = FacesContext.getCurrentInstance();
 		String id = context.getExternalContext().getRequestParameterMap().get("id");
 		if (!(id == null || id.equals("") || id.equals(" "))) {
 			Usuario usuario = usuarioDAO.obterUsuarioPorId(Integer.parseInt(id));
@@ -146,4 +114,20 @@ public class UsuarioBean implements Serializable {
 
 	}
 	
+	// Setters & Getters
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	public Part getFile() {
+		return file;
+	}
+
+	public void setFile(Part file) {
+		this.file = file;
+	}
 }

@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 
 import org.primefaces.event.FileUploadEvent;
@@ -23,29 +25,41 @@ import br.com.dropper.web.model.Imagem;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.util.JpaUtil;
 
-@ManagedBean
+@Named
 @SessionScoped
 public class ImagemBean implements Serializable {
 
-	public ImagemBean(){
-		System.out.println("Criando um managedBean");
-	}
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4639661786842341443L;
+	private static final long serialVersionUID = 1L;
+
+	@Inject
+	private FacesContext context;
+
+	@Inject
+	private ImagemBuilder builder;
+
 	private UploadedFile file;
 	private EntityManager em = new JpaUtil().getEntityManager();
 	private ImagemDAO imagemDAO = new ImagemDAO(em);
 
-	private List<Imagem> imagens = imagemDAO.obterImagensPorUsuario(getUsuarioLogado());
+	private List<Imagem> imagens;
+
+	@PostConstruct
+	public void init() {
+		atualizaListaImagem();
+	}
+
+	private void atualizaListaImagem() {
+		this.imagens = imagemDAO.obterImagensPorUsuario(getUsuarioLogado());
+	}
+
+	private Usuario getUsuarioLogado() {
+		Usuario usuario = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
+		return usuario;
+	}
 
 	public void handleFileUpload(FileUploadEvent event) throws IOException {
-
 		this.file = event.getFile();
 
-		ImagemBuilder builder = new ImagemBuilder();
 		builder.setNome(file.getFileName()).setTamanho(file.getSize()).setDataInclusao(null)
 				.setData(file.getInputstream()).setUsuario(getUsuarioLogado());
 
@@ -53,7 +67,7 @@ public class ImagemBean implements Serializable {
 		imagemDAO.persist(imagem);
 
 		FacesMessage message = new FacesMessage("Imagem ", event.getFile().getFileName() + " cadastrada com sucesso!");
-		FacesContext.getCurrentInstance().addMessage(null, message);
+		context.addMessage(null, message);
 
 		atualizaListaImagem();
 	}
@@ -76,32 +90,9 @@ public class ImagemBean implements Serializable {
 
 		// return
 		return file;
-
-	}
-
-	private void atualizaListaImagem() {
-		this.imagens = imagemDAO.obterImagensPorUsuario(getUsuarioLogado());
-	}
-
-	private Usuario getUsuarioLogado() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		Usuario usuario = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
-		return usuario;
-	}
-
-	// Setters & Getters
-
-	public List<Imagem> getImagens() {
-		return imagens;
-	}
-
-	public void setImagens(List<Imagem> imagens) {
-		this.imagens = imagens;
 	}
 
 	public StreamedContent getImagem() throws Exception {
-
-		FacesContext context = FacesContext.getCurrentInstance();
 		String id = context.getExternalContext().getRequestParameterMap().get("id");
 		if (!(id == null || id.equals("") || id.equals(" "))) {
 			Imagem imagem = imagemDAO.obterImagemPorId(Integer.parseInt(id));
@@ -119,6 +110,15 @@ public class ImagemBean implements Serializable {
 			return new DefaultStreamedContent(new ByteArrayInputStream(imagem.getData()), "image/png");
 		}
 
+	}
+
+	// Setters & Getters
+	public List<Imagem> getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(List<Imagem> imagens) {
+		this.imagens = imagens;
 	}
 
 }
