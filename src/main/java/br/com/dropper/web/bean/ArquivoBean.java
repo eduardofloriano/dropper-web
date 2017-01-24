@@ -11,7 +11,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -22,7 +21,6 @@ import br.com.dropper.web.builder.ArquivoBuilder;
 import br.com.dropper.web.dao.ArquivoDAO;
 import br.com.dropper.web.model.Arquivo;
 import br.com.dropper.web.model.Usuario;
-import br.com.dropper.web.util.JpaUtil;
 
 @Named
 @SessionScoped
@@ -36,8 +34,10 @@ public class ArquivoBean implements Serializable {
 	private List<Arquivo> arquivos;
 
 	private UploadedFile file;
-	private EntityManager em = new JpaUtil().getEntityManager();
-	private ArquivoDAO arquivoDAO = new ArquivoDAO(em);
+
+	// TODO: Persistencia e Transacao controladas por EJB
+	@Inject
+	private ArquivoDAO arquivoDAO;
 
 	@PostConstruct
 	public void init() {
@@ -72,7 +72,7 @@ public class ArquivoBean implements Serializable {
 
 	public void remover(Arquivo arquivo) {
 		System.out.println("Vai remover o arquivo: " + arquivo.getNome() + " - " + arquivo.getId());
-		arquivo = arquivoDAO.obterArquivoPorId(arquivo.getId());
+		arquivo = arquivoDAO.findById(arquivo.getId());
 		arquivoDAO.remove(arquivo);
 
 		atualizaListaArquivo();
@@ -80,7 +80,7 @@ public class ArquivoBean implements Serializable {
 
 	public StreamedContent download(Arquivo arquivo) throws IOException {
 		System.out.println("Vai realizar o download da imagem: " + arquivo.getNome() + " - " + arquivo.getId());
-		arquivo = arquivoDAO.obterArquivoPorId(arquivo.getId());
+		arquivo = arquivoDAO.findById(arquivo.getId());
 
 		// TODO download
 		StreamedContent file = new DefaultStreamedContent(new ByteArrayInputStream(arquivo.getData()), null,

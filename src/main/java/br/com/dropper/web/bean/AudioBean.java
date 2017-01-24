@@ -11,7 +11,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -22,7 +21,6 @@ import br.com.dropper.web.builder.AudioBuilder;
 import br.com.dropper.web.dao.AudioDAO;
 import br.com.dropper.web.model.Audio;
 import br.com.dropper.web.model.Usuario;
-import br.com.dropper.web.util.JpaUtil;
 
 @Named
 @SessionScoped
@@ -37,8 +35,10 @@ public class AudioBean implements Serializable {
 	private AudioBuilder builder;
 
 	private UploadedFile file;
-	private EntityManager em = new JpaUtil().getEntityManager();
-	private AudioDAO audioDAO = new AudioDAO(em);
+	
+	// TODO: Persistencia e Transacao controladas por EJB
+	@Inject
+	private AudioDAO audioDAO;
 
 	private List<Audio> audios;
 
@@ -74,7 +74,7 @@ public class AudioBean implements Serializable {
 
 	public void remover(Audio audio) {
 		System.out.println("Vai remover o audio: " + audio.getNome() + " - " + audio.getId());
-		audio = audioDAO.obterAudioPorId(audio.getId());
+		audio = audioDAO.findById(audio.getId());
 		audioDAO.remove(audio);
 
 		atualizaListaAudios();
@@ -82,7 +82,7 @@ public class AudioBean implements Serializable {
 
 	public StreamedContent download(Audio audio) throws IOException {
 		System.out.println("Vai realizar o download do audio: " + audio.getNome() + " - " + audio.getId());
-		audio = audioDAO.obterAudioPorId(audio.getId());
+		audio = audioDAO.findById(audio.getId());
 
 		// TODO download
 		StreamedContent file = new DefaultStreamedContent(new ByteArrayInputStream(audio.getData()), null,

@@ -25,7 +25,7 @@ public class ImagemServlet extends HttpServlet {
 	
 	
 	private EntityManager em = new JpaUtil().getEntityManager();
-	private ImagemDAO imagemDAO = new ImagemDAO(em);
+	private ImagemDAO imagemDAO = new ImagemDAO();
 	
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,7 +34,7 @@ public class ImagemServlet extends HttpServlet {
 		
         String imageId = String.valueOf(request.getPathInfo().substring(1)); // Gets string that goes after "/images/".
         //UploadedImage image = cms.findImage(imageId); // Get Image from DB.
-        Imagem imagem = imagemDAO.obterImagemPorId(Integer.parseInt(imageId));
+        Imagem imagem = imagemDAO.findById(Integer.parseInt(imageId));
         
         
         

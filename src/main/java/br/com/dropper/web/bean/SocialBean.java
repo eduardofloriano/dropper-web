@@ -11,100 +11,93 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import br.com.dropper.web.dao.RepositorioDAO;
 import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
-import br.com.dropper.web.util.JpaUtil;
 
 @Named
 @SessionScoped
 public class SocialBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private FacesContext context;
-	
-	private EntityManager em = new JpaUtil().getEntityManager();
-	private UsuarioDAO usuarioDAO = new UsuarioDAO(em);
-	RepositorioDAO repositorioDAO = new RepositorioDAO(em);
 
-	private Usuario usuario = new Usuario();
-	private Usuario usuarioLogado = new Usuario();
-	
+	// TODO: Persistencia e Transacao controladas por EJB
+	@Inject
+	private UsuarioDAO usuarioDAO;
+
+	private Usuario usuario;
+	private Usuario usuarioLogado;
+
 	private List<Usuario> amigosTotal;
 	private List<Usuario> amigosSugestao;
 
-
 	@PostConstruct
-	public void init(){
+	public void init() {
+		this.usuario = new Usuario();
+		this.usuarioLogado = new Usuario();
 		atualizaListasAmigos(getUsuarioLogado());
 	}
 
-	private void atualizaListasAmigos(Usuario usuarioPrincipal){
+	private void atualizaListasAmigos(Usuario usuarioPrincipal) {
 		this.amigosTotal = new ArrayList<Usuario>();
 		this.amigosSugestao = usuarioDAO.obterTodosUsuarios();
 
 		amigosTotal.addAll(usuarioPrincipal.getAmigos());
 		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
-		
+
 		amigosSugestao.removeAll(amigosTotal);
 		amigosSugestao.remove(usuarioPrincipal);
-		
+
 	}
-	
+
 	public Usuario getUsuarioLogado() {
 		this.usuarioLogado = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
 		return this.usuarioLogado;
 	}
 
-
 	public List<Usuario> getAmigos() {
 		List<Usuario> amigosTotal = new ArrayList<Usuario>();
-		
+
 		Usuario usuarioLogado = getUsuarioLogado();
-		Usuario usuarioPrincipal = usuarioDAO.obterUsuarioPorId(usuarioLogado.getId());
-		
-		em.getTransaction().begin();
-		
+		Usuario usuarioPrincipal = usuarioDAO.findById(usuarioLogado.getId());
+
 		amigosTotal.addAll(usuarioPrincipal.getAmigos());
 		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
-		
+
 		this.amigosTotal = amigosTotal;
-		
-		em.getTransaction().commit();
-		
+
 		return this.amigosTotal;
 	}
 
 	public List<Usuario> getAmigosSugestao() {
-		
+
 		List<Usuario> amigosSugestao = usuarioDAO.obterTodosUsuarios();
 		List<Usuario> amigosTotal = new ArrayList<Usuario>();
-		
+
 		Usuario usuarioLogado = getUsuarioLogado();
-		Usuario usuarioPrincipal = usuarioDAO.obterUsuarioPorId(usuarioLogado.getId());
-		
-		amigosTotal.addAll(usuarioPrincipal .getAmigos());
-		amigosTotal.addAll(usuarioPrincipal .getAmigoDe());
-		
+		Usuario usuarioPrincipal = usuarioDAO.findById(usuarioLogado.getId());
+
+		amigosTotal.addAll(usuarioPrincipal.getAmigos());
+		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
+
 		amigosSugestao.removeAll(amigosTotal);
 		amigosSugestao.remove(usuarioPrincipal);
-		
+
 		this.amigosSugestao = amigosSugestao;
-		
-		return  this.amigosSugestao;
+
+		return this.amigosSugestao;
 	}
 
 	public StreamedContent getAmigo() throws Exception {
 		String id = context.getExternalContext().getRequestParameterMap().get("id");
 		if (!(id == null || id.equals("") || id.equals(" "))) {
-			Usuario usuario = usuarioDAO.obterUsuarioPorId(Integer.parseInt(id));
+			Usuario usuario = usuarioDAO.findById(Integer.parseInt(id));
 			return new DefaultStreamedContent(new ByteArrayInputStream(
 					usuario.getImagemPerfil() == null ? usuario.getImagemPerfilDefault() : usuario.getImagemPerfil()),
 					"image/png");
@@ -117,58 +110,51 @@ public class SocialBean implements Serializable {
 		} else {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
-			Usuario usuario = usuarioDAO.obterUsuarioPorId(Integer.parseInt(id));
+			Usuario usuario = usuarioDAO.findById(Integer.parseInt(id));
 			return new DefaultStreamedContent(new ByteArrayInputStream(
 					usuario.getImagemPerfil() == null ? usuario.getImagemPerfilDefault() : usuario.getImagemPerfil()),
 					"image/png");
 		}
 
 	}
-	
-	public void removerAmigo(Usuario amigo){
+
+	public void removerAmigo(Usuario amigo) {
 		System.out.println("Removendo amigo...");
 		System.out.println(amigo.getNome());
-		amigo = usuarioDAO.obterUsuarioPorId(amigo.getId());
-		
-		em.getTransaction().begin();
-		
+		amigo = usuarioDAO.findById(amigo.getId());
+
+
 		Usuario usuarioPrincipal = getUsuarioLogado();
-		
-		if(usuarioPrincipal.getAmigos().contains(amigo)){
+
+		if (usuarioPrincipal.getAmigos().contains(amigo)) {
 			usuarioPrincipal.getAmigos().remove(amigo);
-		}else if (usuarioPrincipal.getAmigoDe().contains(amigo)){
+		} else if (usuarioPrincipal.getAmigoDe().contains(amigo)) {
 			usuarioPrincipal.getAmigoDe().remove(amigo);
 		}
-		
+
 		usuarioDAO.merge(usuarioPrincipal);
-		
-		em.getTransaction().commit();
-		
+
 		System.out.println("Usuario Removido");
 		atualizaListasAmigos(usuarioPrincipal);
-		
+
 	}
-	
-	public void conectarAmigo(Usuario amigo){
+
+	public void conectarAmigo(Usuario amigo) {
 		System.out.println("Conectando amigo...");
 		System.out.println(amigo.getNome());
-		amigo = usuarioDAO.obterUsuarioPorId(amigo.getId());
-		
-		em.getTransaction().begin();
-		
+		amigo = usuarioDAO.findById(amigo.getId());
+
 		Usuario usuarioPrincipal = getUsuarioLogado();
 
 		usuarioPrincipal.getAmigos().add(amigo);
 		usuarioDAO.merge(usuarioPrincipal);
-		
-		em.getTransaction().commit();
-		
+
 		System.out.println("Usuario Conectado");
 		atualizaListasAmigos(usuarioPrincipal);
-		
+
 	}
-	
-	//Setters Getters
+
+	// Setters Getters
 	public Usuario getUsuario() {
 		return usuario;
 	}

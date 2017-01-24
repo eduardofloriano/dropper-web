@@ -11,7 +11,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -22,7 +21,6 @@ import br.com.dropper.web.builder.VideoBuilder;
 import br.com.dropper.web.dao.VideoDAO;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.model.Video;
-import br.com.dropper.web.util.JpaUtil;
 
 @Named
 @SessionScoped
@@ -37,20 +35,22 @@ public class VideoBean implements Serializable {
 	private VideoBuilder builder;
 
 	private UploadedFile file;
-	private EntityManager em = new JpaUtil().getEntityManager();
-	private VideoDAO videoDAO = new VideoDAO(em);
+
+	// TODO: Persistencia e Transacao controladas por EJB
+	@Inject
+	private VideoDAO videoDAO;
 
 	private List<Video> videos;
 
 	@PostConstruct
-	public void init(){
+	public void init() {
 		atualizaListaVideo();
 	}
-	
+
 	private void atualizaListaVideo() {
 		this.videos = videoDAO.obterVideosPorUsuario(getUsuarioLogado());
 	}
-	
+
 	public void handleFileUpload(FileUploadEvent event) throws IOException {
 
 		this.file = event.getFile();
@@ -67,8 +67,6 @@ public class VideoBean implements Serializable {
 		atualizaListaVideo();
 	}
 
-	
-
 	private Usuario getUsuarioLogado() {
 		Usuario usuario = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
 		return usuario;
@@ -76,7 +74,7 @@ public class VideoBean implements Serializable {
 
 	public void remover(Video video) {
 		System.out.println("Vai remover o arquivo: " + video.getNome() + " - " + video.getId());
-		video = videoDAO.obterVideoPorId(video.getId());
+		video = videoDAO.findById(video.getId());
 		videoDAO.remove(video);
 
 		atualizaListaVideo();
@@ -84,7 +82,7 @@ public class VideoBean implements Serializable {
 
 	public StreamedContent download(Video video) throws IOException {
 		System.out.println("Vai realizar o download da imagem: " + video.getNome() + " - " + video.getId());
-		video = videoDAO.obterVideoPorId(video.getId());
+		video = videoDAO.findById(video.getId());
 
 		// TODO download
 		StreamedContent file = new DefaultStreamedContent(new ByteArrayInputStream(video.getData()), null,

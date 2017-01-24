@@ -2,16 +2,16 @@ package br.com.dropper.web.bean;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 
 import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
-import br.com.dropper.web.util.JpaUtil;
+import br.com.dropper.web.transaction.Transacional;
 
 @Named
 @SessionScoped
@@ -26,13 +26,18 @@ public class LoginBean implements Serializable {
 	private Usuario usuario;
 	
 	//TODO: Persistencia e Transacao controladas por EJB
-	private EntityManager em = new JpaUtil().getEntityManager();
-	private UsuarioDAO usuarioDAO = new UsuarioDAO(em);
+	@Inject
+	private UsuarioDAO usuarioDAO;
 
+	@PostConstruct
+	public void init(){
+	}
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
 
+	@Transacional
 	public String autenticar() {
 		Usuario usuario = usuarioDAO.obterUsuarioPorEmail(this.usuario);
 
@@ -46,11 +51,13 @@ public class LoginBean implements Serializable {
 		}
 	}
 
+	@Transacional
 	public String cadastrarUsuario() {
 		System.out.println("Redirecionando para cadastroUsuario.xhtml");
 		return "cadastroUsuario.xhtml?faces-redirect=true";
 	}
 
+	@Transacional
 	public String logout() {
 		context.getExternalContext().getSessionMap().remove("usuarioLogado");
 		context.getExternalContext().invalidateSession();

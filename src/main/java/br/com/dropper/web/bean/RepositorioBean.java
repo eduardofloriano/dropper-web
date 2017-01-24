@@ -7,7 +7,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -21,7 +20,6 @@ import br.com.dropper.web.dao.ImagemDAO;
 import br.com.dropper.web.dao.RepositorioDAO;
 import br.com.dropper.web.dao.VideoDAO;
 import br.com.dropper.web.model.Usuario;
-import br.com.dropper.web.util.JpaUtil;
 
 @Named
 @SessionScoped
@@ -31,26 +29,38 @@ public class RepositorioBean implements Serializable {
 
 	@Inject
 	private FacesContext context;
-	
+
 	@Inject
 	private Usuario usuario;
-	
+
 	@Inject
 	private Usuario usuarioLogado;
 
-	private EntityManager em = new JpaUtil().getEntityManager();
-	RepositorioDAO repositorioDAO = new RepositorioDAO(em);
+	// TODO: Persistencia e Transacao controladas por EJB
+	@Inject
+	private RepositorioDAO repositorioDAO;
 	
+	@Inject
+	private ImagemDAO imagemDAO;
+	
+	@Inject
+	private ArquivoDAO arquivoDAO;
+	
+	@Inject
+	private AudioDAO audioDAO;
+	
+	@Inject
+	private VideoDAO videoDAO;
+
 	private PieChartModel repositorioPieChartModel;
 	private BarChartModel repositorioBarModel;
-	
-	
+
 	@PostConstruct
 	public void init() {
-		
+
 		this.repositorioBarModel = new BarChartModel();
 		this.repositorioPieChartModel = new PieChartModel();
-		
+
 		preenchePieModel();
 		preencheBarModel();
 	}
@@ -94,19 +104,19 @@ public class RepositorioBean implements Serializable {
 
 			ChartSeries imagens = new ChartSeries();
 			imagens.setLabel("Imagens");
-			imagens.set("Imagens", new ImagemDAO(em).obterImagensPorUsuario(usuarioLogado).size());
+			imagens.set("Imagens", imagemDAO.obterImagensPorUsuario(usuarioLogado).size());
 
 			ChartSeries arquivos = new ChartSeries();
 			arquivos.setLabel("Arquivos");
-			arquivos.set("Arquivos", new ArquivoDAO(em).obterArquivosPorUsuario(usuarioLogado).size());
+			arquivos.set("Arquivos", arquivoDAO.obterArquivosPorUsuario(usuarioLogado).size());
 
 			ChartSeries videos = new ChartSeries();
 			videos.setLabel("Videos");
-			videos.set("Videos", new VideoDAO(em).obterVideosPorUsuario(usuarioLogado).size());
+			videos.set("Videos", videoDAO.obterVideosPorUsuario(usuarioLogado).size());
 
-			ChartSeries audios = new ChartSeries();
+			ChartSeries audios = new ChartSeries();	
 			audios.setLabel("Audios");
-			audios.set("Audios", new AudioDAO(em).obterAudiosPorUsuario(usuarioLogado).size());
+			audios.set("Audios", audioDAO.obterAudiosPorUsuario(usuarioLogado).size());
 
 			repositorioBarModel.addSeries(imagens);
 			repositorioBarModel.addSeries(arquivos);
@@ -116,7 +126,7 @@ public class RepositorioBean implements Serializable {
 			repositorioBarModel.setTitle("Quantidade de Arquivos");
 			repositorioBarModel.setLegendPosition("ne");
 
-			//Axis xAxis = repositorioBarModel.getAxis(AxisType.X);
+			// Axis xAxis = repositorioBarModel.getAxis(AxisType.X);
 			// xAxis.setLabel("Arquivos Multimídia");
 
 			Axis yAxis = repositorioBarModel.getAxis(AxisType.Y);
@@ -124,6 +134,7 @@ public class RepositorioBean implements Serializable {
 			yAxis.setMin(0);
 			// yAxis.setMax(200);
 
+			
 		}
 	}
 

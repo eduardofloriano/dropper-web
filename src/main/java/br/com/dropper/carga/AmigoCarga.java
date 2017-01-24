@@ -14,7 +14,7 @@ public class AmigoCarga {
 
 		JpaUtil jpaUtil = new JpaUtil();
 		EntityManager em = jpaUtil.getEntityManager();
-		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
 
 		Usuario usuario1 = em.find(Usuario.class, new Integer(3));
 		System.out.println("Usuario 1: " + usuario1.getNome());
