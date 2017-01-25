@@ -20,6 +20,7 @@ import br.com.dropper.web.dao.ImagemDAO;
 import br.com.dropper.web.dao.RepositorioDAO;
 import br.com.dropper.web.dao.VideoDAO;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.transaction.Transacional;
 
 @Named
 @SessionScoped
@@ -99,6 +100,7 @@ public class RepositorioBean implements Serializable {
 		}
 	}
 
+	@Transacional
 	private void preencheBarModel() {
 		if (getUsuarioLogado() != null) {
 

@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-
+	<ui:define name="titulo">Dashboard Videos</ui:define>
 
 	<ui:define name="conteudo">
 		<p:panel styleClass="dashboard-area">
@@ -27,14 +27,14 @@
 					<h:form id="dashboard-data-form">
 						<div class="ui-g-12 dropper-grid-area dropper-grid-area-arquivo">
 							<p:dataGrid id="dropper-data-grid" var="video"
-								value="#{videoBean.videos}" columns="6" layout="grid"
-								rows="20" paginator="true" paginatorPosition="bottom"
+								value="#{videoBean.videos}" columns="6" layout="grid" rows="20"
+								paginator="true" paginatorPosition="bottom"
 								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
 								<p:panel style="text-align:center">
 									<h:panelGrid id="dropper-data-arquivo-panel" columns="1"
 										style="width:100%">
-										
+
 										<p:graphicImage library="img" name="video-icone.png">
 
 											<p:contextMenu for="dropper-data-arquivo-panel">

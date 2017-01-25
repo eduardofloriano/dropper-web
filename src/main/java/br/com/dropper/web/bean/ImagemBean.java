@@ -59,6 +59,7 @@ public class ImagemBean implements Serializable {
 		return usuario;
 	}
 
+	@Transacional
 	public void handleFileUpload(FileUploadEvent event) throws IOException {
 		this.file = event.getFile();
 
@@ -74,6 +75,7 @@ public class ImagemBean implements Serializable {
 		atualizaListaImagem();
 	}
 
+	@Transacional
 	public void remover(Imagem imagem) {
 		System.out.println("Vai remover a imagem: " + imagem.getNome() + " - " + imagem.getId());
 		imagem = imagemDAO.findById(imagem.getId());
@@ -82,6 +84,7 @@ public class ImagemBean implements Serializable {
 		atualizaListaImagem();
 	}
 
+	@Transacional
 	public StreamedContent download(Imagem imagem) throws IOException {
 		System.out.println("Vai realizar o download da imagem: " + imagem.getNome() + " - " + imagem.getId());
 		imagem = imagemDAO.findById(imagem.getId());
@@ -94,6 +97,7 @@ public class ImagemBean implements Serializable {
 		return file;
 	}
 
+	@Transacional
 	public StreamedContent getImagem() throws Exception {
 		String id = context.getExternalContext().getRequestParameterMap().get("id");
 		if (!(id == null || id.equals("") || id.equals(" "))) {

@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 
 import br.com.dropper.web.model.Arquivo;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.transaction.Transacional;
 
 public class ArquivoDAO implements Serializable{
 
@@ -42,6 +43,7 @@ public class ArquivoDAO implements Serializable{
 		dao.merge(t);
 	}
 
+	@Transacional
 	public Arquivo obterArquivoPorNome(Arquivo arquivo) {
 		TypedQuery<Arquivo> query = em.createNamedQuery(Arquivo.OBTER_ARQUIVO_POR_NOME, Arquivo.class);
 		query.setParameter("pNome", arquivo.getNome());
@@ -52,13 +54,12 @@ public class ArquivoDAO implements Serializable{
 		}
 	}
 
+	@Transacional
 	public List<Arquivo> obterArquivosPorUsuario(Usuario usuario) {
 		TypedQuery<Arquivo> query = em.createNamedQuery(Arquivo.OBTER_ARQUIVOS_POR_USUARIO, Arquivo.class);
 		query.setParameter("pUsuario", usuario);
 		try {
-			em.getTransaction().begin();
 			List<Arquivo> result = query.getResultList();
-			em.getTransaction().commit();
 			return result;
 		} catch (NoResultException e) {
 			return null;

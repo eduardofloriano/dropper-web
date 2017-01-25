@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-
+	<ui:define name="titulo">Dashboard Arquivos</ui:define>
 
 	<ui:define name="conteudo">
 		<p:panel styleClass="dashboard-area">
@@ -15,7 +15,8 @@
 
 					<div class="ui-g-12 upload-area">
 						<h:form id="dashboard-upload-form">
-							<p:fileUpload fileUploadListener="#{arquivoBean.handleFileUpload}"
+							<p:fileUpload
+								fileUploadListener="#{arquivoBean.handleFileUpload}"
 								mode="advanced" dragDropSupport="true"
 								update=":dashboard-data-form:dropper-data-grid :profile-form"
 								sizeLimit="100000000" />
@@ -34,7 +35,7 @@
 								<p:panel style="text-align:center">
 									<h:panelGrid id="dropper-data-arquivo-panel" columns="1"
 										style="width:100%">
-										
+
 										<p:graphicImage library="img" name="arquivo-icone.png">
 
 											<p:contextMenu for="dropper-data-arquivo-panel">

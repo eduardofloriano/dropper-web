@@ -13,7 +13,7 @@ public class QueryTest {
 	public static void main(String[] args) {
 		
 		EntityManager em = new JpaUtil().getEntityManager();		
-		RepositorioDAO repositorioDAO = new RepositorioDAO(em);
+		RepositorioDAO repositorioDAO = new RepositorioDAO();
 
 		
 		Usuario usuario = em.find(Usuario.class, 3);

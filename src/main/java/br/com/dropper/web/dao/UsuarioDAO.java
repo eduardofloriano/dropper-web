@@ -11,6 +11,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.transaction.Transacional;
 
 public class UsuarioDAO implements Serializable{
 
@@ -42,6 +43,7 @@ public class UsuarioDAO implements Serializable{
 		dao.merge(t);
 	}
 
+	@Transacional
 	public Usuario obterUsuarioPorEmail( Usuario usuarioLogin ){
 		
 		Usuario usuario = null;
@@ -57,6 +59,7 @@ public class UsuarioDAO implements Serializable{
 		return usuario;
 	}
 	
+	@Transacional
 	public List<Usuario> obterTodosUsuarios(){
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		TypedQuery<Usuario> query = em.createNamedQuery(Usuario.OBTER_TODOS_USUARIOS, Usuario.class);

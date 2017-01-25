@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 
 import br.com.dropper.web.model.Imagem;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.transaction.Transacional;
 
 public class ImagemDAO implements Serializable{
 
@@ -42,6 +43,7 @@ public class ImagemDAO implements Serializable{
 		dao.merge(t);
 	}
 
+	@Transacional
 	public Imagem obterImagemPorNome(Imagem imagem) {
 		TypedQuery<Imagem> query = em.createNamedQuery(Imagem.OBTER_IMAGEM_POR_NOME, Imagem.class);
 		query.setParameter("pNome", imagem.getNome());
@@ -52,13 +54,12 @@ public class ImagemDAO implements Serializable{
 		}
 	}
 
+	@Transacional
 	public List<Imagem> obterImagensPorUsuario(Usuario usuario) {
 		TypedQuery<Imagem> query = em.createNamedQuery(Imagem.OBTER_IMAGENS_POR_USUARIO, Imagem.class);
 		query.setParameter("pUsuario", usuario);
 		try {
-			em.getTransaction().begin();
 			List<Imagem> result = query.getResultList();
-			em.getTransaction().commit();
 			return result;
 		} catch (NoResultException e) {
 			return null;

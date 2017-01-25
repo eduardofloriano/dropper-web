@@ -5,16 +5,18 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
+	<ui:define name="titulo">Perfil</ui:define>
+
 
 	<ui:define name="conteudo">
-		<p:panel styleClass="dashboard-area" >
+		<p:panel styleClass="dashboard-area">
 			<div class="ui-g">
 				<div class="ui-g-12 ui-g-nopad">
 
 					<div class="ui-g-12 upload-area">
-						<h:form id="perfilUsuario-form" enctype="multipart/form-data">
+						<p:panel header="Dados Pessoais">
 
-							<p:panel header="Dados Pessoais">
+							<h:form id="perfilUsuario-form">
 								<p:panelGrid styleClass="section-cadastro-form-table"
 									columns="2">
 
@@ -67,26 +69,38 @@
 										feedback="true" requiredMessage="Senha é Obrigatório"
 										redisplay="true" />
 
-
 								</p:panelGrid>
+							</h:form>
 
-								<p:panelGrid styleClass="section-cadastro-form-table-buttons"
-									columns="1">
-									<div class="dropper-separator" />
+							<p:panelGrid styleClass="section-cadastro-form-table-buttons"
+								columns="1">
+								<div class="dropper-separator" />
 
-									<h:inputFile value="#{usuarioBean.file}" label="Upload Foto Perfil" />
-
-									<p:commandButton styleClass="dr-button-center" value="Upload Foto de Perfil"
-										action="#{usuarioBean.alterarImagemPerfil}" update="@form" process="@form" ajax="false"/>
+								<h:form id="imagemPerfilUsuario-form"
+									enctype="multipart/form-data">
+									<h:inputFile value="#{usuarioBean.file}"
+										label="Upload Foto Perfil" />
+								</h:form>
+								<h:form>
+									<p:commandButton styleClass="dr-button-center"
+										value="Upload Foto de Perfil"
+										action="#{usuarioBean.alterarImagemPerfil}"
+										update=":imagemPerfilUsuario-form"
+										process="@this,:imagemPerfilUsuario-form" ajax="false" />
 
 									<p:commandButton styleClass="dr-button-center" value="Alterar"
-										action="#{usuarioBean.alterar}" update="@form" process="@form" />
-								</p:panelGrid>
+										action="#{usuarioBean.alterar}" update=":perfilUsuario-form"
+										process="@this,:perfilUsuario-form" />
 
-								<p:messages id="messages" globalOnly="true" />
+									<p:commandButton styleClass="dr-button-center"
+										value="Apagar Perfil" action="#{usuarioBean.remover}"
+										immediate="true" update=":imagemPerfilUsuario-form"
+										process="@this" />
+								</h:form>
+							</p:panelGrid>
 
-							</p:panel>
-						</h:form>
+							<p:messages id="messages" globalOnly="true" />
+						</p:panel>
 
 						<div class="dropper-separator" />
 

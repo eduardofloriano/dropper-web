@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 
 import br.com.dropper.web.model.Audio;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.transaction.Transacional;
 
 public class AudioDAO implements Serializable{
 
@@ -42,6 +43,7 @@ public class AudioDAO implements Serializable{
 		dao.merge(t);
 	}
 
+	@Transacional
 	public Audio obterArquivoPorNome(Audio audio) {
 		TypedQuery<Audio> query = em.createNamedQuery(Audio.OBTER_AUDIO_POR_NOME, Audio.class);
 		query.setParameter("pNome", audio.getNome());
@@ -52,13 +54,12 @@ public class AudioDAO implements Serializable{
 		}
 	}
 
+	@Transacional
 	public List<Audio> obterAudiosPorUsuario(Usuario usuario) {
 		TypedQuery<Audio> query = em.createNamedQuery(Audio.OBTER_AUDIOS_POR_USUARIO, Audio.class);
 		query.setParameter("pUsuario", usuario);
 		try {
-			em.getTransaction().begin();
 			List<Audio> result = query.getResultList();
-			em.getTransaction().commit();
 			return result;
 		} catch (NoResultException e) {
 			return null;

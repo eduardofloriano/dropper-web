@@ -51,13 +51,11 @@ public class LoginBean implements Serializable {
 		}
 	}
 
-	@Transacional
 	public String cadastrarUsuario() {
 		System.out.println("Redirecionando para cadastroUsuario.xhtml");
 		return "cadastroUsuario.xhtml?faces-redirect=true";
 	}
 
-	@Transacional
 	public String logout() {
 		context.getExternalContext().getSessionMap().remove("usuarioLogado");
 		context.getExternalContext().invalidateSession();

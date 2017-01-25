@@ -32,7 +32,6 @@ public class UsuarioBean implements Serializable {
 	private FacesContext context;
 
 	// TODO: Persistencia e Transacao controladas por EJB
-
 	@Inject
 	private UsuarioDAO usuarioDAO;
 	
@@ -77,6 +76,19 @@ public class UsuarioBean implements Serializable {
 	}
 
 	@Transacional
+	public String remover(){
+		System.out.println("Removendo Usuário: " + usuarioLogado.getEmail());
+		
+		Usuario usuario = usuarioDAO.findById(this.usuarioLogado.getId());
+		usuarioDAO.remove(usuario);
+		
+		context.getExternalContext().getSessionMap().remove("usuarioLogado");
+		context.getExternalContext().invalidateSession();
+		return "login.xhtml?faces-redirect=true";
+		
+	}
+	
+	@Transacional
 	public void alterar() {
 		System.out.println("Atualizando Usuário");
 		usuarioDAO.merge(this.usuarioLogado);
@@ -84,7 +96,6 @@ public class UsuarioBean implements Serializable {
 		context.getExternalContext().getFlash().setKeepMessages(true);
 	}
 
-	@Transacional
 	public Long getEspacoDisponivel() {
 		if (getUsuarioLogado() != null) {
 			Long espacoTotal = usuarioLogado.getRepositorio().getEspacoTotal();
@@ -104,7 +115,6 @@ public class UsuarioBean implements Serializable {
 		usuarioDAO.merge(this.usuarioLogado);
 		context.addMessage(null, new FacesMessage("Usuário Atualizado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
-
 	}
 
 	@Transacional

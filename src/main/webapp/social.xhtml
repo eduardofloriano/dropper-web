@@ -6,6 +6,8 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
+	<ui:define name="titulo">Social</ui:define>
+
 	<ui:define name="conteudo">
 		<p:panel styleClass="dashboard-area">
 			<div class="ui-g">
@@ -30,7 +32,9 @@
 											<h:outputText value="${amigo.nome}" />
 											<h:outputText value="${amigo.email}" />
 											<p:commandButton value="Acessar"></p:commandButton>
-											<p:commandButton value="Remover" action="#{socialBean.removerAmigo(amigo)}" update="@form" process="@form" />
+											<p:commandButton value="Remover"
+												action="#{socialBean.removerAmigo(amigo)}" update="@form"
+												process="@form" />
 										</h:panelGrid>
 									</p:panel>
 								</p:dataGrid>
@@ -51,7 +55,9 @@
 											</p:graphicImage>
 											<h:outputText value="${amigo.nome}" />
 											<h:outputText value="${amigo.email}" />
-											<p:commandButton value="Conectar" action="#{socialBean.conectarAmigo(amigo)}" update="@form" process="@form" />
+											<p:commandButton value="Conectar"
+												action="#{socialBean.conectarAmigo(amigo)}" update="@form"
+												process="@form" immediate="true" />
 										</h:panelGrid>
 									</p:panel>
 								</p:dataGrid>

@@ -21,6 +21,7 @@ import br.com.dropper.web.builder.ArquivoBuilder;
 import br.com.dropper.web.dao.ArquivoDAO;
 import br.com.dropper.web.model.Arquivo;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.transaction.Transacional;
 
 @Named
 @SessionScoped
@@ -53,6 +54,7 @@ public class ArquivoBean implements Serializable {
 		return usuario;
 	}
 
+	@Transacional
 	public void handleFileUpload(FileUploadEvent event) throws IOException {
 
 		this.file = event.getFile();
@@ -70,6 +72,7 @@ public class ArquivoBean implements Serializable {
 		atualizaListaArquivo();
 	}
 
+	@Transacional
 	public void remover(Arquivo arquivo) {
 		System.out.println("Vai remover o arquivo: " + arquivo.getNome() + " - " + arquivo.getId());
 		arquivo = arquivoDAO.findById(arquivo.getId());
@@ -78,6 +81,7 @@ public class ArquivoBean implements Serializable {
 		atualizaListaArquivo();
 	}
 
+	@Transacional
 	public StreamedContent download(Arquivo arquivo) throws IOException {
 		System.out.println("Vai realizar o download da imagem: " + arquivo.getNome() + " - " + arquivo.getId());
 		arquivo = arquivoDAO.findById(arquivo.getId());

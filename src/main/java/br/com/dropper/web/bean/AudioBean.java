@@ -21,6 +21,7 @@ import br.com.dropper.web.builder.AudioBuilder;
 import br.com.dropper.web.dao.AudioDAO;
 import br.com.dropper.web.model.Audio;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.transaction.Transacional;
 
 @Named
 @SessionScoped
@@ -56,6 +57,7 @@ public class AudioBean implements Serializable {
 		return usuario;
 	}
 
+	@Transacional
 	public void handleFileUpload(FileUploadEvent event) throws IOException {
 
 		this.file = event.getFile();
@@ -72,6 +74,7 @@ public class AudioBean implements Serializable {
 		atualizaListaAudios();
 	}
 
+	@Transacional
 	public void remover(Audio audio) {
 		System.out.println("Vai remover o audio: " + audio.getNome() + " - " + audio.getId());
 		audio = audioDAO.findById(audio.getId());
@@ -80,6 +83,7 @@ public class AudioBean implements Serializable {
 		atualizaListaAudios();
 	}
 
+	@Transacional
 	public StreamedContent download(Audio audio) throws IOException {
 		System.out.println("Vai realizar o download do audio: " + audio.getNome() + " - " + audio.getId());
 		audio = audioDAO.findById(audio.getId());
