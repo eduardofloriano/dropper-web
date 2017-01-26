@@ -5,16 +5,18 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
+	<ui:define name="titulo">Perfil</ui:define>
+
 
 	<ui:define name="conteudo">
 		<p:panel styleClass="dashboard-area">
-			<div class="ui-g">
+			<div class="ui-g section-perfil-usuario">
 				<div class="ui-g-12 ui-g-nopad">
 
 					<div class="ui-g-12 upload-area">
-						<h:form id="perfilUsuario-form">
 
 							<p:panel header="Dados Pessoais">
+							<h:form id="perfilUsuario-form">
 								<p:panelGrid styleClass="section-cadastro-form-table"
 									columns="2">
 
@@ -69,25 +71,45 @@
 
 
 								</p:panelGrid>
+							</h:form>
 
 								<p:panelGrid styleClass="section-cadastro-form-table-buttons"
 									columns="1">
 									<div class="dropper-separator" />
+
+								<h:form id="imagemPerfilUsuario-form"
+									enctype="multipart/form-data">
+									<h:inputFile value="#{usuarioBean.file}"
+										label="Upload Foto Perfil" />
+								</h:form>
+								<h:form>
+									<p:commandButton styleClass="dr-button-center"
+										value="Upload Foto de Perfil"
+										action="#{usuarioBean.alterarImagemPerfil}"
+										update=":imagemPerfilUsuario-form"
+										process="@this,:imagemPerfilUsuario-form" ajax="false" />
+
 									<p:commandButton styleClass="dr-button-center" value="Alterar"
-										action="#{usuarioBean.alterar}" update="@form" process="@form" />
+										action="#{usuarioBean.alterar}" update=":perfilUsuario-form"
+										process="@this,:perfilUsuario-form" />
+
+									<p:commandButton styleClass="dr-button-center"
+										value="Apagar Perfil" action="#{usuarioBean.remover}"
+										immediate="true" update=":imagemPerfilUsuario-form"
+										process="@this" />
+								</h:form>
 								</p:panelGrid>
 
 								<p:messages id="messages" globalOnly="true" />
 
 							</p:panel>
-						</h:form>
 
 						<div class="dropper-separator" />
 
 						<h:form>
 							<p:panel header="Dados do Repositório"
 								styleClass="section-repositorio-panel">
-								<p:panelGrid columns="2"
+								<p:panelGrid columns="1"
 									styleClass="section-repositorio-form-table-charts">
 									<p:chart type="bar"
 										model="#{repositorioBean.repositorioBarModel}"

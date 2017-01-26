@@ -1,4 +1,4 @@
-package br.com.dropper.web.test;
+package br.com.dropper.carga;
 
 import javax.persistence.EntityManager;
 
@@ -6,24 +6,24 @@ import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.util.JpaUtil;
 
-public class AmigoTest {
+public class AmigoCarga {
 
 	public static void main(String[] args) {
 
 		System.out.println("Inciando Teste de Amigo");
 
 		JpaUtil jpaUtil = new JpaUtil();
-		EntityManager em = jpaUtil.getEntityManager();		
-		UsuarioDAO usuarioDAO = new UsuarioDAO(em);
-		
-		Usuario usuario1 = em.find(Usuario.class, 8);
+		EntityManager em = jpaUtil.getEntityManager();
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+		Usuario usuario1 = em.find(Usuario.class, new Integer(3));
 		System.out.println("Usuario 1: " + usuario1.getNome());
 
-		Usuario usuario2 = em.find(Usuario.class, 7);
+		Usuario usuario2 = em.find(Usuario.class, new Integer(2));
 		System.out.println("Usuario 2: " + usuario2.getNome());
 
-//		usuario1.getAmigos().add(usuario2);
-//		System.out.println("Usuario 1 adicionando Usuario 2 como amigo.");
+		usuario1.getAmigos().add(usuario2);
+		System.out.println("Usuario 1 adicionando Usuario 2 como amigo.");
 
 		System.out.println("**************");
 
@@ -36,7 +36,7 @@ public class AmigoTest {
 		for (Usuario amigo : usuario1.getAmigoDe()) {
 			System.out.println("- " + amigo.getNome());
 		}
-		
+
 		System.out.println("**************");
 
 		System.out.println(usuario2.getNome() + " possui os amigos: ");
@@ -48,11 +48,10 @@ public class AmigoTest {
 		for (Usuario amigo : usuario2.getAmigoDe()) {
 			System.out.println("- " + amigo.getNome());
 		}
-		
-		
-//		usuarioDAO.merge(usuario1);
-//		usuarioDAO.merge(usuario2);
-		
+
+		 usuarioDAO.merge(usuario1);
+		 usuarioDAO.merge(usuario2);
+
 		em.close();
 		jpaUtil.close();
 	}

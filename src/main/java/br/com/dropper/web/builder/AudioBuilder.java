@@ -1,6 +1,7 @@
 package br.com.dropper.web.builder;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
@@ -8,7 +9,9 @@ import org.apache.commons.io.IOUtils;
 import br.com.dropper.web.model.Audio;
 import br.com.dropper.web.model.Usuario;
 
-public class AudioBuilder implements ArquivoMultimidiaBuilder<Audio> {
+public class AudioBuilder implements ArquivoMultimidiaBuilder<Audio>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String nome;
 	private Date dataInclusao;

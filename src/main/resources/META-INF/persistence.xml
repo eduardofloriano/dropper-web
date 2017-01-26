@@ -6,14 +6,20 @@
 
 	<persistence-unit name="DropperDS" transaction-type="RESOURCE_LOCAL">
 		<jta-data-source>java:jboss/datasources/DropperDS</jta-data-source>
-		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<class>br.com.dropper.web.model.Usuario</class>
+		<class>br.com.dropper.web.model.Arquivo</class>
+		<class>br.com.dropper.web.model.Audio</class>
+		<class>br.com.dropper.web.model.Imagem</class>
+		<class>br.com.dropper.web.model.Repositorio</class>
+		<class>br.com.dropper.web.model.Video</class>
+		
 		
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="true" />
-			<!-- <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>  -->
+			<property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/> 
 		</properties>
 	</persistence-unit>
 

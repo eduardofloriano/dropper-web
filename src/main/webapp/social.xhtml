@@ -1,0 +1,77 @@
+<ui:composition template="_template_box_default.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<ui:define name="titulo">Social</ui:define>
+
+	<ui:define name="conteudo">
+		<p:panel styleClass="dashboard-area">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-g-nopad">
+
+					<div class="ui-g-12 upload-area">
+						<h:form id="social-form">
+
+							<p:panel header="Amigos">
+								<p:dataGrid emptyMessage="Nenhum Amigo Encontrado"
+									id="dropper-data-grid" var="amigo" value="#{socialBean.amigos}"
+									columns="4" layout="grid" rows="6" paginator="true"
+									paginatorPosition="bottom"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+									<p:panel style="text-align:center">
+										<h:panelGrid id="dropper-data-image-panel" columns="1"
+											style="width:100%">
+											<p:graphicImage value="#{socialBean.amigo}">
+												<f:param name="id" value="#{amigo.id}" />
+											</p:graphicImage>
+											<h:outputText value="${amigo.nome}" />
+											<h:outputText value="${amigo.email}" />
+											<p:commandButton value="Acessar" disabled="true" />
+											<p:commandButton value="Remover"
+												action="#{socialBean.removerAmigo(amigo)}" update="@form"
+												process="@form" />
+										</h:panelGrid>
+									</p:panel>
+								</p:dataGrid>
+							</p:panel>
+
+							<div class="dropper-separator" />
+
+							<p:panel header="Sugestao de Amigos">
+								<p:dataGrid id="dropper-data-grid2" var="amigo"
+									value="#{socialBean.amigosSugestao}" columns="4" layout="grid"
+									rows="6" paginator="true" paginatorPosition="bottom"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+									<p:panel style="text-align:center">
+										<h:panelGrid id="dropper-data-image-panel2" columns="1"
+											style="width:100%">
+											<p:graphicImage value="#{socialBean.amigo}">
+												<f:param name="id" value="#{amigo.id}" />
+											</p:graphicImage>
+											<h:outputText value="${amigo.nome}" />
+											<h:outputText value="${amigo.email}" />
+											<p:commandButton value="Conectar"
+												action="#{socialBean.conectarAmigo(amigo)}" update="@form"
+												process="@form" immediate="true" />
+										</h:panelGrid>
+									</p:panel>
+								</p:dataGrid>
+							</p:panel>
+
+
+						</h:form>
+					</div>
+				</div>
+
+			</div>
+		</p:panel>
+	</ui:define>
+	<!-- FIM DO CONTEUDO -->
+
+
+</ui:composition>

@@ -20,6 +20,11 @@ body {
 	margin: 0px;
 }
 
+
+.versao-dev{
+	font-weight: bold;
+}
+
 div#conteudo {
 	/*padding-top: 60px;*/
 	
@@ -131,8 +136,14 @@ div#conteudo .section-login-form-table .ui-widget-content, div#conteudo .section
 	border: none;
 }
 
+div#conteudo .section-perfil-usuario .section-cadastro-form-table-buttons .ui-button {
+	width: auto;
+	margin: 10px;
+}
+
 div#conteudo  .section-cadastro-form-table-buttons .ui-button {
 	width: 60%;
+	
 }
 
 /**
@@ -153,6 +164,16 @@ div#conteudo  .section-cadastro-form-table-buttons .ui-button {
 }
 
 .dr-sidebar .ui-menu.ui-widget li>.ui-menuitem-link.ui-state-hover {
+	background-color: transparent;
+	background-image: none;
+}
+
+.menu-header-bar .ui-menu.ui-widget li > .ui-menuitem-link{
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.menu-header-bar .ui-state-disabled{
 	background-color: transparent;
 	background-image: none;
 }
@@ -215,8 +236,9 @@ SIDEBAR
 
 .dr-sidebar .profile img {
 	display: block;
-	width: 56px;
+	width: 100px;
 	margin: 0 auto;
+	border-radius: 50%;
 }
 
 .dr-sidebar .profile>a {

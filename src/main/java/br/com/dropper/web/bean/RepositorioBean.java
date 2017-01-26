@@ -3,10 +3,10 @@ package br.com.dropper.web.bean;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -20,56 +20,53 @@ import br.com.dropper.web.dao.ImagemDAO;
 import br.com.dropper.web.dao.RepositorioDAO;
 import br.com.dropper.web.dao.VideoDAO;
 import br.com.dropper.web.model.Usuario;
-import br.com.dropper.web.util.JpaUtil;
+import br.com.dropper.web.transaction.Transacional;
 
-@ManagedBean
-@ViewScoped
+@Named
+@SessionScoped
 public class RepositorioBean implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6755567510858433234L;
-	private EntityManager em = new JpaUtil().getEntityManager();
-	RepositorioDAO repositorioDAO = new RepositorioDAO(em);
+	private static final long serialVersionUID = 1L;
 
-	private Usuario usuario = new Usuario();
-	private Usuario usuarioLogado = new Usuario();
+	@Inject
+	private FacesContext context;
+
+	@Inject
+	private Usuario usuario;
+
+	@Inject
+	private Usuario usuarioLogado;
+
+	// TODO: Persistencia e Transacao controladas por EJB
+	@Inject
+	private RepositorioDAO repositorioDAO;
+
+	@Inject
+	private ImagemDAO imagemDAO;
+
+	@Inject
+	private ArquivoDAO arquivoDAO;
+
+	@Inject
+	private AudioDAO audioDAO;
+
+	@Inject
+	private VideoDAO videoDAO;
+
 	private PieChartModel repositorioPieChartModel;
 	private BarChartModel repositorioBarModel;
 
 	@PostConstruct
 	public void init() {
-		createPieModel();
-		createBarModel();
-	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+		this.repositorioBarModel = new BarChartModel();
+		this.repositorioPieChartModel = new PieChartModel();
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-	public PieChartModel getRepositorioPieChartModel() {
-		return repositorioPieChartModel;
-	}
-
-	public void setRepositorioPieChartModel(PieChartModel repositorioPieChartModel) {
-		this.repositorioPieChartModel = repositorioPieChartModel;
-	}
-
-	public BarChartModel getRepositorioBarModel() {
-		return repositorioBarModel;
-	}
-
-	public void setRepositorioBarModel(BarChartModel repositorioBarModel) {
-		this.repositorioBarModel = repositorioBarModel;
+		preenchePieModel();
+		preencheBarModel();
 	}
 
 	public Usuario getUsuarioLogado() {
-		FacesContext context = FacesContext.getCurrentInstance();
 		this.usuarioLogado = (Usuario) context.getExternalContext().getSessionMap().get("usuarioLogado");
 		return this.usuarioLogado;
 	}
@@ -88,12 +85,8 @@ public class RepositorioBean implements Serializable {
 		return 1L;
 	}
 
-	private void createPieModel() {
-		repositorioPieChartModel = new PieChartModel();
-
+	private void preenchePieModel() {
 		if (getUsuarioLogado() != null) {
-			Long espacoTotal = usuarioLogado.getRepositorio().getEspacoTotal();
-
 			repositorioPieChartModel.set("Imagens", repositorioDAO.obterEspacoOcupadoImagemPorUsuario(usuarioLogado));
 			repositorioPieChartModel.set("Arquivos", repositorioDAO.obterEspacoOcupadoArquivoPorUsuario(usuarioLogado));
 			repositorioPieChartModel.set("Videos", repositorioDAO.obterEspacoOcupadoVideoPorUsuario(usuarioLogado));
@@ -108,39 +101,35 @@ public class RepositorioBean implements Serializable {
 
 	}
 
-	private void createBarModel() {
-		
-		repositorioBarModel = new BarChartModel();
-
+	@Transacional
+	private void preencheBarModel() {
 		if (getUsuarioLogado() != null) {
-			
 			
 			ChartSeries imagens = new ChartSeries();
 			imagens.setLabel("Imagens");
-			imagens.set("Imagens", new ImagemDAO(em).obterImagensPorUsuario(usuarioLogado).size());
+			imagens.set("Imagens", imagemDAO.obterImagensPorUsuario(usuarioLogado).size());
 
 			ChartSeries arquivos = new ChartSeries();
 			arquivos.setLabel("Arquivos");
-			arquivos.set("Arquivos", new ArquivoDAO(em).obterArquivosPorUsuario(usuarioLogado).size());
+			arquivos.set("Arquivos", arquivoDAO.obterArquivosPorUsuario(usuarioLogado).size());
 
 			ChartSeries videos = new ChartSeries();
 			videos.setLabel("Videos");
-			videos.set("Videos", new VideoDAO(em).obterVideosPorUsuario(usuarioLogado).size());
+			videos.set("Videos", videoDAO.obterVideosPorUsuario(usuarioLogado).size());
 
 			ChartSeries audios = new ChartSeries();
 			audios.setLabel("Audios");
-			audios.set("Audios", new AudioDAO(em).obterAudiosPorUsuario(usuarioLogado).size());
+			audios.set("Audios", audioDAO.obterAudiosPorUsuario(usuarioLogado).size());
 
 			repositorioBarModel.addSeries(imagens);
 			repositorioBarModel.addSeries(arquivos);
 			repositorioBarModel.addSeries(videos);
 			repositorioBarModel.addSeries(audios);
 			
-		
 			repositorioBarModel.setTitle("Quantidade de Arquivos");
 			repositorioBarModel.setLegendPosition("ne");
 
-			Axis xAxis = repositorioBarModel.getAxis(AxisType.X);
+			// Axis xAxis = repositorioBarModel.getAxis(AxisType.X);
 //			xAxis.setLabel("Arquivos Multimídia");
 
 			Axis yAxis = repositorioBarModel.getAxis(AxisType.Y);
@@ -148,9 +137,32 @@ public class RepositorioBean implements Serializable {
 			yAxis.setMin(0);
 			//yAxis.setMax(200);
 			
+			
 		}
-		
-		
 	}
 
+	// Setters & Getters
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+		}
+		
+	public PieChartModel getRepositorioPieChartModel() {
+		return repositorioPieChartModel;
+	}
+		
+	public void setRepositorioPieChartModel(PieChartModel repositorioPieChartModel) {
+		this.repositorioPieChartModel = repositorioPieChartModel;
+	}
+
+	public BarChartModel getRepositorioBarModel() {
+		return repositorioBarModel;
+	}
+
+	public void setRepositorioBarModel(BarChartModel repositorioBarModel) {
+		this.repositorioBarModel = repositorioBarModel;
+	}
 }

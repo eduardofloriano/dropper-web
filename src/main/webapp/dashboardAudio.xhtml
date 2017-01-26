@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-
+	<ui:define name="titulo">Dashboard Audios</ui:define>
 
 	<ui:define name="conteudo">
 		<p:panel styleClass="dashboard-area">
@@ -27,8 +27,8 @@
 					<h:form id="dashboard-data-form">
 						<div class="ui-g-12 dropper-grid-area dropper-grid-area-arquivo">
 							<p:dataGrid id="dropper-data-grid" var="audio"
-								value="#{audioBean.audios}" columns="6" layout="grid"
-								rows="20" paginator="true" paginatorPosition="bottom"
+								value="#{audioBean.audios}" columns="6" layout="grid" rows="20"
+								paginator="true" paginatorPosition="bottom"
 								paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
 								<p:panel style="text-align:center">

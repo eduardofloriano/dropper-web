@@ -1,5 +1,9 @@
 package br.com.dropper.web.dao;
 
+import java.io.Serializable;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -7,14 +11,38 @@ import javax.persistence.TypedQuery;
 import br.com.dropper.web.model.Repositorio;
 import br.com.dropper.web.model.Usuario;
 
-public class RepositorioDAO extends DAO<Repositorio> {
+public class RepositorioDAO implements Serializable {
 
-	public RepositorioDAO(EntityManager em) {
-		this.em = em;
+	private static final long serialVersionUID = 1L;
+
+	@Inject
+	private EntityManager em;
+
+	private DAO<Repositorio> dao;
+
+	@PostConstruct
+	public void init(){
+		this.dao = new DAO<>(Repositorio.class, em);
 	}
 
-	public Repositorio obterRepositorioPorUsuario(Usuario usuario) {
+	public Repositorio findById(Integer id) {
+		return dao.findById(id);
+	}
 
+	public void persist(Repositorio t) {
+		dao.persist(t);
+	}
+
+	public void remove(Repositorio t) {
+		dao.remove(t);
+	}
+
+	public void merge(Repositorio t) {
+		dao.merge(t);
+	}
+
+
+	public Repositorio obterRepositorioPorUsuario(Usuario usuario) {
 		TypedQuery<Repositorio> query = em.createNamedQuery(Repositorio.OBTER_REPOSITORIO_POR_USUARIO,
 				Repositorio.class);
 		query.setParameter("pUsuario", usuario);
@@ -92,7 +120,6 @@ public class RepositorioDAO extends DAO<Repositorio> {
 	}
 	
 	public Long obterEspacoOcupadoAudioPorUsuario(Usuario usuario) {
-
 		TypedQuery<Long> query = em.createNamedQuery(Repositorio.OBTER_ESPACO_AUDIO_OCUPADO_POR_USUARIO, Long.class);
 		query.setParameter("pUsuario", usuario);
 
