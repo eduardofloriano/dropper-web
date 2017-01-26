@@ -31,7 +31,7 @@
 											</p:graphicImage>
 											<h:outputText value="${amigo.nome}" />
 											<h:outputText value="${amigo.email}" />
-											<p:commandButton value="Acessar"></p:commandButton>
+											<p:commandButton value="Acessar" disabled="true" />
 											<p:commandButton value="Remover"
 												action="#{socialBean.removerAmigo(amigo)}" update="@form"
 												process="@form" />
