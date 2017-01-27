@@ -2,6 +2,7 @@ package br.com.dropper.web.bean;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import javax.inject.Named;
 import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
+import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -34,17 +36,25 @@ public class UsuarioBean implements Serializable {
 	// TODO: Persistencia e Transacao controladas por EJB
 	@Inject
 	private UsuarioDAO usuarioDAO;
-	
+
 	@Inject
 	private RepositorioDAO repositorioDAO;
 
 	private Usuario usuario;
 	private Usuario usuarioLogado;
-	
+
 	private Part file;
-	
+
+	private CroppedImage croppedImage;
+	private InputStream croppedImageStream;
+
+	/**
+	 * PRODUCAO
+	 */
+	private static final int NUMERO_MAXIMO_USUARIOS = 10;
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		this.usuario = new Usuario();
 		this.usuarioLogado = new Usuario();
 
@@ -58,18 +68,31 @@ public class UsuarioBean implements Serializable {
 	@Transacional
 	public String cadastrar() {
 		System.out.println("Persistindo Usuário: " + usuario.getEmail());
-		
-		if(file != null){
+
+		/**
+		 * PRODUCAO - INICIO
+		 */
+		if (usuarioDAO.obterTodosUsuarios().size() > NUMERO_MAXIMO_USUARIOS) {
+			context.addMessage(null,
+					new FacesMessage("O número máximo de usuários para versão alpha já foi atingido!"));
+			context.getExternalContext().getFlash().setKeepMessages(true);
+			return null;
+		}
+		/**
+		 * PRODUCAO - FIM
+		 */
+
+		if (file != null) {
 			try {
-				
+
 				this.usuario.setImagemPerfil(IOUtils.toByteArray(file.getInputStream()));
 				System.out.println("Possuí imagem de perfil! " + file.getName());
 			} catch (Exception e) {
 				System.out.println("Ocorreu um erro ao processar a imagem de perfil do usuário.");
 				e.printStackTrace();
-			}			
+			}
 		}
-		
+
 		usuarioDAO.persist(this.usuario);
 		context.addMessage(null, new FacesMessage("Usuário Cadastrado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
@@ -77,18 +100,18 @@ public class UsuarioBean implements Serializable {
 	}
 
 	@Transacional
-	public String remover(){
+	public String remover() {
 		System.out.println("Removendo Usuário: " + usuarioLogado.getEmail());
-		
+
 		Usuario usuario = usuarioDAO.findById(this.usuarioLogado.getId());
 		usuarioDAO.remove(usuario);
-		
+
 		context.getExternalContext().getSessionMap().remove("usuarioLogado");
 		context.getExternalContext().invalidateSession();
 		return "login.xhtml?faces-redirect=true";
-		
+
 	}
-	
+
 	@Transacional
 	public void alterar() {
 		System.out.println("Atualizando Usuário");
@@ -117,7 +140,7 @@ public class UsuarioBean implements Serializable {
 		context.addMessage(null, new FacesMessage("Usuário Atualizado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
 	}
-	
+
 	@Transacional
 	public StreamedContent getImagemPerfil() throws Exception {
 		String id = context.getExternalContext().getRequestParameterMap().get("id");
@@ -140,13 +163,31 @@ public class UsuarioBean implements Serializable {
 			return new DefaultStreamedContent(new ByteArrayInputStream(usuario.getImagemPerfil()), "image/png");
 		}
 
+	}
+
+	@Transacional
+	public CroppedImage getImagemPerfilCarregada() throws Exception {
+		
+		if(this.file == null){
+			//return new DefaultStreamedContent();
+			return null;
 		}
+		
+		if(croppedImageStream == null){
+			croppedImageStream = new ByteArrayInputStream(IOUtils.toByteArray(file.getInputStream()));	
+			croppedImage = new CroppedImage();
+			croppedImage.setBytes(IOUtils.toByteArray(croppedImageStream));
+		}
+		
+		//return new DefaultStreamedContent(croppedImageStream, "image/png");
+		return croppedImage;
+	}
 
 	// Setters & Getters
 	public Usuario getUsuario() {
 		return usuario;
 	}
-	
+
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}

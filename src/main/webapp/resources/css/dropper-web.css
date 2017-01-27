@@ -146,6 +146,10 @@ div#conteudo  .section-cadastro-form-table-buttons .ui-button {
 	
 }
 
+.dr-no-padding, #conteudo .dr-no-padding{
+	padding: 0;
+}
+
 /**
 * HOVER EM TODO O TEMA
 */
@@ -205,6 +209,7 @@ MENUHEADER
 /***************************
 SIDEBAR
 ***************************/
+
 .dr-sidebar {
 	margin-top: 43px;
 	position: fixed;

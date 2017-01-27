@@ -15,7 +15,7 @@
 
 					<div class="ui-g-12 upload-area">
 
-							<p:panel header="Dados Pessoais">
+						<p:panel header="Dados Pessoais">
 							<h:form id="perfilUsuario-form">
 								<p:panelGrid styleClass="section-cadastro-form-table"
 									columns="2">
@@ -73,16 +73,28 @@
 								</p:panelGrid>
 							</h:form>
 
-								<p:panelGrid styleClass="section-cadastro-form-table-buttons"
-									columns="1">
-									<div class="dropper-separator" />
+							<p:panelGrid styleClass="section-cadastro-form-table-buttons"
+								columns="1">
+								<div class="dropper-separator" />
 
 								<h:form id="imagemPerfilUsuario-form"
 									enctype="multipart/form-data">
-									<h:inputFile value="#{usuarioBean.file}"
-										label="Upload Foto Perfil" />
+									<h:inputFile id="dr-input-file" value="#{usuarioBean.file}"
+										label="Upload Foto Perfil">
+										<f:ajax execute="@form" render="@form" />
+									</h:inputFile>
+
+									 <p:imageCropper id="imagemPerfilCarregada"
+										rendered="#{not empty usuarioBean.file}"
+										value="#{usuarioBean.imagemPerfilCarregada}"
+										initialCoords="225,75,300,125" /> 
+									<!-- <p:graphicImage id="imagemPerfilCarregada"
+										rendered="#{not empty usuarioBean.file}"
+										value="#{usuarioBean.imagemPerfilCarregada}" /> -->
+
 								</h:form>
 								<h:form>
+
 									<p:commandButton styleClass="dr-button-center"
 										value="Upload Foto de Perfil"
 										action="#{usuarioBean.alterarImagemPerfil}"
@@ -98,11 +110,11 @@
 										immediate="true" update=":imagemPerfilUsuario-form"
 										process="@this" />
 								</h:form>
-								</p:panelGrid>
+							</p:panelGrid>
 
-								<p:messages id="messages" globalOnly="true" />
+							<p:messages id="messages" globalOnly="true" />
 
-							</p:panel>
+						</p:panel>
 
 						<div class="dropper-separator" />
 

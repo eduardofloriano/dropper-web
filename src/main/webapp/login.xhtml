@@ -12,6 +12,14 @@
 	<ui:define name="titulo">Login</ui:define>
 
 	<ui:define name="conteudo">
+	
+		<!-- PRODUCAO -->
+		<p:dialog header="Dropper Web - Versão 0.3 ALPHA" widgetVar="dlg2"
+			modal="true" height="100" visible="true">
+			<h:outputText value="Bem vindo ao Dropper Web." />
+		</p:dialog>
+
+
 		<div id="section-login">
 			<div id="section-login-logo">
 				<h:graphicImage library="img" name="dropper-web-logo.png" />
@@ -42,7 +50,7 @@
 							</div>
 							<div class="ui-g-2" />
 						</div>
-						
+
 						<div class="ui-g-12 dropper-separator" />
 
 						<div class="ui-g-12 ui-g-nopad">
@@ -65,53 +73,11 @@
 
 					</div>
 
-
-					<!-- 
-					<p:panelGrid styleClass="section-login-form-table" columns="2">
-						<p:outputLabel value="Email:" for="email" />
-						<p:inputText id="email" value="#{loginBean.usuario.email}"
-							required="True" requiredMessage="Email é Obrigatório">
-							<f:ajax event="blur" render="messages" />
-						</p:inputText>
-						<p:outputLabel value="Senha:" for="senha" />
-						<p:password id="senha" value="#{loginBean.usuario.senha}"
-							required="true" feedback="true"
-							requiredMessage="Senha é Obrigatório" />
-
-
-					</p:panelGrid> -->
-
-
 				</h:form>
 			</div>
 		</div>
 	</ui:define>
 	<!-- FIM DO CONTEUDO -->
 
-
-
-	<!--  <h:form id="login">
-
-			<p:messages id="messages" globalOnly="true" />
-
-			<p:fieldset legend="Dados de Login">				
-				<p:panelGrid columns="3">
-					<p:outputLabel value="Email" for="email" />
-					<p:inputText id="email" value="#{loginBean.usuario.email}"
-						required="True" requiredMessage="Email é Obrigatório">
-						<f:ajax event="blur" render="messages" />
-					</p:inputText>
-					<p:message for="email" />
-
-					<p:outputLabel value="Senha" for="senha" />					
-					<p:password id="senha" value="#{loginBean.usuario.senha}" required="true" feedback="true"
-						requiredMessage="Senha é Obrigatório" />
-					<p:message for="senha" />
-				</p:panelGrid>
-
-				<p:commandButton value="Entrar" action="#{loginBean.autenticar}" update="@form" process="@form" />
-			</p:fieldset>
-
-		</h:form> -->
 </ui:composition>
 </html>
