@@ -440,3 +440,9 @@ DASHBOARD
 	/* Hack para acertar icones de arquivos com nome em duas linhas */
 	margin-bottom: 10px;
 }
+
+/* MODAL */
+.dialog-dropper{
+	background-color: rgb(4, 156, 236);
+	box-shadow: inset 0 -10px 40px rgba(0,0,0,.15)
+}
