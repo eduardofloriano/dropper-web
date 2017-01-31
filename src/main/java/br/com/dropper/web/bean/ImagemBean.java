@@ -23,6 +23,7 @@ import br.com.dropper.web.dao.ImagemDAO;
 import br.com.dropper.web.model.Imagem;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.transaction.Transacional;
+import br.com.dropper.web.util.ImageUtil;
 
 @Named
 @SessionScoped
@@ -35,6 +36,9 @@ public class ImagemBean implements Serializable {
 
 	@Inject
 	private ImagemBuilder builder;
+	
+	@Inject
+	private ImageUtil imageUtil;
 	
 	private UploadedFile file;
 
@@ -103,7 +107,8 @@ public class ImagemBean implements Serializable {
 		String id = context.getExternalContext().getRequestParameterMap().get("id");
 		if (!(id == null || id.equals("") || id.equals(" "))) {
 			Imagem imagem = imagemDAO.findById(Integer.parseInt(id));
-			return new DefaultStreamedContent(new ByteArrayInputStream(imagem.getData()), "image/png");
+			byte[] imagemResized = imageUtil.resize(new ByteArrayInputStream(imagem.getData()), 350, 350, "png");
+			return new DefaultStreamedContent(new ByteArrayInputStream(imagemResized), "image/png");
 		}
 
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
@@ -114,7 +119,8 @@ public class ImagemBean implements Serializable {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
 			Imagem imagem = imagemDAO.findById(Integer.parseInt(id));
-			return new DefaultStreamedContent(new ByteArrayInputStream(imagem.getData()), "image/png");
+			byte[] imagemResized = imageUtil.resize(new ByteArrayInputStream(imagem.getData()), 350, 350, "png");
+			return new DefaultStreamedContent(new ByteArrayInputStream(imagemResized), "image/png");
 		}
 
 	}

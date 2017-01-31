@@ -1,11 +1,9 @@
 package br.com.dropper.web.bean;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +24,7 @@ import br.com.dropper.web.dao.RepositorioDAO;
 import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.transaction.Transacional;
+import br.com.dropper.web.util.ImageUtil;
 import net.coobird.thumbnailator.Thumbnails;
 
 @Named
@@ -43,6 +42,9 @@ public class UsuarioBean implements Serializable {
 
 	@Inject
 	private RepositorioDAO repositorioDAO;
+	
+	@Inject
+	private ImageUtil imageUtil;
 
 	private Usuario usuario;
 	private Usuario usuarioLogado;
@@ -140,12 +142,9 @@ public class UsuarioBean implements Serializable {
 	public void alterarImagemPerfil() throws IOException {
 		System.out.println("Alterando Imagem de Pefil do Usuário");
 		
+		byte[] imagemRedimensionada = imageUtil.forceResize(file.getInputStream(), 150, 150, "png");
 		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		Thumbnails.of(file.getInputStream()).forceSize(150, 150).outputFormat("png").toOutputStream(baos);
-		
-//		this.usuarioLogado.setImagemPerfil(IOUtils.toByteArray(file.getInputStream()));
-		this.usuarioLogado.setImagemPerfil(baos.toByteArray());;
+		this.usuarioLogado.setImagemPerfil(imagemRedimensionada);
 		usuarioDAO.merge(this.usuarioLogado);
 		context.addMessage(null, new FacesMessage("Usuário Atualizado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
