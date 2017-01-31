@@ -81,25 +81,16 @@
 									enctype="multipart/form-data">
 									<h:inputFile id="dr-input-file" value="#{usuarioBean.file}"
 										label="Upload Foto Perfil">
-										<f:ajax execute="@form" render="@form" />
 									</h:inputFile>
-
-									 <p:imageCropper id="imagemPerfilCarregada"
-										rendered="#{not empty usuarioBean.file}"
-										value="#{usuarioBean.imagemPerfilCarregada}"
-										initialCoords="225,75,300,125" /> 
-									<!-- <p:graphicImage id="imagemPerfilCarregada"
-										rendered="#{not empty usuarioBean.file}"
-										value="#{usuarioBean.imagemPerfilCarregada}" /> -->
+									
+									<p:commandButton styleClass="dr-button-center"
+										value="Gravar Foto de Perfil"
+										action="#{usuarioBean.alterarImagemPerfil}"
+										update=":imagemPerfilUsuario-form"
+										process="@form" ajax="false" />
 
 								</h:form>
 								<h:form>
-
-									<p:commandButton styleClass="dr-button-center"
-										value="Upload Foto de Perfil"
-										action="#{usuarioBean.alterarImagemPerfil}"
-										update=":imagemPerfilUsuario-form"
-										process="@this,:imagemPerfilUsuario-form" ajax="false" />
 
 									<p:commandButton styleClass="dr-button-center" value="Alterar"
 										action="#{usuarioBean.alterar}" update=":perfilUsuario-form"

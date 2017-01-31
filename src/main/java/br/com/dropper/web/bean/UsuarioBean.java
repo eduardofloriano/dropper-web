@@ -1,8 +1,11 @@
 package br.com.dropper.web.bean;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +26,7 @@ import br.com.dropper.web.dao.RepositorioDAO;
 import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.transaction.Transacional;
+import net.coobird.thumbnailator.Thumbnails;
 
 @Named
 @SessionScoped
@@ -135,7 +139,13 @@ public class UsuarioBean implements Serializable {
 	@Transacional
 	public void alterarImagemPerfil() throws IOException {
 		System.out.println("Alterando Imagem de Pefil do Usuário");
-		this.usuarioLogado.setImagemPerfil(IOUtils.toByteArray(file.getInputStream()));
+		
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		Thumbnails.of(file.getInputStream()).forceSize(150, 150).outputFormat("png").toOutputStream(baos);
+		
+//		this.usuarioLogado.setImagemPerfil(IOUtils.toByteArray(file.getInputStream()));
+		this.usuarioLogado.setImagemPerfil(baos.toByteArray());;
 		usuarioDAO.merge(this.usuarioLogado);
 		context.addMessage(null, new FacesMessage("Usuário Atualizado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
@@ -165,22 +175,28 @@ public class UsuarioBean implements Serializable {
 
 	}
 
+//	@Transacional
+//	public CroppedImage getImagemPerfilCarregada() throws Exception {
+//		
+//		if(this.file == null){
+//			//return new DefaultStreamedContent();
+//			return null;
+//		}
+//		
+//		if(croppedImageStream == null){
+//			croppedImageStream = new ByteArrayInputStream(IOUtils.toByteArray(file.getInputStream()));	
+//			croppedImage = new CroppedImage();
+//			croppedImage.setBytes(IOUtils.toByteArray(croppedImageStream));
+//		}
+//		
+//		//return new DefaultStreamedContent(croppedImageStream, "image/png");
+//		return croppedImage;
+//	}
+	
+	
 	@Transacional
-	public CroppedImage getImagemPerfilCarregada() throws Exception {
-		
-		if(this.file == null){
-			//return new DefaultStreamedContent();
-			return null;
-		}
-		
-		if(croppedImageStream == null){
-			croppedImageStream = new ByteArrayInputStream(IOUtils.toByteArray(file.getInputStream()));	
-			croppedImage = new CroppedImage();
-			croppedImage.setBytes(IOUtils.toByteArray(croppedImageStream));
-		}
-		
-		//return new DefaultStreamedContent(croppedImageStream, "image/png");
-		return croppedImage;
+	public void setImagemPerfilCarregada(CroppedImage croppedImage) throws Exception {
+		this.croppedImage = croppedImage;
 	}
 
 	// Setters & Getters
