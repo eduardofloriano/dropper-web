@@ -15,7 +15,8 @@
 
 		<!-- PRODUCAO -->
 		<p:dialog header="Versão ALPHA" widgetVar="dlg2" modal="true"
-			height="400" width="500" visible="true" showHeader="true">
+			height="400" width="500" visible="#{loginBean.modalBoasVindas}"
+			showHeader="true">
 
 			<div class="dialog-dropper">
 				<h:graphicImage library="img" name="favi-icon.png" />
@@ -58,6 +59,8 @@
 							</div>
 							<div class="ui-g-2" />
 						</div>
+						
+						<p:growl id="messages" showDetail="true" sticky="true" /> 
 
 						<div class="ui-g-12 dropper-separator" />
 

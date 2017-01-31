@@ -29,8 +29,11 @@ public class LoginBean implements Serializable {
 	@Inject
 	private UsuarioDAO usuarioDAO;
 
+	private boolean modalBoasVindas;
+	
 	@PostConstruct
 	public void init(){
+		modalBoasVindas = true;
 	}
 
 	public Usuario getUsuario() {
@@ -45,6 +48,7 @@ public class LoginBean implements Serializable {
 		if (usuario == null) {
 			context.addMessage(null, new FacesMessage("Usuario não encontrado."));
 			context.getExternalContext().getFlash().setKeepMessages(true);
+			modalBoasVindas = false;
 			return "login?faces-redirect=true";
 		} else {
 			context.getExternalContext().getSessionMap().put("usuarioLogado", usuario);
@@ -63,4 +67,14 @@ public class LoginBean implements Serializable {
 		return "login.xhtml?faces-redirect=true";
 	}
 
+	public boolean isModalBoasVindas() {
+		return modalBoasVindas;
+	}
+
+	public void setModalBoasVindas(boolean modalBoasVindas) {
+		this.modalBoasVindas = modalBoasVindas;
+	}
+
+	
+	
 }
