@@ -45,11 +45,9 @@
 							<p:panel header="Sugestao de Amigos">
 								<p:dataGrid id="dropper-data-grid2" var="amigo"
 									value="#{socialBean.amigosSugestao}" columns="4" layout="grid"
-									rows="6" paginator="true" paginatorPosition="bottom"
-									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-									<p:panel style="text-align:center">
-										<h:panelGrid id="dropper-data-image-panel2" columns="1"
-											style="width:100%">
+									rows="6" paginator="false"> 
+									<h:panelGrid id="dropper-data-image-panel2" columns="1"
+											style="width:100%; text-align:center">
 											<p:graphicImage value="#{socialBean.amigo}">
 												<f:param name="id" value="#{amigo.id}" />
 											</p:graphicImage>
@@ -59,7 +57,6 @@
 												action="#{socialBean.conectarAmigo(amigo)}" update="@form"
 												process="@form" immediate="true" />
 										</h:panelGrid>
-									</p:panel>
 								</p:dataGrid>
 							</p:panel>
 

@@ -14,20 +14,30 @@
 	<ui:define name="conteudo">
 
 		<!-- PRODUCAO -->
-		<p:dialog header="Versão ALPHA" widgetVar="dlg2" modal="true"
-			height="400" width="500" visible="#{loginBean.modalBoasVindas}"
-			showHeader="true">
+		<h:form id="modal-boas-vindas-form">
+			<p:dialog header="Versão ALPHA" widgetVar="dlg2" modal="true"
+				height="450" width="500" visible="#{loginBean.modalBoasVindas}"
+				showHeader="false" closable="true" closeOnEscape="true" resizable="false">
 
-			<div class="dialog-dropper">
-				<h:graphicImage library="img" name="favi-icon.png" />
-			</div>
-			<div class="dropper-separator" />
-			<h:outputText value="Bem vindo ao DropperWeb Alpha." />
-			<div class="dropper-separator" />
-			<h:outputText
-				value="Estamos em uma versao de testes, por isso, o cadastro de usuarios esta limitado, assim como nosso banco de dados. Sinta-se a vontade para enviar um feedback para devluiseduardo@gmail.com!" />
-		</p:dialog>
-
+				<div class="dialog-dropper">
+					<h:graphicImage library="img" name="favi-icon.png" />
+				</div>
+				<div class="dropper-separator" />
+				<div class="dropper-dialog-content">
+					<h:outputText value="Bem vindo ao DropperWeb Alpha!" style="font-weight:bold; font-size:22px"/>
+				</div>
+				<div class="dropper-separator" />
+				<div class="dropper-dialog-content">
+					<h:outputText
+						value="Estamos em uma versão de testes, por isso, o cadastro de usuários está limitado, assim como nosso banco de dados. Sinta-se a vontade para enviar um feedback para devluiseduardo@gmail.com!" />
+				</div>
+				<div class="dropper-separator" />
+				<div class="dropper-dialog-content">
+					<p:commandButton styleClass="dr-button-center" value="Entendi"
+						oncomplete="PF('dlg2').hide()" />
+				</div>
+			</p:dialog>
+		</h:form>
 
 		<div id="section-login">
 			<div id="section-login-logo">
@@ -59,8 +69,8 @@
 							</div>
 							<div class="ui-g-2" />
 						</div>
-						
-						<p:growl id="messages" showDetail="true" sticky="true" /> 
+
+						<p:growl id="messages" showDetail="true" sticky="true" />
 
 						<div class="ui-g-12 dropper-separator" />
 

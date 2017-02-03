@@ -47,6 +47,23 @@ div#conteudo .section-login {
 	color: #4f575b;
 }
 
+/* MODAL */
+.dialog-dropper{
+	background-color: rgb(4, 156, 236);
+}
+
+div#conteudo .section-login  .ui-dialog-content .dropper-dialog-content{
+	font-size: 17px;
+}
+
+div#conteudo .section-login .ui-dialog.ui-widget-content .ui-dialog-content{
+	padding: 0;
+} 
+
+div#conteudo .section-login .dropper-dialog-content{
+	padding: 0px 15px;
+}
+
 
 div#conteudo .section-login img {
 	width: auto;
@@ -441,11 +458,3 @@ DASHBOARD
 	margin-bottom: 10px;
 }
 
-/* MODAL */
-.dialog-dropper{
-	background-color: rgb(4, 156, 236);
-}
-
-.section-login .ui-dialog{
-	font-family: verdana;
-}

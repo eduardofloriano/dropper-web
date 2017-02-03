@@ -72,4 +72,17 @@ public class UsuarioDAO implements Serializable{
 		return usuarios;
 	}
 	
+	
+	@Transacional
+	public List<Usuario> obterListaUsuarios(int maxResult){
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		TypedQuery<Usuario> query = em.createNamedQuery(Usuario.OBTER_TODOS_USUARIOS, Usuario.class);
+		query.setMaxResults(maxResult);
+		try {
+			usuarios = query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+		return usuarios;
+	}
 }

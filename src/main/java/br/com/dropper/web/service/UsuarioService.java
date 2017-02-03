@@ -43,5 +43,9 @@ public class UsuarioService implements Serializable {
 	public List<Usuario> obterTodosUsuarios() {
 		return usuarioDAO.obterTodosUsuarios();
 	}
+	
+	public List<Usuario> obterListaUsuarios(int limite){
+		return usuarioDAO.obterListaUsuarios(limite);
+	}
 
 }

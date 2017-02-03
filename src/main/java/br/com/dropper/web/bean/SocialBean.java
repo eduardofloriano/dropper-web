@@ -3,6 +3,7 @@ package br.com.dropper.web.bean;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +16,6 @@ import javax.inject.Named;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.service.UsuarioService;
 import br.com.dropper.web.transaction.Transacional;
@@ -25,7 +25,8 @@ import br.com.dropper.web.transaction.Transacional;
 public class SocialBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	private static final int MAX_AMIGOS_SUGESTAO = 4;
+	
 	@Inject
 	private FacesContext context;
 
@@ -52,15 +53,28 @@ public class SocialBean implements Serializable {
 	}
 
 	private void atualizaListasAmigos(Usuario usuarioPrincipal) {
-		this.amigosTotal = new ArrayList<Usuario>();
-		this.amigosSugestao = usuarioService.obterTodosUsuarios();
-		
+		this.amigosTotal = preencheListaAmigosTotal(usuarioPrincipal);
+		this.amigosSugestao = preencheListaAmigosSugestao(amigosTotal, usuarioPrincipal);
+	}
+	
+	private List<Usuario> preencheListaAmigosTotal(Usuario usuarioPrincipal){
+		List<Usuario> amigosTotal = new ArrayList<Usuario>();
 		amigosTotal.addAll(usuarioPrincipal.getAmigos());
 		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
-
+		return amigosTotal;
+	}
+	
+	private List<Usuario> preencheListaAmigosSugestao(List<Usuario> amigosTotal, Usuario usuarioPrincipal){
+		List<Usuario> amigosSugestao = usuarioService.obterTodosUsuarios();
 		amigosSugestao.removeAll(amigosTotal);
 		amigosSugestao.remove(usuarioPrincipal);
-
+		
+		Collections.shuffle(amigosSugestao);
+		if(!(amigosSugestao.size() < MAX_AMIGOS_SUGESTAO)){
+			return amigosSugestao.subList(0, MAX_AMIGOS_SUGESTAO);
+		}else
+			return amigosSugestao;
+		
 	}
 
 	public Usuario getUsuarioLogado() {
@@ -70,39 +84,13 @@ public class SocialBean implements Serializable {
 
 	@Transacional
 	public List<Usuario> getAmigos() {
-		System.out.println("Inicializando getAmigos()...");
-		List<Usuario> amigosTotal = new ArrayList<Usuario>();
-
-		Usuario usuarioLogado = getUsuarioLogado();
-		Usuario usuarioPrincipal = usuarioService.buscarUsuarioManagedPorId(usuarioLogado.getId());
-
-		amigosTotal.addAll(usuarioPrincipal.getAmigos());
-		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
-
-		this.amigosTotal = amigosTotal;
-
-		System.out.println("Finalizando getAmigos()...");
+		Usuario usuarioPrincipal = usuarioService.buscarUsuarioManagedPorId(getUsuarioLogado().getId());
+		this.amigosTotal = preencheListaAmigosTotal(usuarioPrincipal);
 		return this.amigosTotal;
 	}
 
 	@Transacional
 	public List<Usuario> getAmigosSugestao() {
-		System.out.println("Inicializando getAmigosSugestao()...");
-		List<Usuario> amigosSugestao = usuarioService.obterTodosUsuarios();
-		List<Usuario> amigosTotal = new ArrayList<Usuario>();
-
-		Usuario usuarioLogado = getUsuarioLogado();
-		Usuario usuarioPrincipal = usuarioService.buscarUsuarioManagedPorId(usuarioLogado.getId());
-
-		amigosTotal.addAll(usuarioPrincipal.getAmigos());
-		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
-
-		amigosSugestao.removeAll(amigosTotal);
-		amigosSugestao.remove(usuarioPrincipal);
-
-		this.amigosSugestao = amigosSugestao;
-
-		System.out.println("Finalizando getAmigosSugestao()...");
 		return this.amigosSugestao;
 	}
 
@@ -153,7 +141,9 @@ public class SocialBean implements Serializable {
 		usuarioService.alterarUsuarioManaged(usuarioPrincipal);
 
 		System.out.println("Usuario Removido");
-		atualizaListasAmigos(usuarioPrincipal);
+
+		this.amigosSugestao.remove(amigo);
+		this.amigosTotal.add(amigo);
 
 		System.out.println("Finalizando removerAmigo()...");
 	}
@@ -172,7 +162,13 @@ public class SocialBean implements Serializable {
 
 		System.out.println("Usuario Conectado");
 		
-		atualizaListasAmigos(usuarioPrincipal);
+		this.amigosSugestao.remove(amigo);
+		this.amigosTotal.add(amigo);
+		
+		if(amigosSugestao.isEmpty()){
+			this.amigosSugestao = preencheListaAmigosSugestao(amigosTotal, usuarioPrincipal);
+		}
+		
 		System.out.println("Finalizando conectarAmigo()...");
 	}
 
