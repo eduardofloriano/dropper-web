@@ -19,9 +19,9 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import br.com.dropper.web.builder.ImagemBuilder;
-import br.com.dropper.web.dao.ImagemDAO;
 import br.com.dropper.web.model.Imagem;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.service.ImagemService;
 import br.com.dropper.web.transaction.Transacional;
 import br.com.dropper.web.util.ImageUtil;
 
@@ -36,15 +36,14 @@ public class ImagemBean implements Serializable {
 
 	@Inject
 	private ImagemBuilder builder;
-	
+
 	@Inject
 	private ImageUtil imageUtil;
-	
+
 	private UploadedFile file;
 
-	// TODO: Persistencia e Transacao controladas por EJB
 	@Inject
-	private ImagemDAO imagemDAO;
+	private ImagemService imagemService;
 
 	private List<Imagem> imagens;
 
@@ -55,7 +54,7 @@ public class ImagemBean implements Serializable {
 
 	@Transacional
 	private void atualizaListaImagem() {
-		this.imagens = imagemDAO.obterImagensPorUsuario(getUsuarioLogado());
+		this.imagens = imagemService.obterImagensPorUsuario(getUsuarioLogado());
 	}
 
 	private Usuario getUsuarioLogado() {
@@ -71,7 +70,7 @@ public class ImagemBean implements Serializable {
 				.setData(file.getInputstream()).setUsuario(getUsuarioLogado());
 
 		Imagem imagem = builder.construct();
-		imagemDAO.persist(imagem);
+		imagemService.gravarImagem(imagem);
 
 		FacesMessage message = new FacesMessage("Imagem ", event.getFile().getFileName() + " cadastrada com sucesso!");
 		context.addMessage(null, message);
@@ -82,8 +81,8 @@ public class ImagemBean implements Serializable {
 	@Transacional
 	public void remover(Imagem imagem) {
 		System.out.println("Vai remover a imagem: " + imagem.getNome() + " - " + imagem.getId());
-		imagem = imagemDAO.findById(imagem.getId());
-		imagemDAO.remove(imagem);
+		imagem = imagemService.buscarImagemPorId(imagem.getId());
+		imagemService.removerImagem(imagem);
 
 		atualizaListaImagem();
 	}
@@ -91,7 +90,7 @@ public class ImagemBean implements Serializable {
 	@Transacional
 	public StreamedContent download(Imagem imagem) throws IOException {
 		System.out.println("Vai realizar o download da imagem: " + imagem.getNome() + " - " + imagem.getId());
-		imagem = imagemDAO.findById(imagem.getId());
+		imagem = imagemService.buscarImagemPorId(imagem.getId());
 
 		// TODO download
 		StreamedContent file = new DefaultStreamedContent(new ByteArrayInputStream(imagem.getData()), "image/png",
@@ -106,7 +105,7 @@ public class ImagemBean implements Serializable {
 	public StreamedContent getImagem() throws Exception {
 		String id = context.getExternalContext().getRequestParameterMap().get("id");
 		if (!(id == null || id.equals("") || id.equals(" "))) {
-			Imagem imagem = imagemDAO.findById(Integer.parseInt(id));
+			Imagem imagem = imagemService.buscarImagemPorId(Integer.parseInt(id));
 			byte[] imagemResized = imageUtil.resize(new ByteArrayInputStream(imagem.getData()), 350, 350, "png");
 			return new DefaultStreamedContent(new ByteArrayInputStream(imagemResized), "image/png");
 		}
@@ -118,7 +117,7 @@ public class ImagemBean implements Serializable {
 		} else {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
-			Imagem imagem = imagemDAO.findById(Integer.parseInt(id));
+			Imagem imagem = imagemService.buscarImagemPorId(Integer.parseInt(id));
 			byte[] imagemResized = imageUtil.resize(new ByteArrayInputStream(imagem.getData()), 350, 350, "png");
 			return new DefaultStreamedContent(new ByteArrayInputStream(imagemResized), "image/png");
 		}

@@ -18,9 +18,9 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import br.com.dropper.web.builder.AudioBuilder;
-import br.com.dropper.web.dao.AudioDAO;
 import br.com.dropper.web.model.Audio;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.service.AudioService;
 import br.com.dropper.web.transaction.Transacional;
 
 @Named
@@ -34,12 +34,11 @@ public class AudioBean implements Serializable {
 
 	@Inject
 	private AudioBuilder builder;
+	
+	@Inject
+	private AudioService audioService;
 
 	private UploadedFile file;
-
-	// TODO: Persistencia e Transacao controladas por EJB
-	@Inject
-	private AudioDAO audioDAO;
 
 	private List<Audio> audios;
 
@@ -49,7 +48,7 @@ public class AudioBean implements Serializable {
 	}
 
 	private void atualizaListaAudios() {
-		this.audios = audioDAO.obterAudiosPorUsuario(getUsuarioLogado());
+		this.audios = audioService.obterAudiosPorUsuario(getUsuarioLogado());
 	}
 
 	private Usuario getUsuarioLogado() {
@@ -66,7 +65,7 @@ public class AudioBean implements Serializable {
 				.setData(file.getInputstream()).setUsuario(getUsuarioLogado());
 	
 		Audio audio = builder.construct();
-		audioDAO.persist(audio);
+		audioService.gravarAudio(audio);
 	
 		FacesMessage message = new FacesMessage("Audio ", event.getFile().getFileName() + " cadastrado com sucesso!");
 		context.addMessage(null, message);
@@ -77,8 +76,8 @@ public class AudioBean implements Serializable {
 	@Transacional
 	public void remover(Audio audio) {
 		System.out.println("Vai remover o audio: " + audio.getNome() + " - " + audio.getId());
-		audio = audioDAO.findById(audio.getId());
-		audioDAO.remove(audio);
+		audio = audioService.buscarAudioPorId(audio.getId());
+		audioService.removerAudio(audio);
 
 		atualizaListaAudios();
 	}
@@ -86,7 +85,7 @@ public class AudioBean implements Serializable {
 	@Transacional
 	public StreamedContent download(Audio audio) throws IOException {
 		System.out.println("Vai realizar o download do audio: " + audio.getNome() + " - " + audio.getId());
-		audio = audioDAO.findById(audio.getId());
+		audio = audioService.buscarAudioPorId(audio.getId());
 		
 		// TODO download
 		StreamedContent file = new DefaultStreamedContent(new ByteArrayInputStream(audio.getData()), null,

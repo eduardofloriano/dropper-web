@@ -17,9 +17,9 @@ import org.primefaces.model.chart.PieChartModel;
 import br.com.dropper.web.dao.ArquivoDAO;
 import br.com.dropper.web.dao.AudioDAO;
 import br.com.dropper.web.dao.ImagemDAO;
-import br.com.dropper.web.dao.RepositorioDAO;
 import br.com.dropper.web.dao.VideoDAO;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.service.RepositorioService;
 import br.com.dropper.web.transaction.Transacional;
 
 @Named
@@ -39,7 +39,7 @@ public class RepositorioBean implements Serializable {
 
 	// TODO: Persistencia e Transacao controladas por EJB
 	@Inject
-	private RepositorioDAO repositorioDAO;
+	private RepositorioService repositorioService;
 
 	@Inject
 	private ImagemDAO imagemDAO;
@@ -73,24 +73,17 @@ public class RepositorioBean implements Serializable {
 
 	public Long getEspacoDisponivel() {
 		if (getUsuarioLogado() != null) {
-			Long espacoTotal = usuarioLogado.getRepositorio().getEspacoTotal();
-
-			Long espacoOcupado = repositorioDAO.obterEspacoOcupadoImagemPorUsuario(usuarioLogado)
-					+ repositorioDAO.obterEspacoOcupadoArquivoPorUsuario(usuarioLogado)
-					+ repositorioDAO.obterEspacoOcupadoVideoPorUsuario(usuarioLogado)
-					+ repositorioDAO.obterEspacoOcupadoAudioPorUsuario(usuarioLogado);
-
-			return (espacoOcupado * 100) / espacoTotal;
+			return repositorioService.obterEspacoDisponivel(usuarioLogado);
 		}
 		return 1L;
 	}
 
 	private void preenchePieModel() {
 		if (getUsuarioLogado() != null) {
-			repositorioPieChartModel.set("Imagens", repositorioDAO.obterEspacoOcupadoImagemPorUsuario(usuarioLogado));
-			repositorioPieChartModel.set("Arquivos", repositorioDAO.obterEspacoOcupadoArquivoPorUsuario(usuarioLogado));
-			repositorioPieChartModel.set("Videos", repositorioDAO.obterEspacoOcupadoVideoPorUsuario(usuarioLogado));
-			repositorioPieChartModel.set("Audios", repositorioDAO.obterEspacoOcupadoAudioPorUsuario(usuarioLogado));
+			repositorioPieChartModel.set("Imagens", repositorioService.obterEspacoOcupadoImagemPorUsuario(usuarioLogado));
+			repositorioPieChartModel.set("Arquivos", repositorioService.obterEspacoOcupadoArquivoPorUsuario(usuarioLogado));
+			repositorioPieChartModel.set("Videos", repositorioService.obterEspacoOcupadoVideoPorUsuario(usuarioLogado));
+			repositorioPieChartModel.set("Audios", repositorioService.obterEspacoOcupadoAudioPorUsuario(usuarioLogado));
 
 			repositorioPieChartModel.setTitle("Repositorio");
 			repositorioPieChartModel.setLegendPosition("e");

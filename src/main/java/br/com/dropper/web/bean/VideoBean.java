@@ -18,9 +18,9 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import br.com.dropper.web.builder.VideoBuilder;
-import br.com.dropper.web.dao.VideoDAO;
 import br.com.dropper.web.model.Usuario;
 import br.com.dropper.web.model.Video;
+import br.com.dropper.web.service.VideoService;
 
 @Named
 @SessionScoped
@@ -36,9 +36,8 @@ public class VideoBean implements Serializable {
 
 	private UploadedFile file;
 
-	// TODO: Persistencia e Transacao controladas por EJB
 	@Inject
-	private VideoDAO videoDAO;
+	private VideoService videoService;
 
 	private List<Video> videos;
 
@@ -48,7 +47,7 @@ public class VideoBean implements Serializable {
 	}
 
 	private void atualizaListaVideo() {
-		this.videos = videoDAO.obterVideosPorUsuario(getUsuarioLogado());
+		this.videos = videoService.obterVideosPorUsuario(getUsuarioLogado());
 	}
 
 	public void handleFileUpload(FileUploadEvent event) throws IOException {
@@ -59,7 +58,7 @@ public class VideoBean implements Serializable {
 				.setData(file.getInputstream()).setUsuario(getUsuarioLogado());
 
 		Video video = builder.construct();
-		videoDAO.persist(video);
+		videoService.gravarVideo(video);
 
 		FacesMessage message = new FacesMessage("Video ", event.getFile().getFileName() + " cadastrado com sucesso!");
 		context.addMessage(null, message);
@@ -74,15 +73,15 @@ public class VideoBean implements Serializable {
 
 	public void remover(Video video) {
 		System.out.println("Vai remover o arquivo: " + video.getNome() + " - " + video.getId());
-		video = videoDAO.findById(video.getId());
-		videoDAO.remove(video);
+		video = videoService.buscarVideoPorId(video.getId());
+		videoService.removerVideo(video);
 
 		atualizaListaVideo();
 	}
 
 	public StreamedContent download(Video video) throws IOException {
 		System.out.println("Vai realizar o download da imagem: " + video.getNome() + " - " + video.getId());
-		video = videoDAO.findById(video.getId());
+		video = videoService.buscarVideoPorId(video.getId());
 		
 		// TODO download
 		StreamedContent file = new DefaultStreamedContent(new ByteArrayInputStream(video.getData()), null,

@@ -17,6 +17,7 @@ import org.primefaces.model.StreamedContent;
 
 import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.service.UsuarioService;
 import br.com.dropper.web.transaction.Transacional;
 
 @Named
@@ -28,9 +29,8 @@ public class SocialBean implements Serializable {
 	@Inject
 	private FacesContext context;
 
-	// TODO: Persistencia e Transacao controladas por EJB
 	@Inject
-	private UsuarioDAO usuarioDAO;
+	private UsuarioService usuarioService;
 
 	private Usuario usuario;
 	private Usuario usuarioLogado;
@@ -53,7 +53,7 @@ public class SocialBean implements Serializable {
 
 	private void atualizaListasAmigos(Usuario usuarioPrincipal) {
 		this.amigosTotal = new ArrayList<Usuario>();
-		this.amigosSugestao = usuarioDAO.obterTodosUsuarios();
+		this.amigosSugestao = usuarioService.obterTodosUsuarios();
 		
 		amigosTotal.addAll(usuarioPrincipal.getAmigos());
 		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
@@ -74,7 +74,7 @@ public class SocialBean implements Serializable {
 		List<Usuario> amigosTotal = new ArrayList<Usuario>();
 
 		Usuario usuarioLogado = getUsuarioLogado();
-		Usuario usuarioPrincipal = usuarioDAO.findById(usuarioLogado.getId());
+		Usuario usuarioPrincipal = usuarioService.buscarUsuarioManagedPorId(usuarioLogado.getId());
 
 		amigosTotal.addAll(usuarioPrincipal.getAmigos());
 		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
@@ -88,11 +88,11 @@ public class SocialBean implements Serializable {
 	@Transacional
 	public List<Usuario> getAmigosSugestao() {
 		System.out.println("Inicializando getAmigosSugestao()...");
-		List<Usuario> amigosSugestao = usuarioDAO.obterTodosUsuarios();
+		List<Usuario> amigosSugestao = usuarioService.obterTodosUsuarios();
 		List<Usuario> amigosTotal = new ArrayList<Usuario>();
 
 		Usuario usuarioLogado = getUsuarioLogado();
-		Usuario usuarioPrincipal = usuarioDAO.findById(usuarioLogado.getId());
+		Usuario usuarioPrincipal = usuarioService.buscarUsuarioManagedPorId(usuarioLogado.getId());
 
 		amigosTotal.addAll(usuarioPrincipal.getAmigos());
 		amigosTotal.addAll(usuarioPrincipal.getAmigoDe());
@@ -111,7 +111,7 @@ public class SocialBean implements Serializable {
 		System.out.println("Inicializando getAmigo()...");
 		String id = context.getExternalContext().getRequestParameterMap().get("id");
 		if (!(id == null || id.equals("") || id.equals(" "))) {
-			Usuario usuario = usuarioDAO.findById(Integer.parseInt(id));
+			Usuario usuario = usuarioService.buscarUsuarioManagedPorId(Integer.parseInt(id));
 			System.out.println("Finalizando getAmigo()...");
 			return new DefaultStreamedContent(new ByteArrayInputStream(
 					usuario.getImagemPerfil() == null ? usuario.getImagemPerfilDefault() : usuario.getImagemPerfil()),
@@ -126,7 +126,7 @@ public class SocialBean implements Serializable {
 		} else {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
-			Usuario usuario = usuarioDAO.findById(Integer.parseInt(id));
+			Usuario usuario = usuarioService.buscarUsuarioManagedPorId(Integer.parseInt(id));
 			System.out.println("Finalizando getAmigo()...");
 			return new DefaultStreamedContent(new ByteArrayInputStream(
 					usuario.getImagemPerfil() == null ? usuario.getImagemPerfilDefault() : usuario.getImagemPerfil()),
@@ -140,7 +140,7 @@ public class SocialBean implements Serializable {
 		System.out.println("Inicializando removerAmigo()...");
 		System.out.println("Removendo amigo...");
 		System.out.println(amigo.getNome());
-		amigo = usuarioDAO.findById(amigo.getId());
+		amigo = usuarioService.buscarUsuarioManagedPorId(amigo.getId());
 
 		Usuario usuarioPrincipal = getUsuarioLogado();
 
@@ -150,7 +150,7 @@ public class SocialBean implements Serializable {
 			usuarioPrincipal.getAmigoDe().remove(amigo);
 		}
 
-		usuarioDAO.merge(usuarioPrincipal);
+		usuarioService.alterarUsuarioManaged(usuarioPrincipal);
 
 		System.out.println("Usuario Removido");
 		atualizaListasAmigos(usuarioPrincipal);
@@ -163,12 +163,12 @@ public class SocialBean implements Serializable {
 		System.out.println("Inicializando conectarAmigo()...");
 		System.out.println("Conectando amigo...");
 		System.out.println(amigo.getNome());
-		amigo = usuarioDAO.findById(amigo.getId());
+		amigo = usuarioService.buscarUsuarioManagedPorId(amigo.getId());
 
 		Usuario usuarioPrincipal = getUsuarioLogado();
 
 		usuarioPrincipal.getAmigos().add(amigo);
-		usuarioDAO.merge(usuarioPrincipal);
+		usuarioService.alterarUsuarioManaged(usuarioPrincipal);
 
 		System.out.println("Usuario Conectado");
 		

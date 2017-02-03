@@ -1,9 +1,7 @@
 package br.com.dropper.web.bean;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -16,16 +14,15 @@ import javax.inject.Named;
 import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
-import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import br.com.dropper.web.dao.RepositorioDAO;
-import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.service.ProducaoService;
+import br.com.dropper.web.service.RepositorioService;
+import br.com.dropper.web.service.UsuarioService;
 import br.com.dropper.web.transaction.Transacional;
 import br.com.dropper.web.util.ImageUtil;
-import net.coobird.thumbnailator.Thumbnails;
 
 @Named
 @SessionScoped
@@ -38,10 +35,13 @@ public class UsuarioBean implements Serializable {
 
 	// TODO: Persistencia e Transacao controladas por EJB
 	@Inject
-	private UsuarioDAO usuarioDAO;
+	private UsuarioService usuarioService;
 
 	@Inject
-	private RepositorioDAO repositorioDAO;
+	private RepositorioService repositorioService;
+	
+	@Inject
+	private ProducaoService producaoService;
 	
 	@Inject
 	private ImageUtil imageUtil;
@@ -50,14 +50,7 @@ public class UsuarioBean implements Serializable {
 	private Usuario usuarioLogado;
 
 	private Part file;
-
-	private CroppedImage croppedImage;
-	private InputStream croppedImageStream;
-
-	/**
-	 * PRODUCAO
-	 */
-	private static final int NUMERO_MAXIMO_USUARIOS = 10;
+	
 
 	@PostConstruct
 	public void init() {
@@ -75,18 +68,12 @@ public class UsuarioBean implements Serializable {
 	public String cadastrar() {
 		System.out.println("Persistindo Usuário: " + usuario.getEmail());
 
-		/**
-		 * PRODUCAO - INICIO
-		 */
-		if (usuarioDAO.obterTodosUsuarios().size() > NUMERO_MAXIMO_USUARIOS) {
+		if (producaoService.isLimiteCadastroUsuario()) {
 			context.addMessage(null,
 					new FacesMessage("O número máximo de usuários para versão alpha já foi atingido!"));
 			context.getExternalContext().getFlash().setKeepMessages(true);
 			return null;
 		}
-		/**
-		 * PRODUCAO - FIM
-		 */
 
 		if (file != null) {
 			try {
@@ -99,7 +86,7 @@ public class UsuarioBean implements Serializable {
 			}
 		}
 
-		usuarioDAO.persist(this.usuario);
+		usuarioService.gravarUsuario(this.usuario);
 		context.addMessage(null, new FacesMessage("Usuário Cadastrado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
 		return null;
@@ -109,8 +96,8 @@ public class UsuarioBean implements Serializable {
 	public String remover() {
 		System.out.println("Removendo Usuário: " + usuarioLogado.getEmail());
 
-		Usuario usuario = usuarioDAO.findById(this.usuarioLogado.getId());
-		usuarioDAO.remove(usuario);
+		Usuario usuario = usuarioService.buscarUsuarioManaged(this.usuarioLogado);
+		usuarioService.removerUsuarioManaged(usuario);
 
 		context.getExternalContext().getSessionMap().remove("usuarioLogado");
 		context.getExternalContext().invalidateSession();
@@ -121,19 +108,14 @@ public class UsuarioBean implements Serializable {
 	@Transacional
 	public void alterar() {
 		System.out.println("Atualizando Usuário");
-		usuarioDAO.merge(this.usuarioLogado);
+		usuarioService.alterarUsuarioManaged(this.usuarioLogado);
 		context.addMessage(null, new FacesMessage("Usuário Atualizado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
 	}
 
 	public Long getEspacoDisponivel() {
 		if (getUsuarioLogado() != null) {
-			Long espacoTotal = usuarioLogado.getRepositorio().getEspacoTotal();
-			Long espacoOcupado = repositorioDAO.obterEspacoOcupadoImagemPorUsuario(usuarioLogado)
-					+ repositorioDAO.obterEspacoOcupadoArquivoPorUsuario(usuarioLogado)
-					+ repositorioDAO.obterEspacoOcupadoVideoPorUsuario(usuarioLogado);
-
-			return (espacoOcupado * 100) / espacoTotal;
+			return repositorioService.obterEspacoDisponivel(usuarioLogado);
 		}
 		return 1L;
 	}
@@ -145,7 +127,7 @@ public class UsuarioBean implements Serializable {
 		byte[] imagemRedimensionada = imageUtil.forceResize(file.getInputStream(), 150, 150, "png");
 		
 		this.usuarioLogado.setImagemPerfil(imagemRedimensionada);
-		usuarioDAO.merge(this.usuarioLogado);
+		usuarioService.alterarUsuarioManaged(this.usuarioLogado);
 		context.addMessage(null, new FacesMessage("Usuário Atualizado com sucesso!"));
 		context.getExternalContext().getFlash().setKeepMessages(true);
 	}
@@ -154,7 +136,7 @@ public class UsuarioBean implements Serializable {
 	public StreamedContent getImagemPerfil() throws Exception {
 		String id = context.getExternalContext().getRequestParameterMap().get("id");
 		if (!(id == null || id.equals("") || id.equals(" "))) {
-			Usuario usuario = usuarioDAO.findById(Integer.parseInt(id));
+			Usuario usuario = usuarioService.buscarUsuarioManagedPorId(Integer.parseInt(id));
 			return new DefaultStreamedContent(new ByteArrayInputStream(usuario.getImagemPerfil()), "image/png");
 		}
 
@@ -162,13 +144,10 @@ public class UsuarioBean implements Serializable {
 			// So, we're rendering the view. Return a stub StreamedContent so
 			// that it will generate right URL.
 			return new DefaultStreamedContent();
-			// return new DefaultStreamedContent(new
-			// ByteArrayInputStream(usuarioLogado.getImagemPerfil()),
-			// "image/png");
 		} else {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
-			Usuario usuario = usuarioDAO.findById(Integer.parseInt(id));
+			Usuario usuario = usuarioService.buscarUsuarioManagedPorId(Integer.parseInt(id));
 			return new DefaultStreamedContent(new ByteArrayInputStream(usuario.getImagemPerfil()), "image/png");
 		}
 
@@ -193,11 +172,6 @@ public class UsuarioBean implements Serializable {
 //	}
 	
 	
-	@Transacional
-	public void setImagemPerfilCarregada(CroppedImage croppedImage) throws Exception {
-		this.croppedImage = croppedImage;
-	}
-
 	// Setters & Getters
 	public Usuario getUsuario() {
 		return usuario;

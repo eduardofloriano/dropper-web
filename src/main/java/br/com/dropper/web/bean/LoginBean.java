@@ -9,8 +9,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.dropper.web.dao.UsuarioDAO;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.service.UsuarioService;
 import br.com.dropper.web.transaction.Transacional;
 
 @Named
@@ -25,10 +25,9 @@ public class LoginBean implements Serializable {
 	@Inject
 	private Usuario usuario;
 	
-	//TODO: Persistencia e Transacao controladas por EJB
 	@Inject
-	private UsuarioDAO usuarioDAO;
-
+	private UsuarioService usuarioService;
+	
 	private boolean modalBoasVindas;
 	
 	@PostConstruct
@@ -43,7 +42,7 @@ public class LoginBean implements Serializable {
 	@Transacional
 	public String autenticar() {
 
-		Usuario usuario = usuarioDAO.obterUsuarioPorEmail(this.usuario);
+		Usuario usuario = usuarioService.obterUsuarioPorEmail(this.usuario);
 
 		if (usuario == null) {
 			context.addMessage(null, new FacesMessage("Usuario não encontrado."));
@@ -74,7 +73,5 @@ public class LoginBean implements Serializable {
 	public void setModalBoasVindas(boolean modalBoasVindas) {
 		this.modalBoasVindas = modalBoasVindas;
 	}
-
-	
 	
 }

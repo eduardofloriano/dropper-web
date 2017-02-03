@@ -18,9 +18,9 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import br.com.dropper.web.builder.ArquivoBuilder;
-import br.com.dropper.web.dao.ArquivoDAO;
 import br.com.dropper.web.model.Arquivo;
 import br.com.dropper.web.model.Usuario;
+import br.com.dropper.web.service.ArquivoService;
 import br.com.dropper.web.transaction.Transacional;
 
 @Named
@@ -36,9 +36,8 @@ public class ArquivoBean implements Serializable {
 
 	private UploadedFile file;
 
-	// TODO: Persistencia e Transacao controladas por EJB
 	@Inject
-	private ArquivoDAO arquivoDAO;
+	private ArquivoService arquivoService;
 
 	@PostConstruct
 	public void init() {
@@ -46,7 +45,7 @@ public class ArquivoBean implements Serializable {
 	}
 
 	private void atualizaListaArquivo() {
-		this.arquivos = arquivoDAO.obterArquivosPorUsuario(getUsuarioLogado());
+		this.arquivos = arquivoService.obterArquivosPorUsuario(getUsuarioLogado());
 	}
 
 	private Usuario getUsuarioLogado() {
@@ -64,7 +63,7 @@ public class ArquivoBean implements Serializable {
 				.setData(file.getInputstream()).setUsuario(getUsuarioLogado());
 
 		Arquivo arquivo = builder.construct();
-		arquivoDAO.persist(arquivo);
+		arquivoService.gravarArquivo(arquivo);
 	
 		FacesMessage message = new FacesMessage("Arquivo ", event.getFile().getFileName() + " cadastrado com sucesso!");
 		context.addMessage(null, message);
@@ -75,8 +74,8 @@ public class ArquivoBean implements Serializable {
 	@Transacional
 	public void remover(Arquivo arquivo) {
 		System.out.println("Vai remover o arquivo: " + arquivo.getNome() + " - " + arquivo.getId());
-		arquivo = arquivoDAO.findById(arquivo.getId());
-		arquivoDAO.remove(arquivo);
+		arquivo = arquivoService.buscarArquivoPorId(arquivo.getId());
+		arquivoService.removerArquivo(arquivo);
 
 		atualizaListaArquivo();
 	}
@@ -84,7 +83,7 @@ public class ArquivoBean implements Serializable {
 	@Transacional
 	public StreamedContent download(Arquivo arquivo) throws IOException {
 		System.out.println("Vai realizar o download da imagem: " + arquivo.getNome() + " - " + arquivo.getId());
-		arquivo = arquivoDAO.findById(arquivo.getId());
+		arquivo = arquivoService.buscarArquivoPorId(arquivo.getId());
 		
 		// TODO download
 		StreamedContent file = new DefaultStreamedContent(new ByteArrayInputStream(arquivo.getData()), null,
